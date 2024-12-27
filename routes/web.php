@@ -14,3 +14,6 @@ Route::post('addCategory', [CategoriesController::class, 'insert']);
 Route::get('menu', function () {
     return view('Admin/menu');
 });
+Route::get('login', function () {
+    return view('Admin/login');
+});
