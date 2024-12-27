@@ -18,6 +18,9 @@ class MenuController extends Controller
         return view('Admin/menu' , compact('categories' , 'menu'));
     }
 
+
+
+
     public function insert(Request $request)
     {
         try {
@@ -51,4 +54,65 @@ class MenuController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
         }
     }
+
+    public function home(){
+        $categories = Categories::select('category_id', 'category_name', 'category_description')->where('category_status', 1)->get()->map(function ($category) {
+            // Fetch all menu items for the current category
+            $menuItems = Menu::where('category_id', $category->category_id)
+                ->where('menu_status', 1)
+                ->get()
+                ->map(function ($menu) {
+                    return [
+                        'menu_name' => $menu->menu_name,
+                        'prices' => [   
+                            'small' => $menu->menu_s_price,
+                            'large' => $menu->menu_l_price,
+                        ],
+                        'description' => $menu->menu_description,
+                    ];
+                });
+    
+            return [
+                'id' => $category->category_id,
+                'category_name' => $category->category_name,
+                'category_description' => $category->category_description,
+                'items' => $menuItems,
+            ];
+        });
+    
+        // return response()->json($categories);
+        return view('User.home' , compact('categories'));
+
+    }
+    public function userData(){
+        $categories = Categories::select('category_id', 'category_name', 'category_description')->where('category_status', 1)->get()->map(function ($category) {
+            // Fetch all menu items for the current category
+            $menuItems = Menu::where('category_id', $category->category_id)
+                ->where('menu_status', 1)
+                ->get()
+                ->map(function ($menu) {
+                    return [
+                        'menu_name' => $menu->menu_name,
+                        'prices' => [   
+                            'small' => $menu->menu_s_price,
+                            'large' => $menu->menu_l_price,
+                        ],
+                        'description' => $menu->menu_description,
+                    ];
+                });
+    
+            return [
+                'id' => $category->category_id,
+                'category_name' => $category->category_name,
+                'category_description' => $category->category_description,
+                'items' => $menuItems,
+            ];
+        });
+    
+        // return response()->json($categories);
+        return view('User.menu' , compact('categories'));
+
+    }
+
+    
 }

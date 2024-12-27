@@ -30,7 +30,7 @@
                         <td class='text-xs xl:text-[15px]'>{{ $category->category_name }}</td>
                         <td class='text-xs xl:text-[15px] min-w-[280px]'>{{ $category->category_description }}</td>
 
-                        <td>
+                        <td>la
                             <span class='flex gap-4'>
                                 <button class="updateDataBtn">
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'

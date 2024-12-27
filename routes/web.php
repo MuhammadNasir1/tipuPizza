@@ -17,9 +17,14 @@ Route::post('addCategory', [CategoriesController::class, 'insert']);
 
 Route::get('admin/menu', [MenuController::class, 'index']);
 Route::post('addMenu', [MenuController::class, 'insert']);
+Route::get('menu', [MenuController::class, 'userData']);
 
 
 Route::get('/', function () {
     return view('User.home');
 });
+Route::get('/', [MenuController::class, 'home']);
 
+Route::get('/contact', function () {
+    return view('User/contact');
+});
