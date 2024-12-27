@@ -21,17 +21,20 @@
         @endphp
         <x-table :headers="$headers">
             <x-slot name="tablebody">
+                @foreach ($menu as $data )
+
+
                 <tr>
-                    <td></td>
+                    <td>{{$loop->iteration}}</td>
                     {{-- <td class="whitespace-nowrap">{{ $data->added_username  }}</td> --}}
                     {{-- <td>{{ $username =App\Models\User::select('name')->where('id' , $data->added_user_id)->first();  }}</td> --}}
                     <td><img class="object-cover w-16 h-16 rounded-full "
-                            src="{{ asset('assets/Profile photo (1) 1.png') }}" alt='Blog Image'></td>
-                    <td class='text-xs xl:text-[15px]'>Title Here</td>
-                    <td class='text-xs xl:text-[15px] min-w-[280px]'>Description Here</td>
-                    <td class='text-sm xl:text-[15px] whitespace-nowrap'>Category 1</td>
-                    <td class='text-sm xl:text-[15px] whitespace-nowrap'> 100</td>
-                    <td class='text-sm xl:text-[15px] whitespace-nowrap'>100</td>
+                            src="{{ $data->menu_img }}" alt='Blog Image'></td>
+                    <td class='text-xs xl:text-[15px]'>{{$data->menu_name}}</td>
+                    <td class='text-xs xl:text-[15px] min-w-[280px]'>{{$data->menu_description}}</td>
+                    <td class='text-sm xl:text-[15px] whitespace-nowrap'>{{$data->category->category_name}}</td>
+                    <td class='text-sm xl:text-[15px] whitespace-nowrap'> {{$data->menu_s_price}}</td>
+                    <td class='text-sm xl:text-[15px] whitespace-nowrap'> {{$data->menu_l_price}}</td>
 
                     <td>
                         <span class='flex gap-4'>
@@ -81,6 +84,7 @@
                         </span>
                     </td>
                 </tr>
+                @endforeach
 
             </x-slot>
         </x-table>
@@ -90,46 +94,49 @@
             <x-slot name="title">Add Blog </x-slot>
             <x-slot name="modal_width">max-w-4xl</x-slot>
             <x-slot name="body">
-                <form id="postDataForm" method="POST" url="../saveMedia" enctype="multipart/form-data">
+                <form id="postDataForm" method="POST" url="../addMenu" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="media_type" value="blogs">
                     <input type="hidden" name="media_id" id="updateId">
                     <div class="grid grid-cols-1 gap-4 ">
                         <div class="md:px-52 ">
-                            <x-file-uploader name="media_image" id="moduleImage" />
+                            <x-file-uploader name="menu_name" id="moduleImage" />
                         </div>
                     </div>
                     <div class="mt-2">
                         <div class="mt-4">
-                            <x-input class="" id="categoryName" label="Name" placeholder="Enter Here"
-                                name="category_name" type="text"></x-input>
+                            <x-input class="" id="menu_name" label="Name" placeholder="Enter Here"
+                                name="menu_name" type="text"></x-input>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-4 ">
                         <div>
-                            <x-select name="category_type" id="categoryType1" label="Select Category">
+                            <x-select name="category_id" id="categoryType1" label="Select Category">
                                 <x-slot name="options">
                                     <option disabled selected>Select Category</option>
-                                    <option value="blogs">Blog</option>
-                                    <option value="diseases">Diseases</option>
-                                    <option value="consultancy">Consultancy</option>
+                                    <option value="" disabled selected>Select Menu Category</option>
+
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
+
+                                    @endforeach
                                 </x-slot>
                             </x-select>
                         </div>
                         <div class="">
-                            <x-input class="" id="categoryName" label="Description" placeholder="Enter Here"
-                                name="category_name" type="text"></x-input>
+                            <x-input class="" id="menuDescription" label="Description" placeholder="Enter Here"
+                                name="menu_description" type="text"></x-input>
                         </div>
 
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-2">
                         <div class="">
-                            <x-input class="" id="categoryName" label="S.Price" placeholder="Enter Here"
-                                name="category_name" type="number"></x-input>
+                            <x-input class="" id="menu_s_price" label="S.Price" placeholder="Enter Here"
+                                name="menu_s_price" type="number"></x-input>
                         </div>
                         <div class="">
                             <x-input class="" id="categoryName" label="L.Price" placeholder="Enter Here"
-                                name="category_name" type="number"></x-input>
+                                name="menu_l_price" type="number"></x-input>
                         </div>
                     </div>
                     <div class="px-20 mt-8">
