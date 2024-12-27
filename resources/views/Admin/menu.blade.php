@@ -91,7 +91,7 @@
 
 
         <x-modal id="blog-modal">
-            <x-slot name="title">Add Blog </x-slot>
+            <x-slot name="title">Add Menu  </x-slot>
             <x-slot name="modal_width">max-w-4xl</x-slot>
             <x-slot name="body">
                 <form id="postDataForm" method="POST" url="../addMenu" enctype="multipart/form-data">
@@ -132,11 +132,11 @@
                     <div class="grid grid-cols-2 gap-4 mt-2">
                         <div class="">
                             <x-input class="" id="menu_s_price" label="S.Price" placeholder="Enter Here"
-                                name="menu_s_price" type="number"></x-input>
+                                name="menu_s_price" type="text"></x-input>
                         </div>
                         <div class="">
                             <x-input class="" id="categoryName" label="L.Price" placeholder="Enter Here"
-                                name="menu_l_price" type="number"></x-input>
+                                name="menu_l_price" type="text"></x-input>
                         </div>
                     </div>
                     <div class="px-20 mt-8">
@@ -153,24 +153,14 @@
                                 </svg>
                             </div>
                             <div id="btnText">
-                                Add Category
+                                Add Menu
                             </div>
                         </button>
                     </div>
                 </form>
             </x-slot>
         </x-modal>
-        <x-modal id="view-modal">
-            <x-slot name="title">Details </x-slot>
-            <x-slot name="modal_width">max-w-2xl</x-slot>
-            <x-slot name="body">
-                <div class="p-6">
-                    <div class="flex justify-center">
-                        <img class="object-contain w-80 h-80" src="{{ asset('assets/viewimgsvg.svg') }}" alt="">
-                    </div>
-                </div>
-            </x-slot>
-        </x-modal>
+       
     </div>
 @endsection
 @section('js')
