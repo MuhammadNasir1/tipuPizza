@@ -24,6 +24,7 @@ Route::get('/', function () {
     return view('User.home');
 });
 Route::get('/', [MenuController::class, 'home']);
+Route::get('/', [MenuController::class, 'home']);
 
 Route::get('/contact', function () {
     return view('User/contact');
