@@ -101,7 +101,7 @@
                     </div>
                     <div class="mt-2">
                         <div class="mt-4">
-                            <x-input class="" id="categoryName" label="Image Title" placeholder="Enter Here"
+                            <x-input class="" id="categoryName" label="Name" placeholder="Enter Here"
                                 name="category_name" type="text"></x-input>
                         </div>
                     </div>

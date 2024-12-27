@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,9 +9,8 @@ Route::get('/', function () {
 Route::get('layout', function () {
     return view('Admin/layout');
 });
-Route::get('category', function () {
-    return view('Admin/category');
-});
+Route::get('admin/category', [CategoriesController::class, 'index']);
+Route::post('addCategory', [CategoriesController::class, 'insert']);
 Route::get('menu', function () {
     return view('Admin/menu');
 });
