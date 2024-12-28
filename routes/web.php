@@ -11,7 +11,7 @@ Route::get('layout', function () {
     return view('Admin/layout');
 });
 Route::get('admin/category', [CategoriesController::class, 'index']);
-Route::post('addCategory', [CategoriesController::class, 'insert']);
+Route::post('/addCategory', [CategoriesController::class, 'insert']);
 Route::post('/updateCategory/{id}', [CategoriesController::class, 'update']);
 Route::get('/deleteCategory/{id}', [CategoriesController::class, 'delete']);
 

@@ -22,7 +22,7 @@
                 @foreach ($categories as $category)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td><img class="object-cover w-20 h-20 rounded-full " src="{{ asset(  $category->category_img ?? 'assets/images/logo.png') }}"
+                        <td><img loading="lazy"  class="object-cover w-20 h-20 rounded-full " src="{{ asset(  $category->category_img ?? 'assets/images/logo.png') }}"
                                 alt='category Image'/>
                         </td>
                         <td class='text-xs xl:text-[15px]'>{{ $category->category_name }}</td>
@@ -60,11 +60,11 @@
 
 
         <x-modal id="category-modal">
-            <x-slot name="title">Add Blog </x-slot>
+            <x-slot name="title">Add Category </x-slot>
             <x-slot name="modal_width">max-w-4xl</x-slot>
             <x-slot name="body">
                 <form id="postDataForm" method="POST" url="../addCategory" enctype="multipart/form-data">
-                    @csrf   
+                    @csrf
                     <input type="hidden" name="media_type" value="blogs">
                     <input type="hidden" name="media_id" id="updateId">
                     <div class="grid grid-cols-2 gap-4 ">
@@ -98,7 +98,7 @@
                                 </svg>
                             </div>
                             <div id="btnText">
-                                Add Menu
+                                Add Category
                             </div>
                         </button>
 

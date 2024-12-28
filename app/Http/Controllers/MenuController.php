@@ -115,6 +115,7 @@ class MenuController extends Controller
                 ->get()
                 ->map(function ($menu) {
                     return [
+                        'menu_id' => $menu->menu_id,
                         'menu_name' => $menu->menu_name,
                         'menu_img' => $menu->menu_img,
 
@@ -147,6 +148,7 @@ class MenuController extends Controller
                 ->get()
                 ->map(function ($menu) {
                     return [
+                        'menu_id' => $menu->menu_id,
                         'menu_name' => $menu->menu_name,
                         'menu_img' => $menu->menu_img,
                         'prices' => [

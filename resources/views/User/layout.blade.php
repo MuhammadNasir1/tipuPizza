@@ -48,6 +48,15 @@
             </a>
             <div class="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
                 {{-- <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get started</button> --}}
+                <button id="cartButton" class="relative">
+                    <svg class="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                        <path
+                            d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                    </svg>
+                    <span id="cartItemCount"
+                        class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+
                 <button data-collapse-toggle="navbar-sticky" type="button"
                     class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     aria-controls="navbar-sticky" aria-expanded="false">
@@ -90,7 +99,8 @@
                             aria-labelledby="dropdownDefaultButton">
                             <li>
                                 <a href="../apply"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Apply For Job</a>
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Apply
+                                    For Job</a>
                             </li>
                             <li>
                                 <a href="../supplier"
@@ -155,6 +165,119 @@
     <script src="{{ asset('javascript/script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        // =================== cart
+        $(document).ready(function() {
+            // Load cart from localStorage or initialize
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            // Update the cart item count badge
+            const updateCartCount = () => {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                $('#cartItemCount').text(totalItems);
+            };  
+
+            // Initialize cart count on page load
+            updateCartCount();
+
+            // Add or update item in the cart
+            const addToCart = (item) => {
+                const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id && cartItem
+                    .size === item.size);
+                if (existingItemIndex > -1) {
+                    // Increment quantity if item already exists
+                    cart[existingItemIndex].quantity += 1;
+                } else {
+                    // Add new item to the cart
+                    cart.push({
+                        ...item,
+                        quantity: 1
+                    });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart)); // Save to localStorage
+                updateCartCount(); // Update the badge count
+
+                // SweetAlert2 confirmation
+                Swal.fire({
+                    title: 'Added to Cart',
+                    text: `${item.name} (${item.size}) has been added to your cart!`,
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            };
+
+            // Handle card click
+            $('.open-modal').on('click', function() {
+                const itemId = $(this).data('item-id');
+                const itemName = $(this).data('item-name');
+                const priceSmall = $(this).data('price-small');
+                const priceLarge = $(this).data('price-large');
+
+                if (priceSmall && priceLarge) {
+                    // Show modal if both prices are available
+                    $('#modalItemName').text(itemName);
+                    $('#modalSmallPrice').text(priceSmall);
+                    $('#modalLargePrice').text(priceLarge);
+
+                    $('#selectSmall').data('cart-item', {
+                        id: itemId,
+                        name: itemName,
+                        size: 'Small',
+                        price: priceSmall
+                    });
+                    $('#selectLarge').data('cart-item', {
+                        id: itemId,
+                        name: itemName,
+                        size: 'Large',
+                        price: priceLarge
+                    });
+
+                    $('#sizeModal').removeClass('hidden').addClass('flex');
+                } else {
+                    // Directly add to cart if only one price is available
+                    const cartItem = {
+                        id: itemId,
+                        name: itemName,
+                        size: priceSmall ? 'Small' : 'Large',
+                        price: priceSmall || priceLarge
+                    };
+                    addToCart(cartItem);
+                    console.log('Cart:', cart); // Debugging purposes
+                }
+            });
+
+            // Close modal
+            $('#closeModal').on('click', function() {
+                $('#sizeModal').removeClass('flex').addClass('hidden');
+            });
+
+            // Add item to cart from modal
+            $('#selectSmall, #selectLarge').on('click', function() {
+                const cartItem = $(this).data('cart-item');
+                addToCart(cartItem);
+
+                $('#sizeModal').removeClass('flex').addClass('hidden');
+                console.log('Cart:', cart); // Debugging purposes
+            });
+
+            // Example: Handle cart button click (navigate to cart page)
+            $('#cartButton').on('click', function() {
+                Swal.fire({
+                    title: 'Cart',
+                    text: 'Navigate to cart page or show cart modal here.',
+                    icon: 'info',
+                    confirmButtonText: 'Okay'
+                });
+                console.log('Cart contents:', cart); // Debugging purposes
+            });
+        });
+
+
+
+
+
+        // =================== cart end
+
         $('#view-modal').addClass('hidden');
         $(document).ready(function() {
             // Scroll to top functionality
