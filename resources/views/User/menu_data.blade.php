@@ -10,8 +10,9 @@
                 @foreach ($categories as $category)
                     <a href="#{{ $category['category_name'] }}" onclick="handleCategoryClick('{{ $category['id'] }}')"
                         class="max-w-full whitespace-nowrap bg-primary text-white flex flex-col justify-center flex-shrink-0 items-center rounded-md custom-shadow py-4 px-8 text-center font-semibold hover:bg-red-600 transition">
-                        <img class="w-16 h-16 object-cover mb-2 rounded-full border-primary"
-                            src="{{ $category->category_name ?? asset('assets/images/default.jpg') }}" alt="menu" />
+                        <img class="w-24     h-24 object-cover mb-2 rounded-full border-primary bg-white"
+                            src="{{ $category->category_img ?? asset('assets/images/pizza.jpg') }}" alt="menu" />
+                            {{-- src="{{ $category->category_name ?? asset('assets/images/default.jpg') }}" alt="menu" /> --}}
                         {{ $category['category_name'] }}
                     </a>
                 @endforeach

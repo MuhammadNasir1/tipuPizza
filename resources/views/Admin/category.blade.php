@@ -3,7 +3,6 @@
     Category
 @endsection
 @section('content')
-    <button data-modal-target='view-modal' data-modal-toggle='view-modal'></button>
 
     <div class="w-full pt-10 min-h-[88vh] border-2 shadow-2xl rounded-xl">
         <div class="flex justify-between w-full px-5">
@@ -11,9 +10,8 @@
                 <h1 class="text-3xl font-bold">Categories</h1>
             </div>
             <div>
-                <button id="addModalBtn" data-modal-target="blog-modal" data-modal-toggle="blog-modal"
+                <button id="addModalBtn" data-modal-target="category-modal" data-modal-toggle="category-modal"
                     class="px-5 py-3 font-semibold text-white rounded-full shadow-md gradient-bg">Add New</button>
-                <button data-modal-target="categories-modal" data-modal-toggle="categories-modal"></button>
             </div>
         </div>
         @php
@@ -24,15 +22,15 @@
                 @foreach ($categories as $category)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td><img class="object-cover w-16 h-16 rounded-full " src="{{ $category->category_img }}"
+                        <td><img class="object-cover w-20 h-20 rounded-full " src="{{ asset(  $category->category_img ?? 'assets/images/logo.png') }}"
                                 alt='category Image'/>
                         </td>
                         <td class='text-xs xl:text-[15px]'>{{ $category->category_name }}</td>
                         <td class='text-xs xl:text-[15px] min-w-[280px]'>{{ $category->category_description }}</td>
 
-                        <td>la
+                        <td>
                             <span class='flex gap-4'>
-                                <button class="updateDataBtn">
+                                <button class="updateDataBtn " CategoryId="{{$category->category_id}}" categoryName="{{ $category->category_name }}" categoryImage="{{  asset($category->category_img)}}" categoryDescription="{{ $category->category_description }}" >
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#233A85' />
@@ -41,7 +39,7 @@
                                             fill='#233A85' />
                                     </svg>
                                 </button>
-                                <button class="deleteDataBtn" delId="" delUrl="../deleteMedia" name="media_id">
+                                <button class="deleteDataBtn"  delUrl="../deleteCategory/{{$category->category_id}}" >
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#DF6F79' />
@@ -61,19 +59,19 @@
         </x-table>
 
 
-        <x-modal id="blog-modal">
+        <x-modal id="category-modal">
             <x-slot name="title">Add Blog </x-slot>
             <x-slot name="modal_width">max-w-4xl</x-slot>
             <x-slot name="body">
                 <form id="postDataForm" method="POST" url="../addCategory" enctype="multipart/form-data">
-                    @csrf
+                    @csrf   
                     <input type="hidden" name="media_type" value="blogs">
                     <input type="hidden" name="media_id" id="updateId">
-                    <div class="grid grid-cols-1 gap-4 ">
-                        <div class="md:px-52 ">
-                            <x-file-uploader name="category_img" id="moduleImage" />
+                    <div class="grid grid-cols-2 gap-4 ">
+                        <div class="w-full ">
+                            <x-file-uploader name="category_img" id="categoryImage" />
                         </div>
-                    </div>
+
                     <div class="mt-2">
                         <div class="mt-4">
                             <x-input class="" id="categoryName" label="Name" placeholder="Enter Category Name"
@@ -81,11 +79,12 @@
                         </div>
                         <div class="mt-4">
                             <x-textarea class="" id="categoryDescription" label="Description"
-                                placeholder="Enter Descriptiond" name="category_description"></x-textarea>
+                                placeholder="Enter Description" name="category_description"></x-textarea>
                         </div>
                     </div>
-                    <div class="px-20 mt-8">
-        
+                </div>
+                    <div class=" mt-8">
+
                         <button class="w-full px-3 py-2 font-semibold text-white rounded-full shadow-md gradient-bg" id="submitBtn">
                             <div id="btnSpinner" class="hidden">
                                 <svg aria-hidden="true" class="w-6 h-6 mx-auto text-center text-gray-200 animate-spin fill-customOrangeLight"
@@ -102,71 +101,44 @@
                                 Add Menu
                             </div>
                         </button>
-                        
+
                     </div>
                 </form>
             </x-slot>
         </x-modal>
-        <x-modal id="view-modal">
-            <x-slot name="title">Details </x-slot>
-            <x-slot name="modal_width">max-w-2xl</x-slot>
-            <x-slot name="body">
-                <div class="p-6">
-                    <div class="flex justify-center">
-                        <img class="object-contain w-80 h-80" src="{{ asset('assets/viewimgsvg.svg') }}" alt="">
-                    </div>
-                </div>
-            </x-slot>
-        </x-modal>
+
     </div>
 @endsection
 @section('js')
     <script>
-        function viewData() {
 
-            $('.viewModalBtn').click(function() {
-                $('#view-modal').addClass('flex').removeClass('hidden');
-                $('#dTitle').text($(this).attr('mediaTitle'));
-                $('#dAuthor').text($(this).attr('mediaAuthor'));
-                $('#dCategory').text($(this).attr('mediaCategory'));
-                $('#dDate').text($(this).attr('mediaDate'));
-                $('#dDescription').text($(this).attr('mediaDescription'));
-                $('#dImage').attr('src', $(this).attr('mediaImage'));
-
-            });
-
-        }
-        viewData()
 
         function updateDatafun() {
-            viewData()
+
             $('.updateDataBtn').click(function() {
-                $('#blog-modal').removeClass("hidden").addClass('flex');
-
-                let mediaDetails = $(this).siblings('.viewModalBtn');;
-                $('#updateId').val(mediaDetails.attr('mediaId'));
-                $('#mediaTitle').val(mediaDetails.attr('mediaTitle'));
-                $('#mediaTitle').val(mediaDetails.attr('mediaTitle'));
-                $('#mediaAuthor').val(mediaDetails.attr('mediaAuthor'));
-                $('#categoryId').val(mediaDetails.attr('mediaCategoryId')).trigger('change');
-                $('#mediaDescription').val(mediaDetails.attr('mediaDescription'));
-                let fileImg = $('#blog-modal .file-preview');
-                fileImg.removeClass('hidden').attr('src', mediaDetails.attr('mediaImage'));
+                $('#category-modal').removeClass("hidden").addClass('flex');
+                $('#postDataForm').attr('url' , '../updateCategory/' + $(this).attr('CategoryId'));
 
 
-                $('#blog-modal #modalTitle').text("Update Blog");
-                $('#blog-modal #btnText').text("Update");
+                $('#categoryName').val($(this).attr('categoryName'));
+                $('#categoryDescription').val($(this).attr('categoryDescription'));
+                $('#categoryId').val($(this).attr('mediaCategoryId')).trigger('change');
+                $('#mediaDescription').val($(this).attr('mediaDescription'));
+                let fileImg = $('#category-modal .file-preview');
+                fileImg.removeClass('hidden').attr('src', $(this).attr('categoryImage'));
+
+
+                $('#category-modal #modalTitle').text("Update Category");
+                $('#category-modal #btnText').text("Update");
 
             });
         }
         updateDatafun();
         $('#addModalBtn').click(function() {
             $('#postDataForm')[0].reset();
-            $('#categoryId').trigger('change');
-            $('#updateId').val('');
-            $('#blog-modal #modalTitle').text("Add Category");
-            $('#blog-modal #btnText').text("Preview");
-            let fileImg = $('#blog-modal .file-preview');
+            $('#category-modal #modalTitle').text("Add Category");
+            $('#category-modal #btnText').text("Add");
+            let fileImg = $('#category-modal .file-preview');
             fileImg.addClass('hidden');
 
         })

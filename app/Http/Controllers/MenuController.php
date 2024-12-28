@@ -49,9 +49,9 @@ class MenuController extends Controller
                 'menu_l_price' => $validatedData['menu_l_price'],
             ]);
             //    $category->save();
-            return response()->json(['status' => 'success', 'message' => 'Menu added successfully'], 200);
+            return response()->json(['success' => true,  'message' => 'Menu added successfully'], 200);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 400);
+            return response()->json(['success' => false,  'message' => $e->getMessage()], 400);
         }
     }
 
@@ -64,14 +64,14 @@ class MenuController extends Controller
                 ->map(function ($menu) {
                     return [
                         'menu_name' => $menu->menu_name,
-                        'prices' => [   
+                        'prices' => [
                             'small' => $menu->menu_s_price,
                             'large' => $menu->menu_l_price,
                         ],
                         'description' => $menu->menu_description,
                     ];
                 });
-    
+
             return [
                 'id' => $category->category_id,
                 'category_name' => $category->category_name,
@@ -79,7 +79,7 @@ class MenuController extends Controller
                 'items' => $menuItems,
             ];
         });
-    
+
         // return response()->json($categories);
         return view('User.home' , compact('categories'));
 
@@ -93,14 +93,14 @@ class MenuController extends Controller
                 ->map(function ($menu) {
                     return [
                         'menu_name' => $menu->menu_name,
-                        'prices' => [   
+                        'prices' => [
                             'small' => $menu->menu_s_price,
                             'large' => $menu->menu_l_price,
                         ],
                         'description' => $menu->menu_description,
                     ];
                 });
-    
+
             return [
                 'id' => $category->category_id,
                 'category_name' => $category->category_name,
@@ -108,11 +108,11 @@ class MenuController extends Controller
                 'items' => $menuItems,
             ];
         });
-    
+
         // return response()->json($categories);
         return view('User.menu' , compact('categories'));
 
     }
 
-    
+
 }

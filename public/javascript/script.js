@@ -2,10 +2,12 @@ function previewFile(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            const previewImg = event.target.closest('.file-upload-label').querySelector('.file-preview');
+        reader.onload = function (e) {
+            const previewImg = event.target
+                .closest(".file-upload-label")
+                .querySelector(".file-preview");
             previewImg.src = e.target.result;
-            previewImg.classList.remove('hidden');
+            previewImg.classList.remove("hidden");
         };
         reader.readAsDataURL(file);
     }
@@ -105,11 +107,7 @@ $(document).ready(function () {
 
     function delDataFun() {
         $(".deleteDataBtn").click(function () {
-            let csrfToken = $('meta[name="csrf-token"]').attr("content");
-            let id = $(this).attr("delId");
-            let dynamicKey = $(this).attr("name");
-            let delData = {};
-            delData[dynamicKey] = id;
+            let url = $(this).attr("delUrl");
             // Show SweetAlert  confirmation dialog
             Swal.fire({
                 title: "Are you sure?",
@@ -119,18 +117,16 @@ $(document).ready(function () {
                 confirmButtonColor: "#D42929FF",
                 cancelButtonColor: "gray",
                 confirmButtonText: "Yes, delete it!",
+                timer: 2000,
             }).then((result) => {
                 if (result.isConfirmed) {
                     // If confirmed, proceed with AJAX request to delete
                     $.ajax({
-                        type: "POST",
-                        url: $(this).attr("delUrl"),
-                        data: delData,
-                        headers: {
-                            "X-CSRF-TOKEN": csrfToken,
-                        },
+                        type: "GET",
+                        url: url,
                         beforeSend: function () {
                             $("#loading").show();
+                            $("#BtnSpinnerShow").show();
                         },
                         success: function (response) {
                             $("#loading").hide();
@@ -140,6 +136,8 @@ $(document).ready(function () {
                                 title: "Deleted!",
                                 text: response.message,
                                 icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500,
                             });
 
                             $(document).trigger("formSubmissionResponse", [
@@ -151,8 +149,10 @@ $(document).ready(function () {
                             $("#loading").hide();
                             Swal.fire({
                                 title: "Error!",
-                                text: "There was an error deleting data.",
+                                text: "There was an error deleting",
                                 icon: "error",
+                                showConfirmButton: false,
+                                timer: 1500,
                             });
                         },
                     });
