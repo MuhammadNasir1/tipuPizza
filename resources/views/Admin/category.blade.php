@@ -63,7 +63,7 @@
             <x-slot name="title">Add Category </x-slot>
             <x-slot name="modal_width">max-w-4xl</x-slot>
             <x-slot name="body">
-                <form id="postDataForm" method="post" url="../addCategory" enctype="multipart/form-data">
+                <form id="postDataForm" method="POST" url="../addCategory" enctype="multipart/form-data">
                     @csrf
                     <div class="grid grid-cols-2 gap-4 ">
                         <div class="w-full ">
@@ -133,7 +133,7 @@
         }
         updateDatafun();
         $('#addModalBtn').click(function() {
-            $('#postDataForm').attr('url' , '../addCategory/');
+            $('#postDataForm').attr('url' , '../addCategory');
 
             $('#postDataForm')[0].reset();
             $('#category-modal #modalTitle').text("Add Category");
