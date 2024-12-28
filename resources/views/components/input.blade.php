@@ -4,5 +4,5 @@
     <input type="{{ $type }}" name="{{ $name }}" id="{{ $id }}"
         placeholder="{{ $placeholder }}"
         class=" border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-customOrangeDark focus:border-customOrangeDark block w-full p-2.5"
-        required />
+         />
 </div>

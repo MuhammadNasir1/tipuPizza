@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', function () {
@@ -22,6 +23,9 @@ Route::post('addMenu', [MenuController::class, 'insert']);
 Route::get('menu', [MenuController::class, 'userData']);
 Route::post('updateMenu/{id}', [MenuController::class, 'update']);
 Route::get('/deleteMenu/{id}', [MenuController::class, 'delete']);
+
+
+Route::post('/order', [OrderController::class, 'order']);
 
 
 Route::get('/', function () {
