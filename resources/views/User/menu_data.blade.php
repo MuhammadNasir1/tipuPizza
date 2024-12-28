@@ -10,7 +10,7 @@
                 @foreach ($categories as $category)
                     <a href="#{{ $category['category_name'] }}" onclick="handleCategoryClick('{{ $category['id'] }}')"
                         class="max-w-full whitespace-nowrap bg-primary text-white flex flex-col justify-center flex-shrink-0 items-center rounded-md custom-shadow py-4 px-8 text-center font-semibold hover:bg-red-600 transition">
-                        <img class="w-24     h-24 object-cover mb-2 rounded-full border-primary bg-white"
+                        <img  loading="lazy" class="w-24     h-24 object-cover mb-2 rounded-full border-primary bg-white"
                             src="{{ asset($category['category_img'] ?? 'assets/images/default.jpg') }}"
                             alt="menu" />
                         {{ $category['category_name'] }}
@@ -73,23 +73,23 @@
                                 </div>
                             </div>
                         </div>
-                        <button 
-                        class="l btn text-sm font-semibold px-3 py-1 bg-primary text-white rounded" 
-                        data-item-id="{{ $item['menu_id'] }}" 
-                        data-item-name="{{ $item['menu_name'] }}" 
-                        data-price-small="{{ $item['prices']['small'] ?? '' }}" 
+                        <button
+                        class="l btn text-sm font-semibold px-3 py-1 bg-primary text-white rounded"
+                        data-item-id="{{ $item['menu_id'] }}"
+                        data-item-name="{{ $item['menu_name'] }}"
+                        data-price-small="{{ $item['prices']['small'] ?? '' }}"
                         data-price-large="{{ $item['prices']['large'] ?? '' }}">
                         Add to Cart
                     </button>
                     </div> --}}
                     <div class="custom-shadow open-modal cursor-pointer px-4 py-6 rounded-xl w-full"
-                    data-item-id="{{ $item['menu_id'] }}" 
-                    data-item-name="{{ $item['menu_name'] }}" 
-                    data-price-small="{{ $item['prices']['small'] ?? '' }}" 
+                    data-item-id="{{ $item['menu_id'] }}"
+                    data-item-name="{{ $item['menu_name'] }}"
+                    data-price-small="{{ $item['prices']['small'] ?? '' }}"
                     data-price-large="{{ $item['prices']['large'] ?? '' }}">
                    <div class="flex flex-col">
                        <div class="flex flex-col md:flex-row gap-5 items-center">
-                           <img class="w-20 h-20 object-cover rounded-full border-primary"
+                           <img loading="lazy" class="w-20 h-20 object-cover rounded-full border-primary"
                                 src="{{ asset( $item['menu_img'] ?? 'assets/images/default.jpg') }}" alt="menu" />
                            <div class="w-full">
                                <div class="flex lg:flex-row flex-col lg:gap-4 lg:justify-between w-full">
@@ -116,15 +116,19 @@
                        </div>
                    </div>
                </div>
-               
+
                 @endforeach
             </div>
         </section>
     @endforeach
 </div>
 
-<div id="sizeModal" class="hidden fixed z-50 inset-0 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen">
+<div id="sizeModal"  tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[200] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="fixed inset-0 transition-opacity">
+        <div id="backdrop" class="absolute inset-0 opacity-75 bg-slate-800"></div>
+    </div>
+    <div class="flex items-center justify-center min-h-screen relative"> ">
         <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
             <h2 class="text-lg font-semibold" id="modalItemName"></h2>
             <p class="text-sm text-gray-500 mb-4" id="modalDescription"></p>

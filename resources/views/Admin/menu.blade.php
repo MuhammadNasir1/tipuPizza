@@ -65,7 +65,7 @@ Menu
             <x-slot name="title">Add Menu </x-slot>
             <x-slot name="modal_width">max-w-4xl</x-slot>
             <x-slot name="body">
-                <form id="postDataForm" method="POST" url="../addMenu" enctype="multipart/form-data">
+                <form id="postDataForm" method="post" url="../addMenu" enctype="multipart/form-data">
                     @csrf
 
                     <div class="grid grid-cols-2 gap-4 ">

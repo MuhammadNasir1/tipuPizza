@@ -27,50 +27,49 @@
         </div>
     </div>
 </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    // Handle close button click
-    document.querySelectorAll('[data-modal-hide]').forEach(button => {
-        button.addEventListener('click', function () {
-            const modalId = this.getAttribute('data-modal-hide');
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('hidden'); // Hide the modal
-            }
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle close button click
+        document.querySelectorAll('[data-modal-hide]').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal-hide');
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('hidden'); // Hide the modal
+                }
+            });
         });
-    });
 
-    // Handle backdrop click
-    document.querySelectorAll('[id^="backdrop-"]').forEach(backdrop => {
-        backdrop.addEventListener('click', function () {
-            const modal = this.closest('.fixed');
-            if (modal) {
-                modal.classList.add('hidden'); // Hide the modal
-            }
+        // Handle backdrop click
+        document.querySelectorAll('[id^="backdrop-"]').forEach(backdrop => {
+            backdrop.addEventListener('click', function() {
+                const modal = this.closest('.fixed');
+                if (modal) {
+                    modal.classList.add('hidden'); // Hide the modal
+                }
+            });
         });
     });
-});
-document.addEventListener('DOMContentLoaded', function () {
-    // Handle close button click
-    document.querySelectorAll('[data-modal-hide]').forEach(button => {
-        button.addEventListener('click', function () {
-            const modalId = this.getAttribute('data-modal-hide');
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('hidden'); // Hide the modal
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle close button click
+        document.querySelectorAll('[data-modal-hide]').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-modal-hide');
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('hidden'); // Hide the modal
+                }
+            });
         });
-    });
 
-    // Handle backdrop click
-    document.querySelectorAll('[id^="backdrop-"]').forEach(backdrop => {
-        backdrop.addEventListener('click', function () {
-            const modal = this.closest('.fixed');
-            if (modal) {
-                modal.classList.add('hidden'); // Hide the modal
-            }
+        // Handle backdrop click
+        document.querySelectorAll('[id^="backdrop-"]').forEach(backdrop => {
+            backdrop.addEventListener('click', function() {
+                const modal = this.closest('.fixed');
+                if (modal) {
+                    modal.classList.add('hidden'); // Hide the modal
+                }
+            });
         });
     });
-});
-
-    </script>
+</script>

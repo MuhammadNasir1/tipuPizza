@@ -10,7 +10,7 @@ Route::get('/dashboard', function () {
 Route::get('layout', function () {
     return view('Admin/layout');
 });
-Route::get('admin/category', [CategoriesController::class, 'index']);
+Route::get('/admin/category', [CategoriesController::class, 'index']);
 Route::post('/addCategory', [CategoriesController::class, 'insert']);
 Route::post('/updateCategory/{id}', [CategoriesController::class, 'update']);
 Route::get('/deleteCategory/{id}', [CategoriesController::class, 'delete']);
@@ -37,4 +37,7 @@ Route::get('/apply', function () {
 });
 Route::get('/supplier', function () {
     return view('User/supplier');
+});
+Route::get('/cart', function () {
+    return view('User/cart');
 });

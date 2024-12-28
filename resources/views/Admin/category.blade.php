@@ -63,7 +63,7 @@
             <x-slot name="title">Add Category </x-slot>
             <x-slot name="modal_width">max-w-4xl</x-slot>
             <x-slot name="body">
-                <form id="postDataForm" method="POST" url="../addCategory" enctype="multipart/form-data">
+                <form id="postDataForm" method="post" url="../addCategory" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="media_type" value="blogs">
                     <input type="hidden" name="media_id" id="updateId">
