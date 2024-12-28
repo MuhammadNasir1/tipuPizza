@@ -41,15 +41,15 @@
 
     <nav
         class="bg-white dark:bg-gray-900 fixed w-full z-[100] top-0 start-0 border-b border-gray-200 dark:border-gray-600 shadow-lg">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
             <a href="../" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="{{ asset('assets/images/logo.png') }}" class="h-14" alt="Logo">
                 {{-- <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">mg</span> --}}
             </a>
-            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                {{-- <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get started</button> --}}
+            <div class="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
+                {{-- <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get started</button> --}}
                 <button data-collapse-toggle="navbar-sticky" type="button"
-                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                     aria-controls="navbar-sticky" aria-expanded="false">
                     <span class="sr-only">Open main menu</span>
                     <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -61,7 +61,7 @@
             </div>
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
                 <ul
-                    class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+                    class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
                     <li>
                         <a href="../"
                             class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('/') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }} "
@@ -76,6 +76,38 @@
                             class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('contact') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }}  ">Contact</a>
                     </li>
 
+                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                        class="inline-flex items-center px-3 py-2 mt-2 font-medium text-center text-black border border-gray-100 rounded-lg focus:ring-4 focus:outline-none md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 focus:ring-red-500 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">Others<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <div id="dropdown"
+                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="dropdownDefaultButton">
+                            <li>
+                                <a href="#"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                            </li>
+                            <li>
+                                <a href="#"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign
+                                    out</a>
+                            </li>
+                        </ul>
+                    </div>
+
                 </ul>
             </div>
         </div>
@@ -86,13 +118,13 @@
 
     <!-- Scroll to Top Button -->
     <div id="scrollToTop"
-        class="fixed bottom-10 right-8 bg-primary h-14 shadow-md w-14 rounded-full flex justify-center items-center text-white text-4xl font-bold cursor-pointer shadow-lg">
+        class="fixed flex items-center justify-center text-4xl font-bold text-white rounded-full shadow-lg cursor-pointer bottom-10 right-8 bg-primary h-14 w-14">
         <i class="fa fa-arrow-up"></i>
     </div>
 
     <!-- Social Media and Footer Section -->
-    <div class="bg-primary text-white py-2 px-4">
-        <div class="flex justify-between items-center">
+    <div class="px-4 py-2 text-white bg-primary">
+        <div class="flex items-center justify-between">
             <span class="text-xl font-semibold">Tipu Pizza Kebab</span>
             <div class="flex gap-6">
                 <a class="text-2xl" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
@@ -111,12 +143,12 @@
         </div>
     </div>
 
-    <footer class="bg-primary py-6 px-16 font-sans tracking-wide">
-        <div class="flex justify-between items-center max-lg:flex-col text-center flex-wrap gap-4">
+    <footer class="px-16 py-6 font-sans tracking-wide bg-primary">
+        <div class="flex flex-wrap items-center justify-between gap-4 text-center max-lg:flex-col">
             <p class="text-[15px] leading-loose text-white font-semibold">&copy; Tipu Pizza Kebab. All rights reserved.
             </p>
 
-            <ul class="flex space-x-6 gap-y-2 max-lg:justify-center flex-wrap">
+            <ul class="flex flex-wrap space-x-6 gap-y-2 max-lg:justify-center">
                 <li><a href="#" class="text-[15px] text-white font-semibold">Terms of Service</a></li>
                 <li><a href="#" class="text-[15px] text-white font-semibold">Privacy Policy</a></li>
                 <li><a href="#" class="text-[15px] text-white font-semibold">Contact</a></li>
