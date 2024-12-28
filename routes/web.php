@@ -29,3 +29,9 @@ Route::get('/', [MenuController::class, 'home']);
 Route::get('/contact', function () {
     return view('User/contact');
 });
+Route::get('/apply', function () {
+    return view('User/apply');
+});
+Route::get('/supplier', function () {
+    return view('User/supplier');
+});
