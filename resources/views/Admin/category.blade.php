@@ -135,6 +135,8 @@
         }
         updateDatafun();
         $('#addModalBtn').click(function() {
+            $('#postDataForm').attr('url' , '../addCategory/');
+
             $('#postDataForm')[0].reset();
             $('#category-modal #modalTitle').text("Add Category");
             $('#category-modal #btnText').text("Add");

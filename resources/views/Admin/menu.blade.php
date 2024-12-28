@@ -1,6 +1,6 @@
 @extends('Admin.layout')
 @section('title')
-    Category
+Menu
 @endsection
 @section('content')
     <div class="w-full pt-10 min-h-[88vh] border-2 shadow-2xl rounded-xl">
@@ -33,7 +33,7 @@
 
                         <td>
                             <span class='flex gap-4'>
-                                <button class="updateDataBtn">
+                                <button class="updateDataBtn" menuId="{{ $data->menu_id }}" menuName="{{ $data->menu_name }}" menuDescription="{{ $data->menu_description }}" menuSPrice="{{ $data->menu_s_price }}" menuLPrice="{{ $data->menu_l_price }}" menuCategory="{{ $data->category_id }}" menuImage="{{ asset($data->menu_img) }}">
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#233A85' />
@@ -70,18 +70,18 @@
 
                     <div class="grid grid-cols-2 gap-4 ">
                         <div>
-                            <x-file-uploader name="menu_name" id="moduleImage" />
+                            <x-file-uploader name="menu_img" id="menuImage" />
                         </div>
                         <div>
 
                             <div class="mt-2">
                                 <div class="mt-4">
-                                    <x-input class="" id="menu_name" label="Name" placeholder="Enter Here"
+                                    <x-input class="" id="menuName" label="Name" placeholder="Enter Here"
                                         name="menu_name" type="text"></x-input>
                                 </div>
                             </div>
                           <div class="mt-4">
-                            <x-select name="category_id" id="categoryType1" label="Select Category">
+                            <x-select name="category_id" id="menuCategory" label="Select Category">
                                 <x-slot name="options">
                                     <option value="" disabled selected>Select Menu Category</option>
 
@@ -96,11 +96,11 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4 col-span-2" >
                             <div class="">
-                                <x-input class="" id="menu_s_price" label="S.Price" placeholder="Enter Here"
+                                <x-input class="" id="menuSPrice" label="S.Price" placeholder="Enter Here"
                                     name="menu_s_price" type="text"></x-input>
                             </div>
                             <div class="">
-                                <x-input class="" id="categoryName" label="L.Price" placeholder="Enter Here"
+                                <x-input class="" id="menuLPrice" label="L.Price" placeholder="Enter Here"
                                     name="menu_l_price" type="text"></x-input>
                             </div>
                         </div>
@@ -143,16 +143,16 @@
         function updateDatafun() {
             $('.updateDataBtn').click(function() {
                 $('#menu-modal').removeClass("hidden").addClass('flex');
-
-                let mediaDetails = $(this).siblings('.viewModalBtn');;
-                $('#updateId').val(mediaDetails.attr('mediaId'));
-                $('#mediaTitle').val(mediaDetails.attr('mediaTitle'));
-                $('#mediaTitle').val(mediaDetails.attr('mediaTitle'));
-                $('#mediaAuthor').val(mediaDetails.attr('mediaAuthor'));
-                $('#categoryId').val(mediaDetails.attr('mediaCategoryId')).trigger('change');
-                $('#mediaDescription').val(mediaDetails.attr('mediaDescription'));
+                $('#postDataForm').attr('url' , '../updateMenu/' + $(this).attr('menuId'));
+              
+            
+                $('#menuName').val($(this).attr('menuName'));
+                $('#menuSPrice').val($(this).attr('menuSPrice'));
+                $('#menuLPrice').val($(this).attr('menuLPrice'));
+                $('#menuCategory').val($(this).attr('menuCategory')).trigger('change');
+                $('#menuDescription').val($(this).attr('menuDescription'));
                 let fileImg = $('#menu-modal .file-preview');
-                fileImg.removeClass('hidden').attr('src', mediaDetails.attr('mediaImage'));
+                fileImg.removeClass('hidden').attr('src', $(this).attr('menuImage'));
 
 
                 $('#menu-modal #modalTitle').text("Update Menu");
@@ -163,8 +163,10 @@
         updateDatafun();
         $('#addModalBtn').click(function() {
             $('#postDataForm')[0].reset();
-            $('#categoryId').trigger('change');
-            $('#updateId').val('');
+            $('#postDataForm').attr('url' , '../addMenu/');
+
+            $('#menuCategory').trigger('change');
+  
             $('#menu-modal #modalTitle').text("Add Menu");
             $('#menu-modal #btnText').text("Add Menu");
             let fileImg = $('#menu-modal .file-preview');

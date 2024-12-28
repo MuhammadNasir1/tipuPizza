@@ -11,10 +11,9 @@
                     <a href="#{{ $category['category_name'] }}" onclick="handleCategoryClick('{{ $category['id'] }}')"
                         class="max-w-full whitespace-nowrap bg-primary text-white flex flex-col justify-center flex-shrink-0 items-center rounded-md custom-shadow py-4 px-8 text-center font-semibold hover:bg-red-600 transition">
                         <img class="w-24     h-24 object-cover mb-2 rounded-full border-primary bg-white"
-                            src="{{ $category->category_img ?? asset('assets/images/pizza.jpg') }}" alt="menu" />
-                            {{-- src="{{ $category->category_name ?? asset('assets/images/default.jpg') }}" alt="menu" /> --}}
+                            src="{{ asset($category['category_img'] ?? "assets/images/default.jpg") }}" alt="menu" />
                         {{ $category['category_name'] }}
-                    </a>
+                    </a>    
                 @endforeach
             </div>
             <button id="scroll-right"
@@ -46,7 +45,7 @@
                         <div class="flex flex-col">
                             <div class="flex flex-col md:flex-row gap-5 items-center">
                                 <img class="w-20 h-20 object-cover rounded-full border-primary"
-                                    src="{{ asset('assets/images/default.jpg') }}" alt="menu" />
+                                    src="{{ asset( $item['menu_img'] ?? 'assets/images/default.jpg') }}" alt="menu" />
                                 <div class="w-full">
                                     <div class="flex lg:flex-row flex-col lg:gap-4 lg:justify-between w-full">
                                         <h3 class="text-lg font-semibold">{{ $item['menu_name'] }}</h3>
