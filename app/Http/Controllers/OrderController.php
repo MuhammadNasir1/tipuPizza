@@ -7,7 +7,27 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function order(Request $request)
+
+    public function index(){
+
+        $orders  = Order::all();
+
+        
+        // return response()->json($order);
+        return view('Admin.order' , compact('orders'));
+    }
+    public function orderDetails($id){
+
+        $order  = Order::find($id);
+        if(!$order){
+            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+
+        }
+            $order->order_items = json_decode($order->order_items);
+        // return response()->json($order);
+        return view('Admin.order_details' , compact('order'));
+    }
+    public function insertOrder(Request $request)
 
     {
 
@@ -30,4 +50,15 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
         }
     }
+
+    public function updateStatus(Request $request, $orderId)
+{
+    $order = Order::findOrFail($orderId);
+    $order->order_status = $request->input('status');
+    $order->save();
+
+    return redirect('../admin/order');
+    // return redirect()->route('Admin.order_details', $orderId)->with('success', 'Order status updated successfully!');
+}
+
 }
