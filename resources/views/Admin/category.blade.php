@@ -65,8 +65,6 @@
             <x-slot name="body">
                 <form id="postDataForm" method="post" url="../addCategory" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="media_type" value="blogs">
-                    <input type="hidden" name="media_id" id="updateId">
                     <div class="grid grid-cols-2 gap-4 ">
                         <div class="w-full ">
                             <x-file-uploader name="category_img" id="categoryImage" />
