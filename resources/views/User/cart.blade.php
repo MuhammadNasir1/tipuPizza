@@ -44,6 +44,11 @@
                             class="form-radio h-5 w-5 text-primary" />
                         <span class="ml-2 text-gray-700">Delivery</span>
                     </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="dining_option" value="take-away"
+                            class="form-radio h-5 w-5 text-primary" />
+                        <span class="ml-2 text-gray-700">Take-Away</span>
+                    </label>
                 </div>
                 <div class="mt-4">
                     <label for="datetime"

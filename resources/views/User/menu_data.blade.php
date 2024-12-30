@@ -160,7 +160,7 @@
                      ${category.category_name}
                     </a>
                        </div>
-            </div>`
+                       `
                         contentHTML += `
                     <section id="${category.id}" class="w-full">
                         <div class="relative flex justify-center items-center flex-col">

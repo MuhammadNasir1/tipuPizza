@@ -20,8 +20,8 @@
     </div>
 </div>
 
-<div class="w-full bg-white sticky top-20 z-50 hidden" id="menuCategory"> >
-    <div class="max-w-6xl mx-auto p-6">
+<div class="w-full md:px-0 px-2 mx-auto container bg-white sticky top-20 z-50 hidden" id="menuCategory"> >
+    <div class=" mx-auto py-6">
 
         <div class="relative">
             <button id="scroll-left"

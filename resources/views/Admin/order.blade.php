@@ -70,7 +70,7 @@
                         const statusLabel = `<span class="px-4 py-2 rounded-full text-white ${statusClass}">
                                             ${order.order_status.charAt(0).toUpperCase() + order.order_status.slice(1)}
                                         </span>`;
-                        const diningOption = order.dining_option === 'dine_in' ? 'Dine In' : 'Delivery';
+                        const diningOption = order.dining_option === 'dine_in' ? 'Dine In' :  order.dining_option;
                         const formattedDate = new Date(order.order_date_time).toLocaleString('en-US', {
                             hour: 'numeric',
                             minute: 'numeric',
