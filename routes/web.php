@@ -2,8 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\InquiryController;
+use App\Http\Controllers\JobsController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -48,6 +51,10 @@ Route::get('/cart', function () {
 });
 Route::get('menu', [MenuController::class, 'userData']);
 Route::post('/order', [OrderController::class, 'insertOrder']);
+Route::post('/applyJobs', [JobsController::class, 'insert']);
+Route::post('/addSupplier', [SupplierController::class, 'insert']);
+Route::post('/addInquiry', [InquiryController::class, 'insert']);
+
 
 Route::middleware('admin')->group(function () {
     Route::get('/admin/order', [OrderController::class, 'index']);
@@ -62,4 +69,8 @@ Route::middleware('admin')->group(function () {
     Route::post('/addCategory', [CategoriesController::class, 'insert']);
     Route::post('/updateCategory/{id}', [CategoriesController::class, 'update']);
     Route::get('/deleteCategory/{id}', [CategoriesController::class, 'delete']);
+
+    Route::get('admin/jobs', [JobsController::class, 'index']);
+    Route::get('admin/supplier', [SupplierController::class, 'index']);
+    Route::get('admin/inquiry', [InquiryController::class, 'index']);
 });

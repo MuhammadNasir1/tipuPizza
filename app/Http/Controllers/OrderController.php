@@ -8,24 +8,23 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
 
-        $orders  = Order::all();
-
-        
+        $orders  = Order::orderBy('created_at', 'desc')->get();
         // return response()->json($order);
-        return view('Admin.order' , compact('orders'));
+        return view('Admin.order', compact('orders'));
     }
-    public function orderDetails($id){
+    public function orderDetails($id)
+    {
 
         $order  = Order::find($id);
-        if(!$order){
+        if (!$order) {
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
-
         }
-            $order->order_items = json_decode($order->order_items);
+        $order->order_items = json_decode($order->order_items);
         // return response()->json($order);
-        return view('Admin.order_details' , compact('order'));
+        return view('Admin.order_details', compact('order'));
     }
     public function insertOrder(Request $request)
 
@@ -52,13 +51,12 @@ class OrderController extends Controller
     }
 
     public function updateStatus(Request $request, $orderId)
-{
-    $order = Order::findOrFail($orderId);
-    $order->order_status = $request->input('status');
-    $order->save();
+    {
+        $order = Order::findOrFail($orderId);
+        $order->order_status = $request->input('status');
+        $order->save();
 
-    return redirect('../admin/order');
-    // return redirect()->route('Admin.order_details', $orderId)->with('success', 'Order status updated successfully!');
-}
-
+        return redirect('../admin/order');
+        // return redirect()->route('Admin.order_details', $orderId)->with('success', 'Order status updated successfully!');
+    }
 }
