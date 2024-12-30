@@ -131,36 +131,37 @@
         $('#MenuLoader').show();
 
         // Fetch data from the server
-        $.ajax({
-            url: '../getMenu', // Replace with your route to fetch categories
-            method: 'GET',
-            success: function(response) {
-                // Assuming the response is an array of categories
-                const categories = response.categories; // Adjust based on your API response format
+        setTimeout(function() {
+            $.ajax({
+                url: '../getMenu', // Replace with your route to fetch categories
+                method: 'GET',
+                success: function(response) {
+                    // Assuming the response is an array of categories
+                    const categories = response
+                    .categories; // Adjust based on your API response format
 
-                // Construct HTML content dynamically
-                let contentHTML = '';
-                let categoryHtml1 = '';
+                    // Construct HTML content dynamically
+                    let contentHTML = '';
+                    let categoryHtml1 = '';
 
 
 
 
 
-                categories.forEach(function(category) {
-                    categoryHtml1 += `
-                    <div >
+                    categories.forEach(function(category) {
+                        categoryHtml1 += `
+                    <div class="w-full" >
 
                     <a href="#${category.category_name}" onclick="handleCategoryClick('${category.id}')"
-                        class="max-w-full whitespace-nowrap bg-primary text-white flex flex-col justify-center flex-shrink-0 items-center rounded-md custom-shadow py-4 px-8 text-center font-semibold hover:bg-red-600 transition">
+                        class="max-w-full whitespace-nowrap min-w-[220px] bg-primary text-white flex flex-col justify-center flex-shrink-0 items-center rounded-md custom-shadow py-4 px-8 text-center font-semibold hover:bg-red-600 transition">
                         <img  loading="lazy" class="w-24     h-24 object-cover mb-2 rounded-full border-primary bg-white"
-                            src=" ${category.category_img ?? 'assets/images/default.jpg'}"
+                            src=" ${category.category_img ?? 'https://tipupizzakebab.uk/storage/category_images/MIrwwTHocrN5amajvlSXQdzI07sT7wYVxNZuiE0Y.png'}"
                             alt="menu" />
                      ${category.category_name}
                     </a>
                        </div>
-
             </div>`
-                    contentHTML += `
+                        contentHTML += `
                     <section id="${category.id}" class="w-full">
                         <div class="relative flex justify-center items-center flex-col">
                             <h2 class="text-white font-semibold bg-primary px-8 py-2 rounded-md text-xl">
@@ -168,7 +169,7 @@
                             </h2>
                         </div>
                         <div>
-                            <p class="my-2 text-center">${category.category_description}</p>
+                            <p class="my-2 text-center">${category.category_description ?? ''}</p>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-8 w-full">
                             ${category.items.map(item => `
@@ -186,7 +187,7 @@
                                                     <h3 class="text-lg font-semibold">${item.menu_name}</h3>
                                                     <div class="flex gap-4 justify-end">
                                                         ${item.prices.small ? `<h2 class="font-semibold text-lg text-black relative flex justify-center">
-                                           ild                 £ ${item.prices.small} <span class="absolute font-semibold -top-5">S</span>
+                                                          £ ${item.prices.small} <span class="absolute font-semibold -top-5">S</span>
                                                         </h2>` : ''}
                                                         ${item.prices.large ? `<h2 class="font-semibold text-lg text-primary relative flex justify-center">
                                                             £ ${item.prices.large} <span class="text-primary absolute font-semibold -top-5">L</span>
@@ -204,23 +205,24 @@
                         </div>
                     </section>
                 `;
-                });
+                    });
 
-                // Inject the content into the page
-                $('#scroll-container').html(categoryHtml1);
-                $('#contentContainer').html(contentHTML);
-                // Hide the loader and show the content
-                $('#MenuLoader').hide();
-                $('#contentContainer').removeClass('hidden');
-                $('#menuCategory').removeClass('hidden');
-                addCartfun()
+                    // Inject the content into the page
+                    $('#scroll-container').html(categoryHtml1);
+                    $('#contentContainer').html(contentHTML);
+                    // Hide the loader and show the content
+                    $('#MenuLoader').hide();
+                    $('#contentContainer').removeClass('hidden');
+                    $('#menuCategory').removeClass('hidden');
+                    addCartfun()
 
-            },
-            error: function() {
-                // Handle error (e.g., show a message or retry option)
-                $('#MenuLoader').hide();
-                alert('Failed to load data');
-            }
-        });
+                },
+                error: function() {
+                    // Handle error (e.g., show a message or retry option)
+                    $('#MenuLoader').hide();
+                    alert('Failed to load data');
+                }
+            });
+        }, 2000);
     });
 </script>
