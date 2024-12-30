@@ -195,7 +195,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="mt-3 text-gray-500 text-sm text-center md:text-start">
-                                                    ${item.description}
+                                                    ${item.description ?? ''}
                                                 </p>
                                             </div>
                                         </div>
