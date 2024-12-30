@@ -186,7 +186,7 @@
                                                     <h3 class="text-lg font-semibold">${item.menu_name}</h3>
                                                     <div class="flex gap-4 justify-end">
                                                         ${item.prices.small ? `<h2 class="font-semibold text-lg text-black relative flex justify-center">
-                                                            £ ${item.prices.small} <span class="absolute font-semibold -top-5">S</span>
+                                           ild                 £ ${item.prices.small} <span class="absolute font-semibold -top-5">S</span>
                                                         </h2>` : ''}
                                                         ${item.prices.large ? `<h2 class="font-semibold text-lg text-primary relative flex justify-center">
                                                             £ ${item.prices.large} <span class="text-primary absolute font-semibold -top-5">L</span>
