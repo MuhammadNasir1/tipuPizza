@@ -34,7 +34,7 @@
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Dining Option:</p>
-                        <p class="text-lg font-medium text-gray-800">{{ ucfirst($order->dining_option == 'dine_in' ?  : "dine in") }}</p>
+                        <p class="text-lg font-medium text-gray-800">{{ ucfirst($order->dining_option == 'dine_in'  ?   "dine in" : "Delivery") }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Total Amount:</p>

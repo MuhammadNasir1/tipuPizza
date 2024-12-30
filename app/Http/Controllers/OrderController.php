@@ -10,10 +10,13 @@ class OrderController extends Controller
 
     public function index()
     {
-
-        $orders  = Order::orderBy('created_at', 'desc')->get();
-        // return response()->json($order);
-        return view('Admin.order', compact('orders'));
+        try {
+            $orders  = Order::orderBy('created_at', 'desc')->get();
+            // return view('Admin.order', compact('orders'));
+            return response()->json(['success' => true, 'message' => 'order Placed', "orders" => $orders], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 400);
+        }
     }
     public function orderDetails($id)
     {

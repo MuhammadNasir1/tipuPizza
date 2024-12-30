@@ -57,7 +57,12 @@ Route::post('/addInquiry', [InquiryController::class, 'insert']);
 
 
 Route::middleware('admin')->group(function () {
-    Route::get('/admin/order', [OrderController::class, 'index']);
+    Route::get('/admin/order'
+    , function () {
+        return view('Admin/order');
+    }
+);
+    Route::get('/getOrder', [OrderController::class, 'index']);
     Route::get('/order/{id}', [OrderController::class, 'orderDetails']);
     Route::post('/updateStatus/{orderId}', [OrderController::class, 'updateStatus']);
 
