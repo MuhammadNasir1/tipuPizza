@@ -66,4 +66,45 @@
     </div>
 @endsection
 
-c
+@section('js')
+    <script>
+        $(document).ready(function() {
+
+            $("#jobForm").submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                // Send the AJAX request
+                $.ajax({
+                    type: "POST",
+                    url: "../applyJobs",
+                    data: formData,
+                    dataType: "json",
+                    beforeSend: function() {
+                        $('#spinner').removeClass('hidden');
+                        $('#text').addClass('hidden');
+                        $('#submitBtn').attr('disabled', true);
+                    },
+                    success: function(response) {
+
+                            $('#text').removeClass('hidden');
+                            $('#spinner').addClass('hidden');
+                            window.location.href = '../apply';
+                    },
+                    error: function(jqXHR) {
+
+                        let response = JSON.parse(jqXHR.responseText);
+
+                        Swal.fire(
+                            'Warning!',
+                            response.message,
+                            'warning'
+                        )
+                        $('#text').removeClass('hidden');
+                        $('#spinner').addClass('hidden');
+                        $('#submitBtn').attr('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+@endsection

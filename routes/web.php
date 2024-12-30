@@ -35,7 +35,7 @@ Route::get('/dashboard', function () {
 Route::get('/', function () {
     return view('User.home');
 });
-Route::get('/', [MenuController::class, 'home']);
+// Route::get('/', [MenuController::class, 'home']);
 
 Route::get('/contact', function () {
     return view('User/contact');
@@ -49,7 +49,11 @@ Route::get('/supplier', function () {
 Route::get('/cart', function () {
     return view('User/cart');
 });
-Route::get('menu', [MenuController::class, 'userData']);
+Route::get('/menu', function () {
+    return view('User/menu');
+});
+Route::get('getMenu', [MenuController::class, 'getMenu']);
+// Route::get('menu', [MenuController::class, 'userData']);
 Route::post('/order', [OrderController::class, 'insertOrder']);
 Route::post('/applyJobs', [JobsController::class, 'insert']);
 Route::post('/addSupplier', [SupplierController::class, 'insert']);

@@ -172,6 +172,40 @@ class MenuController extends Controller
         // return response()->json($categories);
         return view('User.menu', compact('categories'));
     }
+    public function getMenu()
+    {
+        $categories = Categories::select('category_id', 'category_name', 'category_description', 'category_img')->where('category_status', 1)->get()->map(function ($category) {
+            // Fetch all menu items for the current category
+            $menuItems = Menu::where('category_id', $category->category_id)
+                ->where('menu_status', 1)
+                ->get()
+                ->map(function ($menu) {
+                    return [
+                        'menu_id' => $menu->menu_id,
+                        'menu_name' => $menu->menu_name,
+                        'menu_img' => $menu->menu_img,
+                        'prices' => [
+                            'small' => $menu->menu_s_price,
+                            'large' => $menu->menu_l_price,
+                        ],
+                        'description' => $menu->menu_description,
+                    ];
+                });
+
+            return [
+                'id' => $category->category_id,
+                'category_name' => $category->category_name,
+                'category_img' => $category->category_img,
+
+                'category_description' => $category->category_description,
+                'items' => $menuItems,
+            ];
+        });
+
+        return response()->json(["categories" => $categories] , 200);
+        // return view('User.menu', compact('categories'));
+
+    }
 
 
     public function delete($id)

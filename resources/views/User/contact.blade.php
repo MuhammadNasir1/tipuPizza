@@ -113,7 +113,7 @@
                 // Send the AJAX request
                 $.ajax({
                     type: "POST",
-                    url: "/addInquiry",
+                    url: "../addInquiry",
                     data: formData,
                     dataType: "json",
                     beforeSend: function() {
