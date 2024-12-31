@@ -14,6 +14,8 @@ class Menu extends Model
         'category_id',
         'menu_img',
         'menu_description',
+        'menu_s_label',
+        'menu_l_label',
         'menu_s_price',
         'menu_l_price',
         'menu_status',

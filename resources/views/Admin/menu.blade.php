@@ -33,7 +33,8 @@ Menu
 
                         <td>
                             <span class='flex gap-4'>
-                                <button class="updateDataBtn" menuId="{{ $data->menu_id }}" menuName="{{ $data->menu_name }}" menuDescription="{{ $data->menu_description }}" menuSPrice="{{ $data->menu_s_price }}" menuLPrice="{{ $data->menu_l_price }}" menuCategory="{{ $data->category_id }}" menuImage="{{ asset($data->menu_img) }}">
+                                <button class="updateDataBtn" menuId="{{ $data->menu_id }}" menuName="{{ $data->menu_name }}" menuDescription="{{ $data->menu_description }}" menuSPrice="{{ $data->menu_s_price }}" menuLPrice="{{ $data->menu_l_price }}" menuCategory="{{ $data->category_id }}" menuImage="{{ asset($data->menu_img) }}" 
+                                    menuLLabel="{{ $data->menu_l_label }}" menuSLabel="{{ $data->menu_s_label }}">
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#233A85' />
@@ -68,7 +69,7 @@ Menu
                 <form id="postDataForm" method="POST" url="../addMenu" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="grid grid-cols-2 gap-4 ">
+                    <div class="grid md:grid-cols-2 grid-cols-1 w-full gap-4 ">
                         <div>
                             <x-file-uploader name="menu_img" id="menuImage" />
                         </div>
@@ -91,17 +92,29 @@ Menu
                                 </x-slot>
                             </x-select>
                           </div>
-                    
+
 
                         </div>
-                        <div class="grid grid-cols-2 gap-4 col-span-2" >
-                            <div class="">
-                                <x-input class="" id="menuSPrice" label="S.Price" placeholder="Enter Here"
+                        <div class="grid md:grid-cols-2 gap-4  col-span-2" >
+                            <div class="flex gap-2">
+                                <div class="w-1/2">
+                                    <x-input class="" id="menuSLabel" label="Label" placeholder="Enter Here"
+                                    name="menu_s_label" type="text"></x-input>
+                                </div>
+                                <div class="w-1/2">
+                                    <x-input class="" id="menuSPrice" label="S.Price" placeholder="Enter Here"
                                     name="menu_s_price" type="text"></x-input>
+                                </div>
                             </div>
-                            <div class="">
-                                <x-input class="" id="menuLPrice" label="L.Price" placeholder="Enter Here"
+                            <div class="flex gap-2">
+                                <div class="">
+                                    <x-input class="" id="menuLLabel" label="Label 2" placeholder="Enter Here"
+                                    name="menu_l_label" type="text"></x-input>
+                                </div>
+                                <div class="">
+                                    <x-input class="" id="menuLPrice" label="L.Price" placeholder="Enter Here"
                                     name="menu_l_price" type="text"></x-input>
+                                </div>
                             </div>
                         </div>
                         <div class="col-span-2">
@@ -144,11 +157,13 @@ Menu
             $('.updateDataBtn').click(function() {
                 $('#menu-modal').removeClass("hidden").addClass('flex');
                 $('#postDataForm').attr('url' , '../updateMenu/' + $(this).attr('menuId'));
-              
-            
+
+
                 $('#menuName').val($(this).attr('menuName'));
                 $('#menuSPrice').val($(this).attr('menuSPrice'));
                 $('#menuLPrice').val($(this).attr('menuLPrice'));
+                $('#menuSLabel').val($(this).attr('menuSLabel'));
+                $('#menuLLabel').val($(this).attr('menuLLabel'));
                 $('#menuCategory').val($(this).attr('menuCategory')).trigger('change');
                 $('#menuDescription').val($(this).attr('menuDescription'));
                 let fileImg = $('#menu-modal .file-preview');
@@ -166,12 +181,14 @@ Menu
             $('#postDataForm').attr('url' , '../addMenu');
 
             $('#menuCategory').trigger('change');
-  
+
             $('#menu-modal #modalTitle').text("Add Menu");
             $('#menu-modal #btnText').text("Add Menu");
             let fileImg = $('#menu-modal .file-preview');
             fileImg.addClass('hidden');
 
+            $('#menuSLabel').val('S');
+            $('#menuLLabel').val('L');
         })
 
 

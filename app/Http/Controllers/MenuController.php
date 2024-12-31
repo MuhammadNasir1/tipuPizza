@@ -32,6 +32,8 @@ class MenuController extends Controller
                 'menu_description' => 'nullable',
                 'menu_s_price' => 'nullable',
                 'menu_l_price' => 'nullable',
+                'menu_s_label' => 'required',
+                'menu_l_label' => 'required',
             ]);
             if ($request->hasFile('menu_img')) {
                 $image = $request->file('menu_img');
@@ -47,6 +49,8 @@ class MenuController extends Controller
                 'menu_description' => $validatedData['menu_description'],
                 'menu_s_price' => $validatedData['menu_s_price'],
                 'menu_l_price' => $validatedData['menu_l_price'],
+                'menu_s_label' => $validatedData['menu_s_label'],
+                'menu_l_label' => $validatedData['menu_l_label'],
             ]);
             //    $category->save();
             return response()->json(['success' => true,  'message' => 'Menu added successfully'], 200);
@@ -68,6 +72,8 @@ class MenuController extends Controller
                 'menu_description' => 'nullable',
                 'menu_s_price' => 'nullable|numeric',
                 'menu_l_price' => 'nullable|numeric',
+                'menu_s_label' => 'required',
+                'menu_l_label' => 'required',
             ]);
 
             // Find the menu item by ID
@@ -97,6 +103,8 @@ class MenuController extends Controller
                 'menu_description' => $validatedData['menu_description'],
                 'menu_s_price' => $validatedData['menu_s_price'],
                 'menu_l_price' => $validatedData['menu_l_price'],
+                'menu_s_label' => $validatedData['menu_s_label'],
+                'menu_l_label' => $validatedData['menu_l_label'],
             ]);
 
             return response()->json(['success' => true, 'message' => 'Menu updated successfully'], 200);
@@ -152,7 +160,9 @@ class MenuController extends Controller
                         'menu_name' => $menu->menu_name,
                         'menu_img' => $menu->menu_img,
                         'prices' => [
+                            'smallLabel' => $menu->menu_s_label,
                             'small' => $menu->menu_s_price,
+                            'largeLabel' => $menu->menu_l_label,
                             'large' => $menu->menu_l_price,
                         ],
                         'description' => $menu->menu_description,
@@ -185,7 +195,9 @@ class MenuController extends Controller
                         'menu_name' => $menu->menu_name,
                         'menu_img' => $menu->menu_img,
                         'prices' => [
+                            'smallLabel' => $menu->menu_s_label,
                             'small' => $menu->menu_s_price,
+                            'largeLabel' => $menu->menu_l_label,
                             'large' => $menu->menu_l_price,
                         ],
                         'description' => $menu->menu_description,
@@ -202,7 +214,7 @@ class MenuController extends Controller
             ];
         });
 
-        return response()->json(["categories" => $categories] , 200);
+        return response()->json(["categories" => $categories], 200);
         // return view('User.menu', compact('categories'));
 
     }

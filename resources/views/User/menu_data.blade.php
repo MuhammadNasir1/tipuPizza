@@ -138,7 +138,7 @@
                 success: function(response) {
                     // Assuming the response is an array of categories
                     const categories = response
-                    .categories; // Adjust based on your API response format
+                        .categories; // Adjust based on your API response format
 
                     // Construct HTML content dynamically
                     let contentHTML = '';
@@ -173,30 +173,33 @@
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 mt-8 w-full">
                             ${category.items.map(item => `
-                                <div class="custom-shadow open-modal cursor-pointer px-4 py-6 rounded-xl w-full"
-                                     data-item-id="${item.menu_id}"
-                                     data-item-name="${item.menu_name}"
-                                     data-price-small="${item.prices.small || ''}"
-                                     data-price-large="${item.prices.large || ''}">
+                                <div class="custom-shadow  px-4 py-6 rounded-xl w-full">
                                     <div class="flex flex-col">
                                         <div class="flex flex-col md:flex-row gap-5 items-center">
                                             <img loading="lazy" class="w-20 h-20 object-cover rounded-full border-primary"
                                                  src="${item.menu_img || 'assets/images/default.jpg'}" alt="menu" />
                                             <div class="w-full">
-                                                <div class="flex lg:flex-row flex-col lg:gap-4 lg:justify-between w-full">
+                                                <div class="flex lg:flex-row flex-col lg:gap-4 lg:justify-between items-center w-full">
                                                     <h3 class="text-lg font-semibold">${item.menu_name}</h3>
                                                     <div class="flex gap-4 justify-end">
-                                                        ${item.prices.small ? `<h2 class="font-semibold text-lg text-black relative flex justify-center">
-                                                          £ ${item.prices.small} <span class="absolute font-semibold -top-5">S</span>
+                                                        ${item.prices.small ? `<h2 class="font-semibold text-lg text-black relative flex flex-col justify-start items-center ">
+                                                             <span class=" font-semibold leading-none">${item.prices.smallLabel}</span> £ ${item.prices.small}
                                                         </h2>` : ''}
-                                                        ${item.prices.large ? `<h2 class="font-semibold text-lg text-primary relative flex justify-center">
-                                                            £ ${item.prices.large} <span class="text-primary absolute font-semibold -top-5">L</span>
+                                                        ${item.prices.large ? `<h2 class="font-semibold text-lg text-black relative flex flex-col justify-start items-center text-primary ">
+                                                          <span class=" font-semibold leading-none text-primary">${item.prices.largeLabel}</span>  £ ${item.prices.large} 
                                                         </h2>` : ''}
                                                     </div>
                                                 </div>
                                                 <p class="mt-3 text-gray-500 text-sm text-center md:text-start">
                                                     ${item.description ?? ''}
                                                 </p>
+                                               <div class="flex justify-end mt-4">
+                                                    
+                                                 <button class="bg-primary open-modal text-white px-4 py-2 rounded-md flex gap-4 justify-center items-center"        data-item-id="${item.menu_id}"
+                                                    data-item-name="${item.menu_name}"
+                                                    data-price-small="${item.prices.small || ''}"
+                                                    data-price-large="${item.prices.large || ''}"  data-item-label-s="${item.prices.smallLabel}"  data-item-label="${item.prices.largeLabel}"><svg fill="white" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg> Add To Cart</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -223,6 +226,6 @@
                     alert('Failed to load data');
                 }
             });
-        }, 2000);
+        }, 500);
     });
 </script>
