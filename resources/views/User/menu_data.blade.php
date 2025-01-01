@@ -8,9 +8,9 @@
             <h2 class="text-lg font-semibold" id="modalItemName"></h2>
             <p class="text-sm text-gray-500 mb-4" id="modalDescription"></p>
             <div class="flex gap-4">
-                <button id="selectSmall" class="btn bg-gray-300 text-black px-4 py-2 rounded">Small - £<span
+                <button id="selectSmall" class="btn bg-gray-300 text-black px-4 py-2 rounded"><span id="labelS"></span> - £<span
                         id="modalSmallPrice"></span></button>
-                <button id="selectLarge" class="btn bg-gray-300 text-black px-4 py-2 rounded">Large - £<span
+                <button id="selectLarge" class="btn bg-gray-300 text-black px-4 py-2 rounded"> <span id="labelL"></span> - £<span
                         id="modalLargePrice"></span></button>
             </div>
             <button id="closeModal" class="mt-4 btn bg-red-500 text-white px-4 py-2 rounded">Close</button>
@@ -68,23 +68,27 @@
             const itemName = $(this).data('item-name');
             const priceSmall = $(this).data('price-small');
             const priceLarge = $(this).data('price-large');
+            const labelSmall = $(this).data('item-label-s');
+            const labelLarge = $(this).data('item-label-l');
 
             if (priceSmall && priceLarge) {
                 // Show modal if both prices are available
                 $('#modalItemName').text(itemName);
                 $('#modalSmallPrice').text(priceSmall);
                 $('#modalLargePrice').text(priceLarge);
+                $('#labelS').text(labelSmall);
+                $('#labelL').text(labelLarge);
 
                 $('#selectSmall').data('cart-item', {
                     id: itemId,
                     name: itemName,
-                    size: 'Small',
+                    size: labelSmall,
                     price: priceSmall
                 });
                 $('#selectLarge').data('cart-item', {
                     id: itemId,
                     name: itemName,
-                    size: 'Large',
+                    size: labelLarge,
                     price: priceLarge
                 });
 
@@ -94,7 +98,7 @@
                 const cartItem = {
                     id: itemId,
                     name: itemName,
-                    size: priceSmall ? 'Small' : 'Large',
+                    size: priceSmall ? labelSmall : labelLarge,
                     price: priceSmall || priceLarge
                 };
                 addToCart(cartItem);
@@ -179,7 +183,7 @@
                                             <img loading="lazy" class="w-20 h-20 object-cover rounded-full border-primary"
                                                  src="${item.menu_img || 'assets/images/default.jpg'}" alt="menu" />
                                             <div class="w-full">
-                                                <div class="flex lg:flex-row flex-col lg:gap-4 lg:justify-between items-center w-full">
+                                                <div class="flex lg:flex-row flex-col lg:gap-4 lg:justify-between md:items-center w-full">
                                                     <h3 class="text-lg font-semibold">${item.menu_name}</h3>
                                                     <div class="flex gap-4 justify-end">
                                                         ${item.prices.small ? `<h2 class="font-semibold text-lg text-black relative flex flex-col justify-start items-center ">
@@ -195,10 +199,10 @@
                                                 </p>
                                                <div class="flex justify-end mt-4">
                                                     
-                                                 <button class="bg-primary open-modal text-white px-4 py-2 rounded-md flex gap-4 justify-center items-center"        data-item-id="${item.menu_id}"
+                                                 <button class="bg-primary open-modal w-full md:w-auto text-white px-4 py-3 rounded-md flex gap-4 justify-center items-center"        data-item-id="${item.menu_id}"
                                                     data-item-name="${item.menu_name}"
                                                     data-price-small="${item.prices.small || ''}"
-                                                    data-price-large="${item.prices.large || ''}"  data-item-label-s="${item.prices.smallLabel}"  data-item-label="${item.prices.largeLabel}"><svg fill="white" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg> Add To Cart</button>
+                                                    data-price-large="${item.prices.large || ''}"  data-item-label-s="${item.prices.smallLabel}"  data-item-label-l="${item.prices.largeLabel}"><svg fill="white" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg> Add To Cart</button>
                                                 </div>
                                             </div>
                                         </div>

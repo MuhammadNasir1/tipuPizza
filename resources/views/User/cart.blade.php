@@ -29,12 +29,30 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-6 bg-white shadow-md rounded-lg p-4">
+                <div class="flex justify-between items-center">
+                    <div class="text-lg font-semibold text-gray-700">
+                        Total: <span id="cartTotal" class="text-primary">£0.00</span>
+                    </div>
 
+                </div>
+            </div>
             <!-- Delivery or Dining Option -->
             <div class="mt-6 bg-white shadow-md rounded-lg p-4">
                 <h2 class="text-lg font-bold text-gray-800 mb-4">Choose Your Dining Option</h2>
                 <div class="flex gap-6">
                     <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="dining_option" value="collection"
+                            class="form-radio h-5 w-5 text-primary" />
+                        <span class="ml-2 text-gray-700">Collection</span>
+                    </label>
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="dining_option" value="delivery"
+                            class="form-radio h-5 w-5 text-primary" />
+                        <span class="ml-2 text-gray-700">Delivery</span>
+                    </label>
+             
+                    {{-- <label class="flex items-center cursor-pointer">
                         <input type="radio" name="dining_option" value="dine_in"
                             class="form-radio h-5 w-5 text-primary" />
                         <span class="ml-2 text-gray-700">Dine-In</span>
@@ -48,7 +66,7 @@
                         <input type="radio" name="dining_option" value="take-away"
                             class="form-radio h-5 w-5 text-primary" />
                         <span class="ml-2 text-gray-700">Take-Away</span>
-                    </label>
+                    </label> --}}
                 </div>
                 <div class="mt-4">
                     <label for="datetime"
@@ -58,26 +76,21 @@
                         class="md:w-56 border w-full rounded-lg px-4 py-2 text-gray-800" required />
                 </div>
             </div>
-            <div class="mt-6 bg-white shadow-md rounded-lg p-4">
-                <div class="flex justify-between items-center">
-                    <div class="text-lg font-semibold text-gray-700">
-                        Total: <span id="cartTotal" class="text-primary">£0.00</span>
-                    </div>
-
-                </div>
-            </div>
+                <!-- Hidden Inputs for Cart Data -->
+                <form id="orderForm" method="POST">
+                    @csrf
             <!-- User Information -->
-            <div id="userDetails" class="mt-4 hidden bg-white shadow-md rounded-lg p-4">
+            <div id="userDetails" class="mt-4  bg-white shadow-md rounded-lg p-4">
                 <h2 class="text-lg font-bold text-gray-800 mb-4">User Information</h2>
                 <div class="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-4">
                     <div>
                         <label for="name"
                             class="block text-sm text-gray-600 mb-2 focus:outline-none outline-none focus:border-primary">Name</label>
-                        <input type="text" id="name" name="name"
+                        <input type="text" id="name" name="name" required
                             class="w-full border rounded-lg px-4 py-2 text-gray-800" required />
                     </div>
                     <div>
-                        <label for="phone"
+                        <label for="phone" required
                             class="block text-sm text-gray-600 mb-2 focus:outline-none outline-none focus:border-primary">Phone
                             Number</label>
                         <input type="tel" id="phone" name="phone"
@@ -93,7 +106,7 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div>
-                        <label for="address"
+                        <label for="address" required
                             class="block text-sm text-gray-600 mb-2 focus:outline-none outline-none focus:border-primary">Delivery
                             Address</label>
                         <textarea id="address" name="address" class="w-full border h-[110px] rounded-lg px-4 py-2 text-gray-800"></textarea>
@@ -109,9 +122,7 @@
 
 
 
-            <!-- Hidden Inputs for Cart Data -->
-            <form id="orderForm" method="POST">
-                @csrf
+      
                 <input type="hidden" id="cartData" name="cart_data" />
                 <input type="hidden" id="diningOption" name="dining_option" />
                 <input type="hidden" id="totalAmount" name="total_amount" />
@@ -139,15 +150,15 @@
         document.getElementById('datetime').value = localDatetime;
 
         $(document).ready(function() {
-            // Toggle Delivery Address visibility
-            $('input[name="dining_option"]').on('change', function() {
-                const deliveryAddress = $('#userDetails'); // Ensure the correct selector
-                if ($(this).val() === 'delivery') {
-                    deliveryAddress.removeClass('hidden');
-                } else {
-                    deliveryAddress.addClass('hidden');
-                }
-            });
+            // // Toggle Delivery Address visibility
+            // $('input[name="dining_option"]').on('change', function() {
+            //     const deliveryAddress = $('#userDetails'); // Ensure the correct selector
+            //     if ($(this).val() === 'delivery') {
+            //         deliveryAddress.removeClass('hidden');
+            //     } else {
+            //         deliveryAddress.addClass('hidden');
+            //     }
+            // });
 
             // Initialize cart from localStorage
             const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
