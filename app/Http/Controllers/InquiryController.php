@@ -21,12 +21,14 @@ class InquiryController extends Controller
                 'email' => 'required',
                 'phone' => 'required',
                 'message' => 'nullable',
+                'location' => 'required',
             ]);
             Inquiry::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'phone' => $validatedData['phone'],
                 'message' => $validatedData['message'],
+                'location' => $validatedData['location'],
 
             ]);
             return response()->json(['success' => true, 'message' => 'Inquiry created successfully'], 200);

@@ -22,12 +22,14 @@ class SupplierController extends Controller
                 'email' => 'required',
                 'phone' => 'required',
                 'message' => 'nullable',
+                'location' => 'required',
             ]);
             Supplier::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'phone' => $validatedData['phone'],
                 'message' => $validatedData['message'],
+                'location' => $validatedData['location'],
 
             ]);
             return response()->json(['success' => true, 'message' => 'Supplier created successfully',], 200);

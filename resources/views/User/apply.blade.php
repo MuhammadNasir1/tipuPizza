@@ -38,11 +38,29 @@
                     <input type="text" name="phone" required
                         class="w-full px-4 py-3 placeholder-gray-500 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary"
                         placeholder="Phone Number" />
+                    <div>
+                        <div class="flex gap-2 items-center">
+                            <label class="text-gray-600     ">Are you from UK:</label>
+                            <div class="flex items-center me-4">
+                                <input id="ukLocation" type="radio" value="uk" name="job_location" required
+                                    class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 ">
+                                <label for="ukLocation" class="ms-2 text-sm font-medium text-gray-900">Yes</label>
+                            </div>
+                            <div class="flex items-center me-4">
+
+                                <input id="otherLocation" type="radio" value="other" name="job_location" required
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 ">
+                                <label for="otherLocation" class="ms-2 text-sm font-medium text-gray-900">No</label>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold mt-2"><span class="text-primary">Note:</span> We preferred UK peoples </span>
+                    </div>
                     <textarea required
                         class="w-full px-4 py-3 placeholder-gray-500 border border-gray-300 rounded-lg h-36 focus:ring-primary focus:border-primary"
                         placeholder="Description" name="job_description"></textarea>
                     <div class="flex justify-center">
-                        <button class="bg-primary w-full font-bold text-white focus:outline-none rounded-full p-3 " id="submitBtn">
+                        <button class="bg-primary w-full font-bold text-white focus:outline-none rounded-full p-3 "
+                            id="submitBtn">
                             <div class=" text-center hidden" id="spinner">
                                 <svg aria-hidden="true"
                                     class="w-5 h-5 mx-auto text-center text-gray-200 animate-spin fill-primary"
@@ -86,9 +104,21 @@
                     },
                     success: function(response) {
 
-                            $('#text').removeClass('hidden');
-                            $('#spinner').addClass('hidden');
-                            window.location.href = '../apply';
+                        $('#text').removeClass('hidden');
+                        $('#spinner').addClass('hidden');
+                        // window.location.href = '../apply';
+                        Swal.fire({
+                                icon: 'success',
+                                title: 'Order Placed!',
+                                text: 'Your order has been placed successfully!',
+                                confirmButtonColor: '#EC1223',
+                                customClass: {
+                                    icon: 'text-primary',
+                                },
+                            }).then(function() {
+                                window.location.href =
+                                    '../'; // Redirect to the home page
+                            });
                     },
                     error: function(jqXHR) {
 

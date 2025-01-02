@@ -23,6 +23,7 @@ class JobsController extends Controller
                 'phone' => 'required',
                 'job_role' => 'required',
                 'job_description' => 'nullable',
+                'job_location' => 'required',
             ]);
             Jobs::create([
                 'name' => $validatedData['name'],
@@ -30,6 +31,7 @@ class JobsController extends Controller
                 'phone' => $validatedData['phone'],
                 'job_role' => $validatedData['job_role'],
                 'job_description' => $validatedData['job_description'],
+                'job_location' => $validatedData['job_location'],
 
             ]);
             return response()->json(['success' => true, 'message' => 'Job created successfully',], 200);

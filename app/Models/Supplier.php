@@ -13,6 +13,7 @@ class Supplier extends Model
         'email',
         'phone',
         'message',
+        'location',
     ];
 
     public $timestamps = true;

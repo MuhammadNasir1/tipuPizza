@@ -36,7 +36,7 @@
                     d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
                     fill="currentFill" />
             </svg>
-        </div>  
+        </div>
     </div>
 
     <nav
@@ -49,12 +49,13 @@
             <div class="flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
                 {{-- <button type="button" class="px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Get started</button> --}}
                 <a href="../cart" id="cartButton" class="relative">
-                    <svg class="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                    {{-- <svg class="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                         <path
                             d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
-                    </svg>
+                    </svg> --}}
+                    <svg class="h-8 w-8 text-primary" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M160 112c0-35.3 28.7-64 64-64s64 28.7 64 64l0 48-128 0 0-48zm-48 48l-64 0c-26.5 0-48 21.5-48 48L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-208c0-26.5-21.5-48-48-48l-64 0 0-48C336 50.1 285.9 0 224 0S112 50.1 112 112l0 48zm24 48a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm152 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"/></svg>
                     <span id="cartItemCount"
-                        class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                        class="absolute top-0 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
                     </button>
                 </a>
                     <button data-collapse-toggle="navbar-sticky" type="button"
@@ -119,12 +120,16 @@
 
     <!-- Scroll to Top Button -->
     <div id="scrollToTop"
-        class="fixed flex items-center justify-center text-4xl font-bold text-white rounded-full shadow-lg cursor-pointer bottom-10 right-8 bg-primary h-14 w-14">
+        class="fixed flex items-center justify-center text-4xl font-bold text-white rounded-full shadow-lg cursor-pointer bottom-10 right-8 bg-primary border-2 border-white h-14 w-14">
         <i class="fa fa-arrow-up"></i>
     </div>
 
+    <div>
+    <img class="w-full" src="{{asset(('assets/images/night-view.png'))}}" alt="night-view">
+    </div>
+
     <!-- Social Media and Footer Section -->
-    <div class="px-4 py-2 text-white bg-primary">
+    <div class="px-4 md:px-16 py-2 text-white bg-primary">
         <div class="flex items-center justify-between">
             <span class="text-xl font-semibold">Tipu Pizza Kebab</span>
             <div class="flex gap-6">
@@ -143,18 +148,20 @@
             </div>
         </div>
     </div>
+<div>
 
-    <footer class="px-16 py-6 font-sans tracking-wide bg-primary">
-        <div class="flex flex-wrap items-center justify-between gap-4 text-center max-lg:flex-col">
-            <p class="text-[15px] leading-loose text-white font-semibold">&copy; Tipu Pizza Kebab. All rights reserved.
-            </p>
+</div>
+    <footer class="px-16 pt-6 font-sans tracking-wide bg-primary">
+        <p class="text-[15px] leading-loose text-white font-semibold text-center">&copy; 2024 Tipu Pizza Kebab. All rights reserved | Developed by <a href="https://thewebconcept.com/" class="text-gray-100">The Web Concept</a>.
+        </p>
+        {{-- <div class="flex flex-wrap items-center justify-center gap-4 text-center max-lg:flex-col"> --}}
 
-            <ul class="flex flex-wrap space-x-6 gap-y-2 max-lg:justify-center">
+            {{-- <ul class="flex flex-wrap space-x-6 gap-y-2 max-lg:justify-center">
                 <li><a href="#" class="text-[15px] text-white font-semibold">Terms of Service</a></li>
                 <li><a href="#" class="text-[15px] text-white font-semibold">Privacy Policy</a></li>
                 <li><a href="#" class="text-[15px] text-white font-semibold">Contact</a></li>
-            </ul>
-        </div>
+            </ul> --}}
+        {{-- </div> --}}
     </footer>
 
 

@@ -13,6 +13,8 @@ class Inquiry extends Model
         'email',
         'phone',
         'message',
+        'status',
+        'location',
     ];
 
     public $timestamps = true;

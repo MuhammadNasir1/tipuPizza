@@ -14,6 +14,7 @@ class Jobs extends Model
         'phone',
         'job_role',
         'job_description',
+        'job_location',
     ];
 
     public $timestamps = true;

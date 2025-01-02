@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('job_role');
             $table->text('job_description')->nullable();
+            $table->string('job_location');
             $table->timestamps();
         });
     }
