@@ -3,7 +3,7 @@
     Contact Us
 @endsection
 @section('content')
-    <div class="mt-20 lg:grid flex flex-col lg:grid-cols-2 gap-8 py-20 max-w-7xl mx-auto px-6 lg:px-4 ">
+    <div class="mt-4 lg:grid flex flex-col lg:grid-cols-2 gap-8 py-20 max-w-7xl mx-auto px-6 lg:px-4 ">
         <!-- Left Section -->
         <div class="w-full relative">
             <div class="md:grid flex flex-col md:grid-cols-2 gap-6 w-full relative">

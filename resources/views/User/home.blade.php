@@ -6,7 +6,7 @@
 
 @section('content')
     <div>
-        <div class='mt-20'>
+        <div class='mt-1'>
             <img class="w-full " src="{{ asset('assets/images/new-banner.png') }}" alt="banner">
         </div>
     </div>

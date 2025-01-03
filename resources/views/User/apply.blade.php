@@ -3,7 +3,7 @@
     Apply for Job
 @endsection
 @section('content')
-    <div class="flex flex-col gap-8 px-6 py-20 mx-auto mt-20 lg:grid lg:grid-cols-2 max-w-7xl lg:px-4 items-center ">
+    <div class="flex flex-col gap-8 px-6 py-20 mx-auto mt-0 lg:grid lg:grid-cols-2 max-w-7xl lg:px-4 items-center ">
         <!-- Left Section -->
         <div class="relative w-full mt-14">
             <div><img class="w-full rounded-xl" src="{{ asset('assets/pexels-jack-sparrow-5917717.jpg') }}" alt="About Banner">

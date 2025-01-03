@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-<div id="MenuLoader" >
+<div id="MenuLoader">
     <div class=" text-center z-[9999] h-[90vh] w-full flex justify-center items-center   ">
         <svg aria-hidden="true" class="w-12 h-12 mx-auto text-center text-gray-600 animate-spin fill-primary"
             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="w-full md:px-0 px-2 mx-auto container bg-white sticky top-20 z-50 hidden" id="menuCategory"> >
+<div class="w-full md:px-0 px-2 mx-auto container bg-white sticky top-10 z-50 hidden" id="menuCategory">
     <div class=" mx-auto py-6">
 
         <div class="relative">

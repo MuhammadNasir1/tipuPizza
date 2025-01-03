@@ -52,6 +52,9 @@ Route::get('/cart', function () {
 Route::get('/menu', function () {
     return view('User/menu');
 });
+Route::get('/about', function () {
+    return view('User/about');
+});
 Route::get('getMenu', [MenuController::class, 'getMenu']);
 // Route::get('menu', [MenuController::class, 'userData']);
 Route::post('/order', [OrderController::class, 'insertOrder']);

@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-    <div class="min-h-full bg-gray-100 pb-10 pt-28">
+    <div class="min-h-full bg-gray-100 pb-10 pt-10">
         <div class="container mx-auto px-4 lg:px-8">
             <!-- Page Title -->
             <h1 class="text-2xl font-bold text-gray-800 mb-6">Order Details</h1>

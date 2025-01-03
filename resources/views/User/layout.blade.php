@@ -38,9 +38,29 @@
             </svg>
         </div>
     </div>
-
+    <div class="px-4 md:px-16 py-2 text-white bg-primary">
+        <div class="flex items-center justify-between">
+            <p class="text-md  flex gap-4 items-center"><span><i class="fa-solid fa-envelope"></i> admin@tipupizzakebab.com </span></p>
+            {{-- <p class="text-md  flex gap-4 items-center"><span><i class="fa-solid fa-envelope"></i> a </span> | <span><i class="fa-solid fa-phone mr-4"></i> 12345678</span> </span> --}}
+            <div class="flex gap-6">
+                <a class="text-2xl" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a class="text-2xl" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a class="text-2xl" href="https://www.instagram.com/tipupizzakebab/" target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+<div>
     <nav
-        class="bg-white dark:bg-gray-900 fixed w-full z-[100] top-0 start-0 border-b border-gray-200 dark:border-gray-600 shadow-lg">
+        class="bg-white dark:bg-gray-900 sticky w-full z-[100] top-0 border-b border-gray-200 dark:border-gray-600 shadow-lg">
         <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
             <a href="../" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <img src="{{ asset('assets/images/new-logo.png') }}" class="h-14" alt="Logo">
@@ -71,7 +91,7 @@
             </div>
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
                 <ul
-                    class="flex flex-col p-4 mt-4 mx-auto font-medium border border-gray-100 rounded-lg md:p-0  md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+                    class="flex flex-col p-4 mt-4 mx-auto font-medium border border-gray-100 rounded-lg md:p-0  md:space-x-6      md:flex-row md:mt-0 md:border-0 ">
                     <li>
                         <a href="../"
                             class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('/') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }} "
@@ -85,8 +105,20 @@
                         <a href="../contact"
                             class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('contact') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }}  ">Contact</a>
                     </li>
-
-                    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
+                    <li>
+                        <a href="../apply"
+                            class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('apply') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }} ">Apply
+                            For Job</a>
+                    </li>
+                    <li>
+                        <a href="../supplier"
+                            class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('supplier') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }} ">Supplier</a>
+                    </li>
+                    {{-- <li>
+                        <a href="../about"
+                            class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('about') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }} ">About</a>
+                    </li> --}}
+                    {{-- <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
                         class="inline-flex items-center px-3 py-2 mt-2 font-medium text-center text-black border border-gray-100 rounded-lg focus:outline-none md:p-0 bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 focus:ring-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         type="button">Others<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -108,7 +140,7 @@
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Supplier</a>
                             </li>
                         </ul>
-                    </div>
+                    </div> --}}
 
                 </ul>
             </div>
@@ -152,14 +184,14 @@
 
 </div>
     <footer class="px-16 pt-6 font-sans tracking-wide bg-primary">
-        <p class="text-[15px] leading-loose text-white font-semibold text-center">&copy; 2024 Tipu Pizza Kebab. All rights reserved | Developed by <a href="https://thewebconcept.com/" class="text-gray-100">The Web Concept</a>.
+        <p class="text-[.9375rem] leading-loose text-white font-semibold text-center">&copy; 2024 Tipu Pizza Kebab. All rights reserved | Developed by <a href="https://thewebconcept.com/" class="text-gray-100">The Web Concept</a>.
         </p>
         {{-- <div class="flex flex-wrap items-center justify-center gap-4 text-center max-lg:flex-col"> --}}
 
             {{-- <ul class="flex flex-wrap space-x-6 gap-y-2 max-lg:justify-center">
-                <li><a href="#" class="text-[15px] text-white font-semibold">Terms of Service</a></li>
-                <li><a href="#" class="text-[15px] text-white font-semibold">Privacy Policy</a></li>
-                <li><a href="#" class="text-[15px] text-white font-semibold">Contact</a></li>
+                <li><a href="#" class="text-[.9375rem] text-white font-semibold">Terms of Service</a></li>
+                <li><a href="#" class="text-[.9375rem] text-white font-semibold">Privacy Policy</a></li>
+                <li><a href="#" class="text-[.9375rem] text-white font-semibold">Contact</a></li>
             </ul> --}}
         {{-- </div> --}}
     </footer>
@@ -226,7 +258,7 @@
         function handleCategoryClick(categoryId) {
             const target = $("#" + categoryId);
             if (target.length) {
-                // Calculate the scroll position with a 200px offset
+                // Calculate the scroll position with a 12.5rem offset
                 const offset = target.offset().top - 280;
                 $("html, body").animate({
                     scrollTop: offset
