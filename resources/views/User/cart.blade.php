@@ -21,6 +21,7 @@
                             <th class="p-2">Size</th>
                             <th class="p-2">Quantity</th>
                             <th class="p-2">Price</th>
+                            <th class="p-2">Add-ons</th>
                             <th class="p-2">Sub Total</th>
                         </tr>
                     </thead>
@@ -30,13 +31,20 @@
                 </table>
             </div>
             <div class="mt-6 bg-white shadow-md rounded-lg p-4">
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col justify-center space-y-3">
                     <div class="text-lg font-semibold text-gray-700">
-                        Total: <span id="cartTotal" class="text-primary">£0.00</span>
+                        Total: <span id="cartTotal" class="text-primary ml-2">£0.00</span>
                     </div>
-
+                    <div class="text-lg font-semibold text-gray-700">
+                        Delivery Charges: <span id="deliveryCharges" class="text-primary ml-2">£0.00</span>
+                    </div>
+                    <div class="text-lg font-semibold text-gray-700">
+                        Grand Total: <span id="cartGrandTotal" class="text-primary ml-2">£0.00</span>
+                    </div>
                 </div>
             </div>
+
+
             <!-- Delivery or Dining Option -->
             <div class="mt-6 bg-white shadow-md rounded-lg p-4">
                 <h2 class="text-lg font-bold text-gray-800 mb-4">Choose Your Dining Option</h2>
@@ -154,31 +162,10 @@
             String(now.getHours()).padStart(2, '0') + ':' +
             String(now.getMinutes()).padStart(2, '0');
         document.getElementById('datetime').value = localDatetime;
-
         $(document).ready(function() {
-            $('input[name="dining_option"]').on('change', function() {
-                if ($('input[name="dining_option"]:checked').length > 0) {
-                    // If a dining option is selected, add the class
-                    $('#diningOptionWarning').addClass('hidden');
-                }
-            });
-
-
-            // // Toggle Delivery Address visibility
-            // $('input[name="dining_option"]').on('change', function() {
-            //     const deliveryAddress = $('#userDetails'); // Ensure the correct selector
-            //     if ($(this).val() === 'delivery') {
-            //         deliveryAddress.removeClass('hidden');
-            //     } else {
-            //         deliveryAddress.addClass('hidden');
-            //     }
-            // });
-
-            // Initialize cart from localStorage
             const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
             const $cartItemsContainer = $('#cartItems');
             const $cartTotalElement = $('#cartTotal');
-            console.log(cartItems);
 
             // Render Cart items dynamically
             const renderCart = () => {
@@ -186,44 +173,100 @@
                 let total = 0;
 
                 cartItems.forEach((item, index) => {
-                    const itemTotal = item.price * item.quantity;
+                    // Check if the item has add-ons, and calculate their total
+                    const addOnTotal = Array.isArray(item.addons) && item.addons.length > 0 ?
+                        item.addons.reduce((sum, addOn) => sum + addOn.addonPrice, 0) :
+                        0;
+
+                    // Calculate the total for the item, including add-ons
+                    const itemTotal = (item.price + addOnTotal) * item.quantity;
                     total += itemTotal;
+
+                    // Generate HTML for add-ons only if they exist
+                    const addOnsHTML = Array.isArray(item.addons) && item.addons.length > 0 ?
+                        item.addons.map((addOn, addOnIndex) => `
+                <div class="flex justify-between flex-nowrap gap-4 items-center bg-gray-100 p-2 rounded mt-1">
+                    <span>${addOn.addonName} <span class="text-primary">(£${addOn.addonPrice.toFixed(2)})</span></span>
+                    <button class="remove-addon text-red-500 text-sm"  data-index="${index}" data-addon-index="${addOnIndex}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="white" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('') :
+                        '';
 
                     $cartItemsContainer.append(`
                 <tr class="border-b">
-                    <td class="p-2">${item.name}</td>
-                    <td class="p-2">${item.size}</td>
-                    <td class="p-2">
+                    <td class="p-4 whitespace-nowrap">${item.name}</td>
+                    <td class="p-4 whitespace-nowrap">${item.size}</td>
+                    <td class="p-4">
                         <div class="flex items-center">
-                            <button class="decrease-quantity px-2 bg-gray-300 rounded" data-index="${index}">-</button>
-                            <span class="mx-2">${item.quantity}</span>
-                            <button class="increase-quantity px-2 bg-gray-300 rounded" data-index="${index}">+</button>
+                            <button class="decrease-quantity px-3 bg-gray-300 text-gray-700 rounded" data-index="${index}">-</button>
+                            <span class="mx-3">${item.quantity}</span>
+                            <button class="increase-quantity px-3 bg-gray-300 text-gray-700 rounded" data-index="${index}">+</button>
                         </div>
                     </td>
-                    <td class="p-2">£${item.price.toFixed(2)}</td>
-                    <td class="p-2">£${itemTotal.toFixed(2)}</td>
-                    <td class="p-2">
-                        <button class="remove-item bg-red-500 text-white px-3 py-1 rounded" data-index="${index}">
-                            Remove
+                    <td class="p-4 ">£${item.price.toFixed(2)}</td>
+                    <td class="p-4">
+                       <div class="flex gap-y-2 gap-x-4 flex-wrap">${addOnsHTML}</div>
+                    </td>
+                    <td class="p-4 text-primary font-semibold">£${itemTotal.toFixed(2)}</td>
+                    <td class="p-4">
+                        <button class="remove-item  text-primary px-4 py-2 rounded" data-index="${index}">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="white" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                      </svg>
                         </button>
                     </td>
                 </tr>
             `);
                 });
+                let grandTotal = total;
+                let deliveryCharge = 0;
+                $('input[name="dining_option"]').change(function() {
+                    // Check if the delivery option checkbox is checked
+                    if ($('input[name="dining_option"]:checked').val() == "delivery") {
+                        deliveryCharge = 2.5; // Add delivery charge if "delivery" is selected
+                    } else {
+                        deliveryCharge = 0; // Remove delivery charge if any other option is selected
+                    }
+                    // Calculate grand total
+                    grandTotal = total + deliveryCharge;
 
-                $cartTotalElement.text(`£${total.toFixed(2)}`);
+                    // Update the delivery charges and grand total on the page
+                    $('#deliveryCharges').text(`£${deliveryCharge.toFixed(2)}`);
+                    $('#cartGrandTotal').text(`£${grandTotal.toFixed(2)}`);
+                });
+                $('#cartGrandTotal').text(`£${grandTotal.toFixed(2)}`);
+                $('#cartTotal').text(`£${total.toFixed(2)}`);
             };
 
-            // Handle increase in quantity
+
+            // Handle Add-on Removal
+            $cartItemsContainer.on('click', '.remove-addon', function() {
+                const index = $(this).data('index'); // Get the item index
+                const addOnIndex = $(this).data('addon-index'); // Get the add-on index
+
+                // Check if the item and its add-ons array exist
+                if (Array.isArray(cartItems[index].addons) && cartItems[index].addons.length > addOnIndex) {
+                    cartItems[index].addons.splice(addOnIndex, 1); // Remove the selected add-on
+                    localStorage.setItem('cart', JSON.stringify(cartItems)); // Update localStorage
+                    renderCart(); // Re-render the cart
+                } else {
+                    console.error("Add-on or item not found!");
+                }
+            });
+
+
+            // Handle quantity changes and item removal (existing logic)
             $cartItemsContainer.on('click', '.increase-quantity', function() {
                 const index = $(this).data('index');
                 cartItems[index].quantity += 1;
-
                 localStorage.setItem('cart', JSON.stringify(cartItems));
                 renderCart();
             });
 
-            // Handle decrease in quantity
             $cartItemsContainer.on('click', '.decrease-quantity', function() {
                 const index = $(this).data('index');
                 if (cartItems[index].quantity > 1) {
@@ -231,22 +274,20 @@
                 } else {
                     cartItems.splice(index, 1);
                 }
-
                 localStorage.setItem('cart', JSON.stringify(cartItems));
                 renderCart();
             });
 
-            // Handle item removal from cart
             $cartItemsContainer.on('click', '.remove-item', function() {
                 const index = $(this).data('index');
                 cartItems.splice(index, 1);
-
                 localStorage.setItem('cart', JSON.stringify(cartItems));
                 renderCart();
             });
 
             // Initial rendering of cart
             renderCart();
+
 
             function orderDataFun() {
                 // Form submission logic for placing the order

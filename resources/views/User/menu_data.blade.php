@@ -22,12 +22,10 @@
                 <div id="addonList" class="mt-2"></div>
             </div>
 
-            <div class="flex justify-between gap-4">
-                <button id="closeModal"
-                    class="mt-4 btn bg-red-500  font-semibold text-white px-5 py-3 rounded">Close</button>
-                <button id="orderButton" class="btn bg-green-600 font-semibold text-white px-5 py-3 rounded mt-4"
-                    disabled>Add To Cart</button>
-            </div>
+           <div class="flex justify-between gap-4">
+             <button id="closeModal" class="mt-4 btn bg-red-500  font-semibold text-white px-5 py-3 rounded">Close</button>
+            <button id="orderButton" class="btn bg-green-600 font-semibold text-white px-5 py-3 rounded mt-4" disabled>Add To Cart</button>
+           </div>
 
         </div>
     </div>
@@ -169,11 +167,11 @@
 
     function addCartfun() {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
         const updateCartCount = () => {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             $('#cartItemCount').text(totalItems);
         };
+
 
         updateCartCount();
 
@@ -210,7 +208,7 @@
             const addonsId = $(this).data('menu_addons');
 
             $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
-                'selected'); // Reset visibility and selection
+            'selected'); // Reset visibility and selection
             $('#orderButton').prop('disabled', true); // Disable Order button initially
 
             if (!priceSmall) {
@@ -281,8 +279,7 @@
 
         // Enable Order Button and Highlight Size Button when a size is selected
         $('#selectSmall, #selectLarge').on('click', function() {
-            $('#selectSmall, #selectLarge').removeClass(
-            'bg-primary text-white selected'); // Deselect other size buttons
+            $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected'); // Deselect other size buttons
             $(this).addClass('bg-primary text-white selected'); // Highlight the selected size button
 
             $('#orderButton').prop('disabled', false); // Enable Order button

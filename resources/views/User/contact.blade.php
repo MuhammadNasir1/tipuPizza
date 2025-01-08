@@ -60,22 +60,22 @@
                     <input type="text" required name="phone"
                         class="w-full border border-gray-300 py-3 px-4 placeholder-gray-500 rounded-lg focus:ring-primary focus:border-primary"
                         placeholder="Phone Number" />
-                        <div>
-                            <div class="flex gap-2 items-center">
-                                <label class="text-gray-600     ">Are you from UK:</label>
-                                <div class="flex items-center me-4">
-                                    <input id="ukLocation" type="radio" value="uk" name="location" required
-                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 ">
-                                    <label for="ukLocation" class="ms-2 text-sm font-medium text-gray-900">Yes</label>
-                                </div>
-                                <div class="flex items-center me-4">
-    
-                                    <input id="otherLocation" type="radio" value="other" name="location" required
-                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 ">
-                                    <label for="otherLocation" class="ms-2 text-sm font-medium text-gray-900">No</label>
-                                </div>
+                    <div>
+                        <div class="flex gap-2 items-center">
+                            <label class="text-gray-600     ">Are you from UK:</label>
+                            <div class="flex items-center me-4">
+                                <input id="ukLocation" type="radio" value="uk" name="location" required
+                                    class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 ">
+                                <label for="ukLocation" class="ms-2 text-sm font-medium text-gray-900">Yes</label>
+                            </div>
+                            <div class="flex items-center me-4">
+
+                                <input id="otherLocation" type="radio" value="other" name="location" required
+                                    class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 focus:ring-red-500 ">
+                                <label for="otherLocation" class="ms-2 text-sm font-medium text-gray-900">No</label>
                             </div>
                         </div>
+                    </div>
                     <textarea
                         class="w-full border border-gray-300 h-36 py-3 px-4 placeholder-gray-500 rounded-lg focus:ring-primary focus:border-primary"
                         placeholder="Message" required name="message"></textarea>
@@ -139,21 +139,21 @@
                     },
                     success: function(response) {
 
-                            $('#text').removeClass('hidden');
-                            $('#spinner').addClass('hidden');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Order Placed!',
-                                text: 'Your order has been placed successfully!',
-                                confirmButtonColor: '#EC1223',
-                                customClass: {
-                                    icon: 'text-primary',
-                                },
-                            }).then(function() {
-                                window.location.href =
-                                    '../'; // Redirect to the home page
-                            });
-                            // window.location.href = '../contact';
+                        $('#text').removeClass('hidden');
+                        $('#spinner').addClass('hidden');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Order Placed!',
+                            text: 'Your order has been placed successfully!',
+                            confirmButtonColor: '#EC1223',
+                            customClass: {
+                                icon: 'text-primary',
+                            },
+                        }).then(function() {
+                            window.location.href =
+                                '../'; // Redirect to the home page
+                        });
+                        // window.location.href = '../contact';
                     },
                     error: function(jqXHR) {
 
