@@ -23,13 +23,147 @@
             </div>
 
             <button id="closeModal" class="mt-4 btn bg-red-500 text-white px-4 py-2 rounded">Close</button>
+            <button id="orderButton" class="btn bg-green-500 text-white px-4 py-2 rounded mt-4" disabled>Order</button>
+
         </div>
     </div>
 </div>
 
 <script>
+    // function addCartfun() {
+    //     // =================== cart
+    //     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    //     const updateCartCount = () => {
+    //         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    //         $('#cartItemCount').text(totalItems);
+    //     };
+
+    //     updateCartCount();
+
+    //     const addToCart = (item) => {
+    //         const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id && cartItem.size === item
+    //             .size);
+    //         if (existingItemIndex > -1) {
+    //             cart[existingItemIndex].quantity += 1;
+    //         } else {
+    //             cart.push({
+    //                 ...item,
+    //                 quantity: 1
+    //             });
+    //         }
+    //         localStorage.setItem('cart', JSON.stringify(cart));
+    //         updateCartCount();
+
+    //         Swal.fire({
+    //             title: 'Added to Cart',
+    //             text: `${item.name} (${item.size}) has been added to your cart!`,
+    //             icon: 'success',
+    //             showConfirmButton: false,
+    //             timer: 1500
+    //         });
+    //     };
+
+    //     $('.open-modal').on('click', function() {
+    //         const itemId = $(this).data('item-id');
+    //         const itemName = $(this).data('item-name');
+    //         const priceSmall = $(this).data('price-small');
+    //         const priceLarge = $(this).data('price-large');
+    //         const labelSmall = $(this).data('item-label-s');
+    //         const labelLarge = $(this).data('item-label-l');
+    //         const addonsId = $(this).data('menu_addons');
+    //         if (!labelSmall) {
+    //             $('#selectSmall').addClass('hidden');
+    //         }
+    //         if (!labelLarge) {
+    //             $('#selectLarge').addClass('hidden');
+
+    //         }
+
+
+    //         // Fetch addons for the current item
+    //         $.ajax({
+    //             url: '/getIemAddons', // Adjust this URL to match your endpoint
+    //             method: 'GET',
+    //             data: {
+    //                 addonsId: addonsId
+    //             },
+    //             success: function(addons) {
+    //                 // Clear existing addon checkboxes
+    //                 $('#addonList').empty();
+    //                 console.log(addons);
+
+    //                 // Add checkboxes for each addon
+    //                 addons.forEach(function(addon) {
+    //                     const addonHtml = `
+    //                     <div class="flex items-center justify-between gap-4">
+    //                        <div>
+    //                          <input type="checkbox" id="addon-${addon.addon_id}" data-addon-id="${addon.addon_id}" data-addon-name="${addon.addon_name}" class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary  focus:ring-2 ">
+    //                         <label for="addon-${addon.addon_id}" class="ml-2">${addon.addon_name}</label>
+    //                         </div>
+    //                         <div>
+    //                                <p class="ml-2 text-primary font-semibold">${addon.addon_price}£ </;>
+    //                             </div>
+    //                     </div>
+    //                 `;
+    //                     $('#addonList').append(addonHtml);
+    //                 });
+
+    //                 // Show modal
+    //                 $('#modalItemName').text(itemName);
+    //                 $('#modalSmallPrice').text(priceSmall);
+    //                 $('#modalLargePrice').text(priceLarge);
+    //                 $('#labelS').text(labelSmall);
+    //                 $('#labelL').text(labelLarge);
+
+    //                 $('#selectSmall').data('cart-item', {
+    //                     id: itemId,
+    //                     name: itemName,
+    //                     size: labelSmall,
+    //                     price: priceSmall,
+    //                     addons: [] // Initially no addons selected
+    //                 });
+
+    //                 $('#selectLarge').data('cart-item', {
+    //                     id: itemId,
+    //                     name: itemName,
+    //                     size: labelLarge,
+    //                     price: priceLarge,
+    //                     addons: [] // Initially no addons selected
+    //                 });
+
+    //                 $('#sizeModal').removeClass('hidden').addClass('flex');
+    //             }
+    //         });
+    //     });
+
+    //     // Close modal
+    //     $('#closeModal').on('click', function() {
+    //         $('#sizeModal').removeClass('flex').addClass('hidden');
+    //     });
+
+    //     // Add item to cart from modal
+    //     $('#selectSmall, #selectLarge').on('click', function() {
+    //         const cartItem = $(this).data('cart-item');
+
+    //         // Collect selected addons
+    //         const selectedAddons = [];
+    //         $('.addon-checkbox:checked').each(function() {
+    //             selectedAddons.push({
+    //                 id: $(this).data('addon-id'),
+    //                 name: $(this).data('addon-name')
+    //             });
+    //         });
+
+    //         // Add selected addons to the cart item
+    //         cartItem.addons = selectedAddons;
+
+    //         addToCart(cartItem);
+    //         $('#sizeModal').removeClass('flex').addClass('hidden');
+    //     });
+    // }
+
     function addCartfun() {
-        // =================== cart
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         const updateCartCount = () => {
@@ -71,7 +205,17 @@
             const labelLarge = $(this).data('item-label-l');
             const addonsId = $(this).data('menu_addons');
 
-            // Fetch addons for the current item
+            $('#selectSmall, #selectLarge').removeClass('hidden'); // Reset visibility
+            $('#orderButton').prop('disabled', true); // Disable Order button initially
+
+            if (!labelSmall) {
+                $('#selectSmall').addClass('hidden');
+            }
+            if (!labelLarge) {
+                $('#selectLarge').addClass('hidden');
+            }
+
+            // Fetch addons
             $.ajax({
                 url: '/getIemAddons', // Adjust this URL to match your endpoint
                 method: 'GET',
@@ -79,27 +223,23 @@
                     addonsId: addonsId
                 },
                 success: function(addons) {
-                    // Clear existing addon checkboxes
                     $('#addonList').empty();
-                    console.log(addons);
 
-                    // Add checkboxes for each addon
                     addons.forEach(function(addon) {
                         const addonHtml = `
                         <div class="flex items-center justify-between gap-4">
-                           <div>
-                             <input type="checkbox" id="addon-${addon.addon_id}" data-addon-id="${addon.addon_id}" data-addon-name="${addon.addon_name}" class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary  focus:ring-2 ">
-                            <label for="addon-${addon.addon_id}" class="ml-2">${addon.addon_name}</label>
+                            <div>
+                                <input type="checkbox" id="addon-${addon.addon_id}" data-addon-id="${addon.addon_id}" data-addon-name="${addon.addon_name}" class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                                <label for="addon-${addon.addon_id}" class="ml-2">${addon.addon_name}</label>
                             </div>
                             <div>
-                                   <p class="ml-2 text-primary font-semibold">${addon.addon_price}£ </;>
-                                </div>
+                                <p class="ml-2 text-primary font-semibold">${addon.addon_price}£</p>
+                            </div>
                         </div>
                     `;
                         $('#addonList').append(addonHtml);
                     });
 
-                    // Show modal
                     $('#modalItemName').text(itemName);
                     $('#modalSmallPrice').text(priceSmall);
                     $('#modalLargePrice').text(priceLarge);
@@ -132,11 +272,29 @@
             $('#sizeModal').removeClass('flex').addClass('hidden');
         });
 
-        // Add item to cart from modal
+        // Enable Order Button when a size is selected
         $('#selectSmall, #selectLarge').on('click', function() {
-            const cartItem = $(this).data('cart-item');
+            $('.btn.size').removeClass('selected'); // Deselect other size buttons
+            $(this).addClass('selected'); // Highlight selected size
 
-            // Collect selected addons
+            $('#orderButton').prop('disabled', $('.addon-checkbox:checked').length === 0);
+        });
+
+        // Monitor Addons Selection
+        $('#addonList').on('change', '.addon-checkbox', function() {
+            const isSizeSelected = $('#selectSmall').hasClass('selected') || $('#selectLarge').hasClass(
+                'selected');
+            const isAddonSelected = $('.addon-checkbox:checked').length > 0;
+
+            $('#orderButton').prop('disabled', !(isSizeSelected && isAddonSelected));
+        });
+
+        // Place Order
+        $('#orderButton').on('click', function() {
+            const selectedSize = $('#selectSmall').hasClass('selected') ?
+                $('#selectSmall').data('cart-item') :
+                $('#selectLarge').data('cart-item');
+
             const selectedAddons = [];
             $('.addon-checkbox:checked').each(function() {
                 selectedAddons.push({
@@ -145,123 +303,13 @@
                 });
             });
 
-            // Add selected addons to the cart item
-            cartItem.addons = selectedAddons;
+            selectedSize.addons = selectedAddons;
 
-            addToCart(cartItem);
+            addToCart(selectedSize);
             $('#sizeModal').removeClass('flex').addClass('hidden');
         });
     }
 
-
-    // function addCartfun() {
-
-    //     // =================== cart
-    //     // Load cart from localStorage or initialize
-    //     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-    //     // Update the cart item count badge
-    //     const updateCartCount = () => {
-    //         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    //         $('#cartItemCount').text(totalItems);
-    //     };
-
-    //     // Initialize cart count on page load
-    //     updateCartCount();
-
-    //     // Add or update item in the cart
-    //     const addToCart = (item) => {
-    //         const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id && cartItem
-    //             .size === item.size);
-    //         if (existingItemIndex > -1) {
-    //             // Increment quantity if item already exists
-    //             cart[existingItemIndex].quantity += 1;
-    //         } else {
-    //             // Add new item to the cart
-    //             cart.push({
-    //                 ...item,
-    //                 quantity: 1
-    //             });
-    //         }
-    //         localStorage.setItem('cart', JSON.stringify(cart)); // Save to localStorage
-    //         updateCartCount(); // Update the badge count
-
-    //         // SweetAlert2 confirmation
-    //         Swal.fire({
-    //             title: 'Added to Cart',
-    //             text: `${item.name} (${item.size}) has been added to your cart!`,
-    //             icon: 'success',
-    //             showConfirmButton: false,
-    //             timer: 1500
-    //         });
-    //     };
-
-    //     // Handle card click
-    //     $('.open-modal').on('click', function() {
-    //         const itemId = $(this).data('item-id');
-    //         const itemName = $(this).data('item-name');
-    //         const priceSmall = $(this).data('price-small');
-    //         const priceLarge = $(this).data('price-large');
-    //         const labelSmall = $(this).data('item-label-s');
-    //         const labelLarge = $(this).data('item-label-l');
-
-    //         if (priceSmall && priceLarge) {
-    //             // Show modal if both prices are available
-    //             $('#modalItemName').text(itemName);
-    //             $('#modalSmallPrice').text(priceSmall);
-    //             $('#modalLargePrice').text(priceLarge);
-    //             $('#labelS').text(labelSmall);
-    //             $('#labelL').text(labelLarge);
-
-    //             $('#selectSmall').data('cart-item', {
-    //                 id: itemId,
-    //                 name: itemName,
-    //                 size: labelSmall,
-    //                 price: priceSmall
-    //             });
-    //             $('#selectLarge').data('cart-item', {
-    //                 id: itemId,
-    //                 name: itemName,
-    //                 size: labelLarge,
-    //                 price: priceLarge
-    //             });
-
-    //             $('#sizeModal').removeClass('hidden').addClass('flex');
-    //         } else {
-    //             // Directly add to cart if only one price is available
-    //             const cartItem = {
-    //                 id: itemId,
-    //                 name: itemName,
-    //                 size: priceSmall ? labelSmall : labelLarge,
-    //                 price: priceSmall || priceLarge
-    //             };
-    //             addToCart(cartItem);
-    //             console.log('Cart:', cart); // Debugging purposes
-    //         }
-    //     });
-
-    //     // Close modal
-    //     $('#closeModal').on('click', function() {
-    //         $('#sizeModal').removeClass('flex').addClass('hidden');
-    //     });
-
-    //     // Add item to cart from modal
-    //     $('#selectSmall, #selectLarge').on('click', function() {
-    //         const cartItem = $(this).data('cart-item');
-    //         addToCart(cartItem);
-
-    //         $('#sizeModal').removeClass('flex').addClass('hidden');
-    //         console.log('Cart:', cart); // Debugging purposes
-    //     });
-
-
-
-
-
-
-
-    //     // =================== cart end
-    // }'
 
     $(document).ready(function() {
         addCartfun()
