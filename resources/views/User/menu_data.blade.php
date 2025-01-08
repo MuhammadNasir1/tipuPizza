@@ -3,15 +3,15 @@
     <div class="fixed inset-0 transition-opacity">
         <div id="backdrop" class="absolute inset-0 opacity-75 bg-slate-800"></div>
     </div>
-    <div class="flex items-center justify-center min-h-screen relative">
+    <div class="flex items-center justify-center min-h-screen relative max-w-4xl w-full">
         <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
             <h2 class="text-lg font-semibold" id="modalItemName"></h2>
             <p class="text-sm text-gray-500 mb-4" id="modalDescription"></p>
             <div class="flex gap-4">
-                <button id="selectSmall" class="btn bg-gray-300 text-black px-4 py-2 rounded">
+                <button id="selectSmall" class="btn bg-gray-300 text-black px-4 py-2 rounded w-full">
                     <span id="labelS"></span> - £<span id="modalSmallPrice"></span>
                 </button>
-                <button id="selectLarge" class="btn bg-gray-300 text-black px-4 py-2 rounded">
+                <button id="selectLarge" class="btn bg-gray-300 text-black px-4 py-2 rounded w-full">
                     <span id="labelL"></span> - £<span id="modalLargePrice"></span>
                 </button>
             </div>
@@ -22,8 +22,12 @@
                 <div id="addonList" class="mt-2"></div>
             </div>
 
-            <button id="closeModal" class="mt-4 btn bg-red-500 text-white px-4 py-2 rounded">Close</button>
-            <button id="orderButton" class="btn bg-green-500 text-white px-4 py-2 rounded mt-4" disabled>Order</button>
+            <div class="flex justify-between gap-4">
+                <button id="closeModal"
+                    class="mt-4 btn bg-red-500  font-semibold text-white px-5 py-3 rounded">Close</button>
+                <button id="orderButton" class="btn bg-green-600 font-semibold text-white px-5 py-3 rounded mt-4"
+                    disabled>Add To Cart</button>
+            </div>
 
         </div>
     </div>
@@ -205,14 +209,17 @@
             const labelLarge = $(this).data('item-label-l');
             const addonsId = $(this).data('menu_addons');
 
-            $('#selectSmall, #selectLarge').removeClass('hidden'); // Reset visibility
+            $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
+                'selected'); // Reset visibility and selection
             $('#orderButton').prop('disabled', true); // Disable Order button initially
 
-            if (!labelSmall) {
+            if (!priceSmall) {
                 $('#selectSmall').addClass('hidden');
+                $('#selectLarge').click();
             }
-            if (!labelLarge) {
+            if (!priceLarge) {
                 $('#selectLarge').addClass('hidden');
+                $('#selectSmall').click();
             }
 
             // Fetch addons
@@ -227,9 +234,9 @@
 
                     addons.forEach(function(addon) {
                         const addonHtml = `
-                        <div class="flex items-center justify-between gap-4">
+                        <div class="flex items-center mt-2 justify-between gap-4">
                             <div>
-                                <input type="checkbox" id="addon-${addon.addon_id}" data-addon-id="${addon.addon_id}" data-addon-name="${addon.addon_name}" class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                                <input type="checkbox" id="addon-${addon.addon_id}" data-addon-id="${addon.addon_id}" data-addon-name="${addon.addon_name}" data-addon-price="${addon.addon_price}" class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
                                 <label for="addon-${addon.addon_id}" class="ml-2">${addon.addon_name}</label>
                             </div>
                             <div>
@@ -272,21 +279,13 @@
             $('#sizeModal').removeClass('flex').addClass('hidden');
         });
 
-        // Enable Order Button when a size is selected
+        // Enable Order Button and Highlight Size Button when a size is selected
         $('#selectSmall, #selectLarge').on('click', function() {
-            $('.btn.size').removeClass('selected'); // Deselect other size buttons
-            $(this).addClass('selected'); // Highlight selected size
+            $('#selectSmall, #selectLarge').removeClass(
+            'bg-primary text-white selected'); // Deselect other size buttons
+            $(this).addClass('bg-primary text-white selected'); // Highlight the selected size button
 
-            $('#orderButton').prop('disabled', $('.addon-checkbox:checked').length === 0);
-        });
-
-        // Monitor Addons Selection
-        $('#addonList').on('change', '.addon-checkbox', function() {
-            const isSizeSelected = $('#selectSmall').hasClass('selected') || $('#selectLarge').hasClass(
-                'selected');
-            const isAddonSelected = $('.addon-checkbox:checked').length > 0;
-
-            $('#orderButton').prop('disabled', !(isSizeSelected && isAddonSelected));
+            $('#orderButton').prop('disabled', false); // Enable Order button
         });
 
         // Place Order
@@ -298,17 +297,19 @@
             const selectedAddons = [];
             $('.addon-checkbox:checked').each(function() {
                 selectedAddons.push({
-                    id: $(this).data('addon-id'),
-                    name: $(this).data('addon-name')
+                    addonId: $(this).data('addon-id'),
+                    addonName: $(this).data('addon-name'),
+                    addonPrice: $(this).data('addon-price')
                 });
             });
 
-            selectedSize.addons = selectedAddons;
+            selectedSize.addons = selectedAddons; // Add selected addons to the cart item
 
             addToCart(selectedSize);
             $('#sizeModal').removeClass('flex').addClass('hidden');
         });
     }
+
 
 
     $(document).ready(function() {
