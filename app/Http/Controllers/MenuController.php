@@ -17,7 +17,7 @@ class MenuController extends Controller
         $addons = Addons::where('addon_status', 1)->get();
         // $menu = Menu::with('category')->where('menu_status' , 1)->get();
         // return response()->json($menu);
-        return view('Admin/menu', compact('categories', 'menu' , 'addons'));
+        return view('Admin/menu', compact('categories', 'menu', 'addons'));
     }
 
 
@@ -190,35 +190,81 @@ class MenuController extends Controller
     }
     public function getMenu()
     {
-        $categories = Categories::select('category_id', 'category_name', 'category_description', 'category_img')->where('category_status', 1)->get()->map(function ($category) {
-            // Fetch all menu items for the current category
-            $menuItems = Menu::where('category_id', $category->category_id)
-                ->where('menu_status', 1)
-                ->get()
-                ->map(function ($menu) {
-                    return [
-                        'menu_id' => $menu->menu_id,
-                        'menu_name' => $menu->menu_name,
-                        'menu_img' => $menu->menu_img,
-                        'prices' => [
-                            'smallLabel' => $menu->menu_s_label,
-                            'small' => $menu->menu_s_price,
-                            'largeLabel' => $menu->menu_l_label,
-                            'large' => $menu->menu_l_price,
-                        ],
-                        'description' => $menu->menu_description,
-                    ];
-                });
+        // $categories = Categories::select('category_id', 'category_name', 'category_description', 'category_img')->where('category_status', 1)->get()->map(function ($category) {
+        //     // Fetch all menu items for the current category
+        //     $menuItems = Menu::where('category_id', $category->category_id)
+        //         ->where('menu_status', 1)
+        //         ->get()
+        //         ->map(function ($menu) {
+        //             return [
+        //                 'menu_id' => $menu->menu_id,
+        //                 'menu_name' => $menu->menu_name,
+        //                 'menu_img' => $menu->menu_img,
+        //                 'prices' => [
+        //                     'smallLabel' => $menu->menu_s_label,
+        //                     'small' => $menu->menu_s_price,
+        //                     'largeLabel' => $menu->menu_l_label,
+        //                     'large' => $menu->menu_l_price,
+        //                 ],
+        //                 'description' => $menu->menu_description,
+        //             ];
+        //         });
 
-            return [
-                'id' => $category->category_id,
-                'category_name' => $category->category_name,
-                'category_img' => $category->category_img,
+        //     return [
+        //         'id' => $category->category_id,
+        //         'category_name' => $category->category_name,
+        //         'category_img' => $category->category_img,
 
-                'category_description' => $category->category_description,
-                'items' => $menuItems,
-            ];
-        });
+        //         'category_description' => $category->category_description,
+        //         'items' => $menuItems,
+        //     ];
+        // });
+
+        $categories = Categories::select('category_id', 'category_name', 'category_description', 'category_img')
+            ->where('category_status', 1)
+            ->get()
+            ->map(function ($category) {
+                // Fetch all menu items for the current category
+                $menuItems = Menu::where('category_id', $category->category_id)
+                    ->where('menu_status', 1)
+                    ->get()
+                    ->map(function ($menu) {
+                        // Fetch the addons associated with the menu item
+                        $addons = Addons::whereIn('addon_id', explode(',', $menu->addons)) // Assuming 'addons' column contains comma-separated addon IDs
+                            ->get()
+                            ->map(function ($addon) {
+                                return [
+                                    'addon_id' => $addon->addon_id,
+                                    'addon_name' => $addon->addon_name,
+                                ];
+                            });
+
+                        return [
+                            'menu_id' => $menu->menu_id,
+                            'menu_name' => $menu->menu_name,
+                            'menu_addons' => $menu->addons,
+                            'menu_img' => $menu->menu_img,
+                            'prices' => [
+                                'smallLabel' => $menu->menu_s_label,
+                                'small' => $menu->menu_s_price,
+                                'largeLabel' => $menu->menu_l_label,
+                                'large' => $menu->menu_l_price,
+                            ],
+                            'description' => $menu->menu_description,
+                            'addons' => $addons,
+                        ];
+                    });
+
+                return [
+                    'id' => $category->category_id,
+                    'category_name' => $category->category_name,
+                    'category_img' => $category->category_img,
+                    'category_description' => $category->category_description,
+                    'items' => $menuItems,
+                ];
+            });
+
+
 
         return response()->json(["categories" => $categories], 200);
         // return view('User.menu', compact('categories'));

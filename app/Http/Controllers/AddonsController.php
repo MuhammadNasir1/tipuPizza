@@ -74,4 +74,13 @@ class AddonsController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
+    public function getAddons(Request $request){
+        $addonsId = $request->input('addonsId'); // Example: "1,2"
+        $addonsIdArray = explode(',', $addonsId); // Convert string to array
+        
+        $addons = Addons::whereIn('addon_id', $addonsIdArray)->get();
+        
+        return response()->json($addons);
+    }
 }

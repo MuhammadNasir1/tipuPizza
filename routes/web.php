@@ -93,4 +93,5 @@ Route::middleware('admin')->group(function () {
     Route::post('/addAddon', [AddonsController::class, 'insert']);
     Route::post('/updateAddon/{id}', [AddonsController::class, 'update']);
     Route::get('/deleteAddon/{id}', [AddonsController::class, 'delete']);
+    Route::get('/getIemAddons', [AddonsController::class, 'getAddons']);
 });
