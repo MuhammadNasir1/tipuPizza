@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Addons;
 use App\Models\Categories;
 use App\Models\Menu;
 use Illuminate\Http\Request;
@@ -13,9 +14,10 @@ class MenuController extends Controller
 
         $categories = Categories::select('category_id', 'category_name')->where('category_status', 1)->get();
         $menu = Menu::with('category')->where('menu_status', 1)->get();
+        $addons = Addons::where('addon_status', 1)->get();
         // $menu = Menu::with('category')->where('menu_status' , 1)->get();
         // return response()->json($menu);
-        return view('Admin/menu', compact('categories', 'menu'));
+        return view('Admin/menu', compact('categories', 'menu' , 'addons'));
     }
 
 
@@ -34,6 +36,7 @@ class MenuController extends Controller
                 'menu_l_price' => 'nullable',
                 'menu_s_label' => 'required',
                 'menu_l_label' => 'required',
+                'addons' => 'required',
             ]);
             if ($request->hasFile('menu_img')) {
                 $image = $request->file('menu_img');
@@ -51,6 +54,7 @@ class MenuController extends Controller
                 'menu_l_price' => $validatedData['menu_l_price'],
                 'menu_s_label' => $validatedData['menu_s_label'],
                 'menu_l_label' => $validatedData['menu_l_label'],
+                'addons' => $validatedData['addons'],
             ]);
             //    $category->save();
             return response()->json(['success' => true,  'message' => 'Menu added successfully'], 200);
@@ -74,6 +78,7 @@ class MenuController extends Controller
                 'menu_l_price' => 'nullable|numeric',
                 'menu_s_label' => 'required',
                 'menu_l_label' => 'required',
+                'addons' => 'required',
             ]);
 
             // Find the menu item by ID
@@ -105,6 +110,7 @@ class MenuController extends Controller
                 'menu_l_price' => $validatedData['menu_l_price'],
                 'menu_s_label' => $validatedData['menu_s_label'],
                 'menu_l_label' => $validatedData['menu_l_label'],
+                'addons' => $validatedData['addons'],
             ]);
 
             return response()->json(['success' => true, 'message' => 'Menu updated successfully'], 200);

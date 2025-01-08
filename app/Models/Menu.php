@@ -19,6 +19,7 @@ class Menu extends Model
         'menu_s_price',
         'menu_l_price',
         'menu_status',
+        'addons',
     ];
     public $timestamps = true;
 

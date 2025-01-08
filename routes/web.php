@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddonsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\InquiryController;
@@ -64,11 +65,12 @@ Route::post('/addInquiry', [InquiryController::class, 'insert']);
 
 
 Route::middleware('admin')->group(function () {
-    Route::get('/admin/order'
-    , function () {
-        return view('Admin/order');
-    }
-);
+    Route::get(
+        '/admin/order',
+        function () {
+            return view('Admin/order');
+        }
+    );
     Route::get('/getOrder', [OrderController::class, 'index']);
     Route::get('/order/{id}', [OrderController::class, 'orderDetails']);
     Route::post('/updateStatus/{orderId}', [OrderController::class, 'updateStatus']);
@@ -85,4 +87,10 @@ Route::middleware('admin')->group(function () {
     Route::get('admin/jobs', [JobsController::class, 'index']);
     Route::get('admin/supplier', [SupplierController::class, 'index']);
     Route::get('admin/inquiry', [InquiryController::class, 'index']);
+
+
+    Route::get('/admin/addons', [AddonsController::class, 'index']);
+    Route::post('/addAddon', [AddonsController::class, 'insert']);
+    Route::post('/updateAddon/{id}', [AddonsController::class, 'update']);
+    Route::get('/deleteAddon/{id}', [AddonsController::class, 'delete']);
 });

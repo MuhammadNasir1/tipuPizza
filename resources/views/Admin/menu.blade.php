@@ -1,6 +1,6 @@
 @extends('Admin.layout')
 @section('title')
-Menu
+    Menu
 @endsection
 @section('content')
     <div class="w-full pt-10 min-h-[88vh] border-2 shadow-2xl rounded-xl">
@@ -33,7 +33,10 @@ Menu
 
                         <td>
                             <span class='flex gap-4'>
-                                <button class="updateDataBtn" menuId="{{ $data->menu_id }}" menuName="{{ $data->menu_name }}" menuDescription="{{ $data->menu_description }}" menuSPrice="{{ $data->menu_s_price }}" menuLPrice="{{ $data->menu_l_price }}" menuCategory="{{ $data->category_id }}" menuImage="{{ asset($data->menu_img) }}" 
+                                <button class="updateDataBtn" menuId="{{ $data->menu_id }}"
+                                    menuName="{{ $data->menu_name }}" menuDescription="{{ $data->menu_description }}"
+                                    menuSPrice="{{ $data->menu_s_price }}" menuLPrice="{{ $data->menu_l_price }}"
+                                    menuCategory="{{ $data->category_id }}" menuImage="{{ asset($data->menu_img) }}"
                                     menuLLabel="{{ $data->menu_l_label }}" menuSLabel="{{ $data->menu_s_label }}">
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
@@ -81,42 +84,55 @@ Menu
                                         name="menu_name" type="text"></x-input>
                                 </div>
                             </div>
-                          <div class="mt-4">
-                            <x-select name="category_id" id="menuCategory" label="Select Category">
-                                <x-slot name="options">
-                                    <option value="" disabled selected>Select Menu Category</option>
+                            <div class="mt-4">
+                                <x-select name="category_id" id="menuCategory" label="Select Category">
+                                    <x-slot name="options">
+                                        <option value="" disabled selected>Select Menu Category</option>
 
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->category_id }}">{{ $category->category_name }}</option>
-                                    @endforeach
-                                </x-slot>
-                            </x-select>
-                          </div>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->category_id }}">{{ $category->category_name }}
+                                            </option>
+                                        @endforeach
+                                    </x-slot>
+                                </x-select>
+                            </div>
 
 
                         </div>
-                        <div class="grid md:grid-cols-2 gap-4  col-span-2" >
+                        <div class="grid md:grid-cols-2 gap-4  col-span-2">
                             <div class="flex gap-2">
                                 <div class="w-1/2">
                                     <x-input class="" id="menuSLabel" label="Label" placeholder="Enter Here"
-                                    name="menu_s_label" type="text"></x-input>
+                                        name="menu_s_label" type="text"></x-input>
                                 </div>
                                 <div class="w-1/2">
                                     <x-input class="" id="menuSPrice" label="S.Price" placeholder="Enter Here"
-                                    name="menu_s_price" type="text"></x-input>
+                                        name="menu_s_price" type="text"></x-input>
                                 </div>
                             </div>
                             <div class="flex gap-2">
                                 <div class="">
                                     <x-input class="" id="menuLLabel" label="Label 2" placeholder="Enter Here"
-                                    name="menu_l_label" type="text"></x-input>
+                                        name="menu_l_label" type="text"></x-input>
                                 </div>
                                 <div class="">
                                     <x-input class="" id="menuLPrice" label="L.Price" placeholder="Enter Here"
-                                    name="menu_l_price" type="text"></x-input>
+                                        name="menu_l_price" type="text"></x-input>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-span-2 w-full">
+                            <x-select name="addons[]" id="addons" label="Select Addons">
+                                <x-slot name="options">
+                                    <option value="" disabled selected>Select Menu Addons</option>
+                                    @foreach ($addons as $data)
+                                        <option value="{{ $data->addon_id }}">{{ $data->addon_name }}</option>
+                                    @endforeach
+
+                                </x-slot>
+                            </x-select>
+                        </div>
+                        <div id="selected_addons_list" class="my-2 flex gap-3 flex-wrap"></div>
                         <div class="col-span-2">
 
                             <x-textarea class="" id="menuDescription" label="Description"
@@ -124,6 +140,8 @@ Menu
                         </div>
 
 
+                        <!-- Hidden input to store selected addon IDs -->
+                        <input type="hidden" id="selected_addons" name="addons" value="">
                     </div>
                     <div class=" mt-8">
                         <button class="w-full px-3 py-2 font-semibold text-white rounded-full shadow-md gradient-bg"
@@ -153,10 +171,70 @@ Menu
 @endsection
 @section('js')
     <script>
+        $(document).ready(function() {
+            // Listen for changes on the dropdown
+            $('#addons').on('change', function() {
+                // Get the selected value and text
+                let selectedValue = $(this).val();
+                let selectedText = $(this).find('option:selected').text();
+
+                // Check if the selected value already exists in the list
+                if ($('#selected_addons_list button[data-id="' + selectedValue + '"]').length > 0) {
+                    alert("This addon has already been added.");
+                    return; // Stop the function if the addon is already added
+                }
+
+                // Add the selected text to the list view
+                let listItem = `<button type="button" class="flex items-center space-x-2 text-white bg-primary py-2 px-4 rounded-lg" data-id="${selectedValue}">
+    <span class="flex-1">${selectedText}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${selectedValue}">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+</button>
+                    `;
+                $('#selected_addons_list').append(listItem);
+
+                // Disable the selected option in the dropdown
+                $('#addons option[value="' + selectedValue + '"]').prop('disabled', true);
+
+                // Update the hidden input field with the selected values
+                updateHiddenField();
+            });
+
+            // Remove item from the list and update hidden field
+            $(document).on('click', '.remove-addon', function() {
+                let addonId = $(this).data('id');
+
+                // Remove the corresponding list item
+                $(this).closest('button').remove();
+
+                // Enable the option again in the dropdown
+                $('#addons option[value="' + addonId + '"]').prop('disabled', false);
+
+                // Update the hidden input field
+                updateHiddenField();
+            });
+
+            // Function to update the hidden input field
+            function updateHiddenField() {
+                let addonIds = [];
+                $('#selected_addons_list button').each(function() {
+                    addonIds.push($(this).data('id'));
+                });
+
+
+                $('#selected_addons').val(addonIds.join(','));
+            }
+        });
+
+
+
+
+
         function updateDatafun() {
             $('.updateDataBtn').click(function() {
                 $('#menu-modal').removeClass("hidden").addClass('flex');
-                $('#postDataForm').attr('url' , '../updateMenu/' + $(this).attr('menuId'));
+                $('#postDataForm').attr('url', '../updateMenu/' + $(this).attr('menuId'));
 
 
                 $('#menuName').val($(this).attr('menuName'));
@@ -178,7 +256,7 @@ Menu
         updateDatafun();
         $('#addModalBtn').click(function() {
             $('#postDataForm')[0].reset();
-            $('#postDataForm').attr('url' , '../addMenu');
+            $('#postDataForm').attr('url', '../addMenu');
 
             $('#menuCategory').trigger('change');
 
