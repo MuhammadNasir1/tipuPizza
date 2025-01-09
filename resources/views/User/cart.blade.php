@@ -134,7 +134,9 @@
                         <div>
                             <label for="address" required
                                 class="block text-sm text-gray-600 mb-2 focus:outline-none outline-none focus:border-primary">Address</label>
-                            <textarea id="address" readonly name="address" class="w-full border h-[110px] rounded-lg px-4 py-2 text-gray-800">Select location from map or use current location buttton</textarea>
+                            <textarea id="address" readonly name="address" required
+                                class="w-full border h-[110px] rounded-lg px-4 py-2 text-gray-800"
+                                placeholder="Select location from map or use current location button"></textarea>
                         </div>
                         <div>
                             <label for="note"
@@ -183,7 +185,7 @@
             //  location
             const locationIqApiKey = "pk.6f9fa812ffad92a314b9d8105a241486"; // Replace with your LocationIQ API key
             const customLat = 52.922731162100966; // Your custom latitude
-            const customLon = -1.481676048182458; // Your custom longitude (example: New York)
+            const customLon = -1.481676048182458; // Your custom longitude
 
             $('#get-location').click(getCurrentLocation);
 
@@ -220,20 +222,15 @@
                                 // Calculate distance from user's location to custom location
                                 const distance = calculateDistance(latitude, longitude, customLat,
                                     customLon);
-                                $('#distance').text(
-                                    `Distance to custom location: ${distance.toFixed(2)} miles`);
+                                // $('#distance').text(
+                                //     `Distance to custom location: ${distance.toFixed(2)} miles`);
+
+                                // Set delivery charges based on the distance
+                                setDeliveryCharges(distance);
+
                             }).fail((jqXHR, textStatus, errorThrown) => {
                                 console.error('Error fetching location data:', textStatus, errorThrown);
                             });
-
-                            // set deilvery charges
-
-                            function setDeliveryCharges() {
-
-                                // ${distance.toFixed(2)
-                            }
-                            setDeliveryCharge()
-
                         },
                         (error) => {
                             console.error('Error getting location:', error);
@@ -245,6 +242,31 @@
                 } else {
                     alert('Geolocation is not supported by this browser.');
                 }
+            }
+
+            // Function to set delivery charges based on distance
+            function setDeliveryCharges(distance) {
+                let deliveryCharge = 0;
+
+                if ($('input[name="dining_option"]:checked').val() === "delivery") {
+                    if (distance >= 0 && distance <= 3) {
+                        deliveryCharge = 2.5; // Charge for 1-3 miles
+                    } else if (distance > 3 && distance <= 5) {
+                        deliveryCharge = 4.0; // Charge for 3-5 miles
+                    } else {
+                        deliveryCharge = 6.0;
+
+                    }
+                } else {
+                    deliveryCharge = 0;
+
+
+                }
+                let grandTotalWDelivery = parseFloat($('#totalAmount').val()) + parseFloat(deliveryCharge);
+
+                $('#cartGrandTotal').text("£" + grandTotalWDelivery);
+                // Display the delivery charge
+                $('#deliveryCharges').text(`£${deliveryCharge.toFixed(2)}`);
             }
 
             // Function to display the map
@@ -309,6 +331,9 @@
                     // Calculate distance from new location to custom location
                     const distance = calculateDistance(lat, lon, customLat, customLon);
                     $('#distance').text(`Distance to custom location: ${distance.toFixed(2)} miles`);
+
+                    // Set delivery charges based on the new distance
+                    setDeliveryCharges(distance);
                 }).fail((jqXHR, textStatus, errorThrown) => {
                     console.error('Error fetching location data:', textStatus, errorThrown);
                 });
@@ -329,9 +354,6 @@
 
                 return R * c; // Distance in miles
             }
-
-            //  location end
-
 
 
             const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
@@ -394,13 +416,11 @@
             `);
                 });
                 let grandTotal = total;
-                let deliveryCharge = 0;
+                // let deliveryCharge = 0;
                 $('input[name="dining_option"]').change(function() {
                     // Check if the delivery option checkbox is checked
-                    if ($('input[name="dining_option"]:checked').val() == "delivery") {
-                        deliveryCharge = 2.5; // Add delivery charge if "delivery" is selected
-                    } else {
-                        deliveryCharge = 0; // Remove delivery charge if any other option is selected
+                    if ($('input[name="dining_option"]:checked').val() !== "delivery") {
+                        deliveryCharge = 0;
                     }
                     // Calculate grand total
                     grandTotal = total + deliveryCharge;
@@ -409,6 +429,8 @@
                     $('#deliveryCharges').text(`£${deliveryCharge.toFixed(2)}`);
                     $('#cartGrandTotal').text(`£${grandTotal.toFixed(2)}`);
                 });
+
+                $('#totalAmount').val(total.toFixed(2));
                 $('#cartGrandTotal').text(`£${grandTotal.toFixed(2)}`);
                 $('#cartTotal').text(`£${total.toFixed(2)}`);
             };
