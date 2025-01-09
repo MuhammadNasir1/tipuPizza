@@ -229,6 +229,7 @@
                 },
                 success: function(addons) {
                     $('#addonList').empty();
+                    console.log(addons);
 
                     addons.forEach(function(addon) {
                         const addonHtml = `

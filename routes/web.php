@@ -64,6 +64,7 @@ Route::post('/addSupplier', [SupplierController::class, 'insert']);
 Route::post('/addInquiry', [InquiryController::class, 'insert']);
 
 
+Route::get('/getIemAddons', [AddonsController::class, 'getAddons']);
 Route::middleware('admin')->group(function () {
     Route::get(
         '/admin/order',
@@ -93,5 +94,4 @@ Route::middleware('admin')->group(function () {
     Route::post('/addAddon', [AddonsController::class, 'insert']);
     Route::post('/updateAddon/{id}', [AddonsController::class, 'update']);
     Route::get('/deleteAddon/{id}', [AddonsController::class, 'delete']);
-    Route::get('/getIemAddons', [AddonsController::class, 'getAddons']);
 });
