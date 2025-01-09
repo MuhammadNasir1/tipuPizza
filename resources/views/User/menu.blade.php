@@ -28,7 +28,7 @@
                 class="absolute -left-6 top-1/2 transform -translate-y-1/2 z-10 bg-black flex justify-center items-center text-white p-2 h-8 w-8 rounded-full shadow-md hover:bg-gray-700 text-2xl">
                 &#8249;
             </button>
-     <div id="scroll-container" class="flex space-x-4 overflow-x-scroll scrollbar-hide">
+     <div id="scroll-container" class="flex md:space-x-4 space-x-3 overflow-x-scroll scrollbar-hide">
 
      </div>
             <button id="scroll-right"

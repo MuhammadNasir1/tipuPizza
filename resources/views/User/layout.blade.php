@@ -41,18 +41,18 @@
     <div class="px-4 md:px-16 py-2 text-white bg-primary">
         <div class="flex items-center justify-between">
             <p class="text-md  flex gap-4 items-center"><span><i class="fa-solid fa-envelope"></i> <a
-                        href="mailto:tipupizzakebab@gmail.com">tipupizzakebab@gmail.com</a> </span></p>
+                        href="mailto:tipupizzakebab@gmail.com" class="text-xs md:text-lg">tipupizzakebab@gmail.com</a> </span></p>
             {{-- <p class="text-md  flex gap-4 items-center"><span><i class="fa-solid fa-envelope"></i> a </span> | <span><i class="fa-solid fa-phone mr-4"></i> 12345678</span> </span> --}}
-            <div class="flex gap-6">
-                <a class="text-2xl" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
+            <div class="flex md:gap-6 gap-4">
+                <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
                     rel="noopener noreferrer">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a class="text-2xl" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
+                <a class="lg:text-2xl md:text-xl text-sm" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
                     rel="noopener noreferrer">
                     <i class="fab fa-tiktok"></i>
                 </a>
-                <a class="text-2xl" href="https://www.instagram.com/tipupizzakebab/" target="_blank"
+                <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/" target="_blank"
                     rel="noopener noreferrer">
                     <i class="fab fa-instagram"></i>
                 </a>
@@ -120,7 +120,7 @@
                         </li>
                         <li>
                             <a href="../about"
-                                class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('supplier') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }} ">About</a>
+                                class="block py-2 px-3  rounded md:bg-transparent  md:p-0 {{ request()->is('about') ? ' bg-primary md:text-primary text-white' : 'text-gray-900 ' }} ">About</a>
                         </li>
                         {{-- <li>
                         <a href="../about"
@@ -173,15 +173,15 @@
             <div class="flex items-center justify-between">
                 <span class="text-xl font-semibold">Tipu Pizza Kebab</span>
                 <div class="flex gap-6">
-                    <a class="text-2xl" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
+                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
                         rel="noopener noreferrer">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="text-2xl" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
+                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
                         rel="noopener noreferrer">
                         <i class="fab fa-tiktok"></i>
                     </a>
-                    <a class="text-2xl" href="https://www.instagram.com/tipupizzakebab/" target="_blank"
+                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/" target="_blank"
                         rel="noopener noreferrer">
                         <i class="fab fa-instagram"></i>
                     </a>
