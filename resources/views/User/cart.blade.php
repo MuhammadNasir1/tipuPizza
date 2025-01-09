@@ -120,11 +120,21 @@
                                 class="w-full border rounded-lg px-4 py-2 text-gray-800" />
                         </div>
                     </div>
+
+                    <button id="get-location" type="button"
+                        class="bg-primary text-white px-6 py-3 rounded-full mt-4 font-semibold flex gap-2 items-center">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path fill="#ffffff"
+                                d="M256 0c17.7 0 32 14.3 32 32l0 34.7C368.4 80.1 431.9 143.6 445.3 224l34.7 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-34.7 0C431.9 368.4 368.4 431.9 288 445.3l0 34.7c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-34.7C143.6 431.9 80.1 368.4 66.7 288L32 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l34.7 0C80.1 143.6 143.6 80.1 224 66.7L224 32c0-17.7 14.3-32 32-32zM128 256a128 128 0 1 0 256 0 128 128 0 1 0 -256 0zm128-80a80 80 0 1 1 0 160 80 80 0 1 1 0-160z" />
+                        </svg>
+                        Get Current Location</button>
+                    <div id="map" class="my-4 rounded-md" style="height: 400px;"></div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <div>
                             <label for="address" required
                                 class="block text-sm text-gray-600 mb-2 focus:outline-none outline-none focus:border-primary">Address</label>
-                            <textarea id="address" name="address" class="w-full border h-[110px] rounded-lg px-4 py-2 text-gray-800"></textarea>
+                            <textarea id="address" readonly name="address" class="w-full border h-[110px] rounded-lg px-4 py-2 text-gray-800">Select location from map or use current location buttton</textarea>
                         </div>
                         <div>
                             <label for="note"
@@ -132,6 +142,8 @@
                                 (optional)</label>
                             <textarea id="note" name="note" class="w-full border h-[110px] rounded-lg px-4 py-2 text-gray-800"></textarea>
                         </div>
+
+                        <p id="distance"></p>
                     </div>
                 </div>
 
@@ -154,7 +166,12 @@
 @endsection
 
 @section('js')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
+        const customLat = 52.922731162100966; // Your custom latitude
+        const customLon = -1.481676048182458; // Your custom longitude (example: New York)
         let now = new Date();
         let localDatetime = now.getFullYear() + '-' +
             String(now.getMonth() + 1).padStart(2, '0') + '-' +
@@ -163,6 +180,160 @@
             String(now.getMinutes()).padStart(2, '0');
         document.getElementById('datetime').value = localDatetime;
         $(document).ready(function() {
+            //  location
+            const locationIqApiKey = "pk.6f9fa812ffad92a314b9d8105a241486"; // Replace with your LocationIQ API key
+            const customLat = 52.922731162100966; // Your custom latitude
+            const customLon = -1.481676048182458; // Your custom longitude (example: New York)
+
+            $('#get-location').click(getCurrentLocation);
+
+            let currentMarker = null;
+            let map = null;
+
+            $(document).ready(function() {
+                // Render the map with a custom location on page load
+                showMap(customLat, customLon);
+            });
+
+            function getCurrentLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const {
+                                latitude,
+                                longitude
+                            } = position.coords;
+
+                            // Fetch address from LocationIQ API
+                            const url =
+                                `https://us1.locationiq.com/v1/reverse.php?key=${locationIqApiKey}&lat=${latitude}&lon=${longitude}&format=json`;
+
+                            $.getJSON(url, (data) => {
+                                const address = data.display_name;
+
+                                // Display address in textarea
+                                $('#address').val(address);
+
+                                // Show map preview
+                                showMap(latitude, longitude);
+
+                                // Calculate distance from user's location to custom location
+                                const distance = calculateDistance(latitude, longitude, customLat,
+                                    customLon);
+                                $('#distance').text(
+                                    `Distance to custom location: ${distance.toFixed(2)} miles`);
+                            }).fail((jqXHR, textStatus, errorThrown) => {
+                                console.error('Error fetching location data:', textStatus, errorThrown);
+                            });
+
+                            // set deilvery charges
+
+                            function setDeliveryCharges() {
+
+                                // ${distance.toFixed(2)
+                            }
+                            setDeliveryCharge()
+
+                        },
+                        (error) => {
+                            console.error('Error getting location:', error);
+                            alert(
+                                'Unable to retrieve your location. Please enable location services and try again.'
+                            );
+                        }
+                    );
+                } else {
+                    alert('Geolocation is not supported by this browser.');
+                }
+            }
+
+            // Function to display the map
+            function showMap(lat, lon) {
+                if (!map) {
+                    map = L.map('map').setView([lat, lon], 13);
+
+                    // Add OpenStreetMap tiles
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors'
+                    }).addTo(map);
+                } else {
+                    map.setView([lat, lon], 13); // If map already exists, just move to the new position
+                }
+
+                // Add draggable marker for user's location
+                if (currentMarker) {
+                    map.removeLayer(currentMarker); // Remove the previous marker
+                }
+
+                currentMarker = L.marker([lat, lon], {
+                    draggable: true
+                }).addTo(map);
+                currentMarker.on('dragend', onMarkerDragged); // Update location when the marker is dragged
+
+                // Add popup to the marker
+                currentMarker.bindPopup('Delivery Location').openPopup();
+
+                // Allow user to click on the map to update the location
+                map.on('click', function(e) {
+                    const clickedLat = e.latlng.lat;
+                    const clickedLon = e.latlng.lng;
+
+                    // Move the marker to the clicked position
+                    currentMarker.setLatLng([clickedLat, clickedLon]);
+
+                    // Fetch address for clicked location
+                    updateLocationDetails(clickedLat, clickedLon);
+                });
+            }
+
+            // Function to handle marker drag event
+            function onMarkerDragged(event) {
+                const lat = event.target.getLatLng().lat;
+                const lon = event.target.getLatLng().lng;
+
+                // Fetch address from LocationIQ API for the new location
+                updateLocationDetails(lat, lon);
+            }
+
+            // Function to fetch and update location details (address & distance)
+            function updateLocationDetails(lat, lon) {
+                const url =
+                    `https://us1.locationiq.com/v1/reverse.php?key=${locationIqApiKey}&lat=${lat}&lon=${lon}&format=json`;
+
+                $.getJSON(url, (data) => {
+                    const address = data.display_name;
+
+                    // Update textarea with the new address
+                    $('#address').val(address);
+
+                    // Calculate distance from new location to custom location
+                    const distance = calculateDistance(lat, lon, customLat, customLon);
+                    $('#distance').text(`Distance to custom location: ${distance.toFixed(2)} miles`);
+                }).fail((jqXHR, textStatus, errorThrown) => {
+                    console.error('Error fetching location data:', textStatus, errorThrown);
+                });
+            }
+
+            // Function to calculate distance in miles using the Haversine formula
+            function calculateDistance(lat1, lon1, lat2, lon2) {
+                const R = 3961; // Radius of Earth in miles
+                const φ1 = lat1 * Math.PI / 180;
+                const φ2 = lat2 * Math.PI / 180;
+                const Δφ = (lat2 - lat1) * Math.PI / 180;
+                const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+                const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                    Math.cos(φ1) * Math.cos(φ2) *
+                    Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                return R * c; // Distance in miles
+            }
+
+            //  location end
+
+
+
             const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
             const $cartItemsContainer = $('#cartItems');
             const $cartTotalElement = $('#cartTotal');

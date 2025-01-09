@@ -361,8 +361,8 @@
                                 <div class="custom-shadow md:px-4 md:py-6   rounded-xl w-full">
                                     <div class="flex flex-col">
                                         <div class="flex flex-col md:flex-row gap-2 md:gap-4 items-center">
-                                            <img loading="lazy" class="md:w-24 md:h-24 h-30 w-full object-cover md:rounded-full border-primary"
-                                                 src="${item.menu_img || 'assets/images/default.jpg'}" alt="menu" />
+                                            <img loading="lazy" class="md:w-24 md:h-24 h-32 w-full object-cover md:rounded-full border-primary"
+                                                 src="${item.menu_img || 'https://tipupizzakebab.uk/storage/menu_images/9TLFzxLLFIwHViH8EHUvVCZlOSeLb4aVWCm9BSdK.png'}" alt="menu" />
                                             <div class="w-full  p-2 md:p-0 ">
                                                 <div class="flex lg:flex-row flex-col lg:gap-4 gap-1 lg:justify-between md:items-center w-full">
                                                     <h3 class="md:text-lg font-semibold text-xs">${item.menu_name}</h3>
