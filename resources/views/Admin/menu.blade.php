@@ -37,7 +37,8 @@
                                     menuName="{{ $data->menu_name }}" menuDescription="{{ $data->menu_description }}"
                                     menuSPrice="{{ $data->menu_s_price }}" menuLPrice="{{ $data->menu_l_price }}"
                                     menuCategory="{{ $data->category_id }}" menuImage="{{ asset($data->menu_img) }}"
-                                    menuLLabel="{{ $data->menu_l_label }}" menuSLabel="{{ $data->menu_s_label }}">
+                                    menuLLabel="{{ $data->menu_l_label }}" menuSLabel="{{ $data->menu_s_label }}"
+                                    menuAddons={{ $data->addons }}>
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#233A85' />
@@ -124,7 +125,7 @@
                         <div class="col-span-2 w-full">
                             <x-select name="addons[]" id="addons" label="Select Addons">
                                 <x-slot name="options">
-                                    <option value="" disabled selected>Select Menu Addons</option>
+                                    <option value="null" disabled selected>Select Menu Addons</option>
                                     @foreach ($addons as $data)
                                         <option value="{{ $data->addon_id }}">{{ $data->addon_name }}</option>
                                     @endforeach
@@ -247,6 +248,43 @@
                 let fileImg = $('#menu-modal .file-preview');
                 fileImg.removeClass('hidden').attr('src', $(this).attr('menuImage'));
 
+                $('#addons option').prop('disabled', false);
+                $('#addons option[value="null"]').prop('disabled', true);
+
+                $('#selected_addons').val($(this).attr('menuAddons')); // Set the value of selected_addons
+
+                let selectedValues = $('#selected_addons').val().split(
+                    ','); // Get the values as an array (e.g., ["1", "2"])
+
+                // Clear the list to avoid duplicates
+                $('#selected_addons_list').empty();
+
+
+                // Iterate over each selected value
+                selectedValues.forEach(function(value) {
+                    // Find the matching option in the select dropdown
+                    let selectedOption = $(`#addons option[value="${value}"]`);
+                    let selectedText = selectedOption.text(); // Get the text of the option
+
+                    if (selectedText) {
+                        // Create the button element for the addon
+                        let listItem = `
+            <button type="button" class="flex items-center space-x-2 text-white bg-primary py-2 px-4 rounded-lg" data-id="${value}">
+                <span class="flex-1">${selectedText}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${value}">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        `;
+
+                        // Append the button to the selected addons list
+                        $('#selected_addons_list').append(listItem);
+
+                        // Disable the matched option in the select dropdown
+                        selectedOption.prop('disabled', true);
+                    }
+                });
+
 
                 $('#menu-modal #modalTitle').text("Update Menu");
                 $('#menu-modal #btnText').text("Update");
@@ -264,6 +302,12 @@
             $('#menu-modal #btnText').text("Add Menu");
             let fileImg = $('#menu-modal .file-preview');
             fileImg.addClass('hidden');
+
+            $('#selected_addons_list').empty();
+            $('#addons option').prop('disabled', false);
+            $('#addons option[value="null"]').prop('disabled', true);
+
+
 
             $('#menuSLabel').val('S');
             $('#menuLLabel').val('L');

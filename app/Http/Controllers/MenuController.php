@@ -36,7 +36,7 @@ class MenuController extends Controller
                 'menu_l_price' => 'nullable',
                 'menu_s_label' => 'required',
                 'menu_l_label' => 'required',
-                'addons' => 'required',
+                'addons' => 'nullable',
             ]);
             if ($request->hasFile('menu_img')) {
                 $image = $request->file('menu_img');
@@ -78,7 +78,7 @@ class MenuController extends Controller
                 'menu_l_price' => 'nullable|numeric',
                 'menu_s_label' => 'required',
                 'menu_l_label' => 'required',
-                'addons' => 'required',
+                'addons' => 'nullable',
             ]);
 
             // Find the menu item by ID
