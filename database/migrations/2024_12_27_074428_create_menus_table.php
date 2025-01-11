@@ -17,10 +17,11 @@ return new class extends Migration
             $table->integer('category_id');
             $table->string('menu_img')->nullable();
             $table->text('menu_description')->nullable();
-            $table->string('menu_s_label');
+            $table->string('menu_s_label')->nullable();
             $table->double('menu_s_price')->nullable();
-            $table->string('menu_l_label');
+            $table->string('menu_l_label')->nullable();
             $table->double('menu_l_price')->nullable();
+            $table->string('selective')->nullable();
             $table->integer('menu_status')->default(1);
             $table->timestamps();
         });

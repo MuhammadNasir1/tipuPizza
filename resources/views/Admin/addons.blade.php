@@ -3,7 +3,6 @@
     Addons
 @endsection
 @section('content')
-
     <div class="w-full pt-10 min-h-[88vh] border-2 shadow-2xl rounded-xl">
         <div class="flex justify-between w-full px-5">
             <div>
@@ -15,7 +14,7 @@
             </div>
         </div>
         @php
-            $headers = ['Sr.',  'Name', 'Price', 'Action'];
+            $headers = ['Sr.', 'Name', 'Price', 'Type' , 'Action'];
         @endphp
         <x-table :headers="$headers">
             <x-slot name="tablebody">
@@ -25,10 +24,12 @@
 
                         <td class='text-xs xl:text-[15px]'>{{ $data->addon_name }}</td>
                         <td class='text-xs xl:text-[15px] min-w-[280px]'>{{ $data->addon_price }}</td>
+                        <td class='text-xs xl:text-[15px] min-w-[280px]'>{{ $data->addon_type }}</td>
 
                         <td>
                             <span class='flex gap-4'>
-                                <button class="updateDataBtn " AddonId="{{$data->addon_id}}" AddonName="{{ $data->addon_name }}" AddonPrice="{{ $data->addon_price}}">
+                                <button class="updateDataBtn " AddonId="{{ $data->addon_id }}"
+                                    AddonName="{{ $data->addon_name }}" AddonPrice="{{ $data->addon_price }}" addonType="{{$data->addon_type}}">
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#233A85' />
@@ -37,7 +38,7 @@
                                             fill='#233A85' />
                                     </svg>
                                 </button>
-                                <button class="deleteDataBtn"  delUrl="../deleteAddon/{{$data->addon_id}}" >
+                                <button class="deleteDataBtn" delUrl="../deleteAddon/{{ $data->addon_id }}">
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#DF6F79' />
@@ -70,15 +71,26 @@
                         </div>
                         <div class="mt-4">
                             <x-input class="" id="AddonPrice" label="Price" placeholder="Enter Addon price"
-                            name="addon_price" type="text"></x-input>
+                                name="addon_price" type="text"></x-input>
                         </div>
+                        <div class="col-span-2 w-full">
+                            <x-select name="addon_type" id="addonType" label="Select Type">
+                                <x-slot name="options">
+                                    <option value="null" disabled selected>Select  Addons Type</option>
+                                 <option value="addon">Addon</option>
+                                 <option value="selective">Selective</option>
 
-                </div>
+                                </x-slot>
+                            </x-select>
+                        </div>
+                    </div>
                     <div class=" mt-8">
 
-                        <button class="w-full px-3 py-2 font-semibold text-white rounded-full shadow-md gradient-bg" id="submitBtn">
+                        <button class="w-full px-3 py-2 font-semibold text-white rounded-full shadow-md gradient-bg"
+                            id="submitBtn">
                             <div id="btnSpinner" class="hidden">
-                                <svg aria-hidden="true" class="w-6 h-6 mx-auto text-center text-gray-200 animate-spin fill-customOrangeLight"
+                                <svg aria-hidden="true"
+                                    class="w-6 h-6 mx-auto text-center text-gray-200 animate-spin fill-customOrangeLight"
                                     viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -102,17 +114,16 @@
 @endsection
 @section('js')
     <script>
-
-
         function updateDatafun() {
 
             $('.updateDataBtn').click(function() {
                 $('#addon-modal').removeClass("hidden").addClass('flex');
-                $('#postDataForm').attr('url' , '../updateAddon/' + $(this).attr('AddonId'));
+                $('#postDataForm').attr('url', '../updateAddon/' + $(this).attr('AddonId'));
 
 
                 $('#AddonName').val($(this).attr('AddonName'));
                 $('#AddonPrice').val($(this).attr('AddonPrice'));
+                $('#addonType').val($(this).attr('addonType')).trigger("change");
 
 
                 $('#addon-modal #modalTitle').text("Update Addon");
@@ -122,11 +133,13 @@
         }
         updateDatafun();
         $('#addModalBtn').click(function() {
-            $('#postDataForm').attr('url' , '../addAddon');
+            $('#postDataForm').attr('url', '../addAddon');
 
             $('#postDataForm')[0].reset();
             $('#addon-modal #modalTitle').text("Add Addon");
             $('#addon-modal #btnText').text("Add");
+            $('#addonType').trigger("change");
+
 
 
         })

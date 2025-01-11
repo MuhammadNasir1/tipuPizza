@@ -12,6 +12,7 @@ class Addons extends Model
         'addon_id',
         'addon_name',
         'addon_price',
+        'addon_type',
         'addon_status',
     ];
 

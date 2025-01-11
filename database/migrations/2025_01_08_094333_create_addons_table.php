@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('addon_id');
             $table->string('addon_name');
             $table->float('addon_price');
+            $table->string('addon_type');
             $table->integer('addon_status')->default(1);
             $table->timestamps();
         });

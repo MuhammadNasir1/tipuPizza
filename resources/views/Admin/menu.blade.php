@@ -38,7 +38,7 @@
                                     menuSPrice="{{ $data->menu_s_price }}" menuLPrice="{{ $data->menu_l_price }}"
                                     menuCategory="{{ $data->category_id }}" menuImage="{{ asset($data->menu_img) }}"
                                     menuLLabel="{{ $data->menu_l_label }}" menuSLabel="{{ $data->menu_s_label }}"
-                                    menuAddons={{ $data->addons }}>
+                                    menuAddons={{ $data->addons }} menuSelective={{$data->selective}}>
                                     <svg width='36' height='36' viewBox='0 0 36 36' fill='none'
                                         xmlns='http://www.w3.org/2000/svg'>
                                         <circle opacity='0.1' cx='18' cy='18' r='18' fill='#233A85' />
@@ -123,6 +123,20 @@
                             </div>
                         </div>
                         <div class="col-span-2 w-full">
+                            <x-select name="" id="selective" label="Selective">
+                                <x-slot name="options">
+                                    <option value="null" disabled selected>Select Menu Addons</option>
+                                    @foreach ($selective as $data)
+                                        <option value="{{ $data->addon_id }}">{{ $data->addon_name }}</option>
+                                    @endforeach
+
+                                </x-slot>
+                            </x-select>
+                        </div>
+                        <div id="selected_selective_list" class="my-2 flex gap-3 flex-wrap"></div>
+
+
+                        <div class="col-span-2 w-full">
                             <x-select name="addons[]" id="addons" label="Select Addons">
                                 <x-slot name="options">
                                     <option value="null" disabled selected>Select Menu Addons</option>
@@ -142,7 +156,8 @@
 
 
                         <!-- Hidden input to store selected addon IDs -->
-                        <input type="hidden" id="selected_addons" name="addons" value="">
+                        <input type="text" id="selected_addons" name="addons" value="">
+                        <input type="text" id="selected_selective" name="selective" value="">
                     </div>
                     <div class=" mt-8">
                         <button class="w-full px-3 py-2 font-semibold text-white rounded-full shadow-md gradient-bg"
@@ -187,16 +202,41 @@
 
                 // Add the selected text to the list view
                 let listItem = `<button type="button" class="flex items-center space-x-2 text-white bg-primary py-2 px-4 rounded-lg" data-id="${selectedValue}">
-    <span class="flex-1">${selectedText}</span>
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${selectedValue}">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-    </svg>
-</button>
-                    `;
+                                    <span class="flex-1">${selectedText}</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${selectedValue}">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                 </button>`;
                 $('#selected_addons_list').append(listItem);
 
                 // Disable the selected option in the dropdown
                 $('#addons option[value="' + selectedValue + '"]').prop('disabled', true);
+
+                // Update the hidden input field with the selected values
+                updateHiddenField();
+            });
+
+
+            $('#selective').on('change', function() {
+                // Get the selected value and text
+                let selectedValue = $(this).val();
+                let selectedText = $(this).find('option:selected').text();
+
+                // Check if the selected value already exists in the list
+                if ($('#selected_selective_list button[data-id="' + selectedValue + '"]').length > 0) {
+                    alert("This selective has already been added.");
+                    return;
+                }
+                let listItem = `<button type="button" class="flex items-center space-x-2 text-white bg-primary py-2 px-4 rounded-lg" data-id="${selectedValue}">
+                                    <span class="flex-1">${selectedText}</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${selectedValue}">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                        </svg>
+                                 </button>`;
+                $('#selected_selective_list').append(listItem);
+
+                // Disable the selected option in the dropdown
+                $('#selective option[value="' + selectedValue + '"]').prop('disabled', true);
 
                 // Update the hidden input field with the selected values
                 updateHiddenField();
@@ -211,6 +251,7 @@
 
                 // Enable the option again in the dropdown
                 $('#addons option[value="' + addonId + '"]').prop('disabled', false);
+                $('#selective option[value="' + addonId + '"]').prop('disabled', false);
 
                 // Update the hidden input field
                 updateHiddenField();
@@ -225,6 +266,15 @@
 
 
                 $('#selected_addons').val(addonIds.join(','));
+
+
+                let selectiveIds = [];
+                $('#selected_selective_list button').each(function() {
+                    selectiveIds.push($(this).data('id'));
+                });
+
+
+                $('#selected_selective').val(selectiveIds.join(','));
             }
         });
 
@@ -245,22 +295,50 @@
                 $('#menuLLabel').val($(this).attr('menuLLabel'));
                 $('#menuCategory').val($(this).attr('menuCategory')).trigger('change');
                 $('#menuDescription').val($(this).attr('menuDescription'));
+                $('#selected_selective').val($(this).attr('menuSelective')); // Set the value of selected_selective
+                
                 let fileImg = $('#menu-modal .file-preview');
                 fileImg.removeClass('hidden').attr('src', $(this).attr('menuImage'));
 
+                $('#selective option').prop('disabled', false);
                 $('#addons option').prop('disabled', false);
+                $('#selective option[value="null"]').prop('disabled', true);
                 $('#addons option[value="null"]').prop('disabled', true);
+
 
                 $('#selected_addons').val($(this).attr('menuAddons')); // Set the value of selected_addons
 
-                let selectedValues = $('#selected_addons').val().split(
-                    ','); // Get the values as an array (e.g., ["1", "2"])
+                let selectedValues = $('#selected_addons').val().split(','); // Get the values as an array (e.g., ["1", "2"])
+                let selectedSelectiveValues = $('#selected_selective').val().split(','); // Get the values as an array (e.g., ["1", "2"])
 
                 // Clear the list to avoid duplicates
                 $('#selected_addons_list').empty();
+                $('#selected_selective_list').empty();
 
 
                 // Iterate over each selected value
+                selectedSelectiveValues.forEach(function(value) {
+                    // Find the matching option in the select dropdown
+                    let selectedOption = $(`#selective option[value="${value}"]`);
+                    let selectedText = selectedOption.text(); // Get the text of the option
+
+                    if (selectedText) {
+                        // Create the button element for the addon
+                        let listItem = `
+                         <button type="button" class="flex items-center space-x-2 text-white bg-primary py-2 px-4 rounded-lg" data-id="${value}">
+                             <span class="flex-1">${selectedText}</span>
+                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${value}">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                             </svg>
+                         </button>`;
+
+                        // Append the button to the selected addons list
+                        $('#selected_selective_list').append(listItem);
+
+                        // Disable the matched option in the select dropdown
+                        selectedOption.prop('disabled', true);
+                    }
+                });
                 selectedValues.forEach(function(value) {
                     // Find the matching option in the select dropdown
                     let selectedOption = $(`#addons option[value="${value}"]`);
@@ -269,13 +347,12 @@
                     if (selectedText) {
                         // Create the button element for the addon
                         let listItem = `
-            <button type="button" class="flex items-center space-x-2 text-white bg-primary py-2 px-4 rounded-lg" data-id="${value}">
-                <span class="flex-1">${selectedText}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${value}">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-            </button>
-        `;
+                         <button type="button" class="flex items-center space-x-2 text-white bg-primary py-2 px-4 rounded-lg" data-id="${value}">
+                             <span class="flex-1">${selectedText}</span>
+                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 remove-addon" fill="white" viewBox="0 0 24 24" stroke="currentColor" data-id="${value}">
+                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                             </svg>
+                         </button>`;
 
                         // Append the button to the selected addons list
                         $('#selected_addons_list').append(listItem);
@@ -304,8 +381,11 @@
             fileImg.addClass('hidden');
 
             $('#selected_addons_list').empty();
+            $('#selected_selective_list').empty();
             $('#addons option').prop('disabled', false);
+            $('#selective option').prop('disabled', false);
             $('#addons option[value="null"]').prop('disabled', true);
+            $('#selective option[value="null"]').prop('disabled', true);
 
 
 

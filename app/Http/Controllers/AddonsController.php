@@ -21,12 +21,14 @@ class AddonsController extends Controller
             $validatedData = $request->validate([
                 'addon_name' => 'required',
                 'addon_price' => 'required',
+                'addon_type' => 'required',
 
             ]);
 
             Addons::create([
                 'addon_name' => $validatedData['addon_name'],
                 'addon_price' => $validatedData['addon_price'],
+                'addon_type' => $validatedData['addon_type'],
 
             ]);
 
@@ -42,6 +44,7 @@ class AddonsController extends Controller
             $validatedData = $request->validate([
                 'addon_name' => 'required',
                 'addon_price' => 'required',
+                'addon_type' => 'required',
 
             ]);
 
@@ -50,6 +53,7 @@ class AddonsController extends Controller
             $Addons->update([
                 'addon_name' => $validatedData['addon_name'],
                 'addon_price' => $validatedData['addon_price'],
+                'addon_type' => $validatedData['addon_type'],
 
             ]);
 

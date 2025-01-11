@@ -14,10 +14,11 @@ class MenuController extends Controller
 
         $categories = Categories::select('category_id', 'category_name')->where('category_status', 1)->get();
         $menu = Menu::with('category')->where('menu_status', 1)->get();
-        $addons = Addons::where('addon_status', 1)->get();
+        $addons = Addons::where('addon_status', 1)->where('addon_type', "addon")->get();
+        $selective = Addons::where('addon_status', 1)->where('addon_type', "selective")->get();
         // $menu = Menu::with('category')->where('menu_status' , 1)->get();
         // return response()->json($menu);
-        return view('Admin/menu', compact('categories', 'menu', 'addons'));
+        return view('Admin/menu', compact('categories', 'menu', 'addons', 'selective'));
     }
 
 
@@ -34,9 +35,10 @@ class MenuController extends Controller
                 'menu_description' => 'nullable',
                 'menu_s_price' => 'nullable',
                 'menu_l_price' => 'nullable',
-                'menu_s_label' => 'required',
-                'menu_l_label' => 'required',
+                'menu_s_label' => 'nullable',
+                'menu_l_label' => 'nullable',
                 'addons' => 'nullable',
+                'selective' => 'nullable',
             ]);
             if ($request->hasFile('menu_img')) {
                 $image = $request->file('menu_img');
@@ -55,6 +57,7 @@ class MenuController extends Controller
                 'menu_s_label' => $validatedData['menu_s_label'],
                 'menu_l_label' => $validatedData['menu_l_label'],
                 'addons' => $validatedData['addons'],
+                'selective' => $validatedData['selective'],
             ]);
             //    $category->save();
             return response()->json(['success' => true,  'message' => 'Menu added successfully'], 200);
@@ -76,9 +79,11 @@ class MenuController extends Controller
                 'menu_description' => 'nullable',
                 'menu_s_price' => 'nullable|numeric',
                 'menu_l_price' => 'nullable|numeric',
-                'menu_s_label' => 'required',
-                'menu_l_label' => 'required',
+                'menu_s_label' => 'nullable',
+                'menu_l_label' => 'nullable',
                 'addons' => 'nullable',
+                'selective' => 'nullable',
+
             ]);
 
             // Find the menu item by ID
@@ -111,6 +116,8 @@ class MenuController extends Controller
                 'menu_s_label' => $validatedData['menu_s_label'],
                 'menu_l_label' => $validatedData['menu_l_label'],
                 'addons' => $validatedData['addons'],
+                'selective' => $validatedData['selective'],
+
             ]);
 
             return response()->json(['success' => true, 'message' => 'Menu updated successfully'], 200);
