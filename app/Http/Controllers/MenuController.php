@@ -236,20 +236,30 @@ class MenuController extends Controller
                     ->where('menu_status', 1)
                     ->get()
                     ->map(function ($menu) {
-                        // Fetch the addons associated with the menu item
-                        $addons = Addons::whereIn('addon_id', explode(',', $menu->addons)) // Assuming 'addons' column contains comma-separated addon IDs
+                        $addonIds = explode(',', $menu->addons); // Column for addon-type addons
+                        $selectiveIds = explode(',', $menu->selective); // Column for selective-type addons
+                        
+                        // Fetch addons from both columns
+                        $addonData = Addons::whereIn('addon_id', array_merge($addonIds, $selectiveIds))
                             ->get()
                             ->map(function ($addon) {
                                 return [
                                     'addon_id' => $addon->addon_id,
                                     'addon_name' => $addon->addon_name,
+                                    'addon_type' => $addon->addon_type,
                                 ];
                             });
+                        
+                        // Separate the addons into addon and selective based on the `addon_type`
+                        $addon = $addonData->where('addon_type', 'addon')->values();
+                        $selective = $addonData->where('addon_type', 'selective')->values();
+                        
 
                         return [
                             'menu_id' => $menu->menu_id,
                             'menu_name' => $menu->menu_name,
                             'menu_addons' => $menu->addons,
+                            'menu_selective' => $menu->selective,
                             'menu_img' => $menu->menu_img,
                             'prices' => [
                                 'smallLabel' => $menu->menu_s_label,
@@ -258,7 +268,8 @@ class MenuController extends Controller
                                 'large' => $menu->menu_l_price,
                             ],
                             'description' => $menu->menu_description,
-                            'addons' => $addons,
+                            'addons' => $addon,
+                            'selective' => $selective,
                         ];
                     });
 

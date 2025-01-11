@@ -81,10 +81,13 @@ class AddonsController extends Controller
 
     public function getAddons(Request $request){
         $addonsId = $request->input('addonsId'); // Example: "1,2"
+        $selectiveId = $request->input('selectiveId'); // Example: "1,2"
         $addonsIdArray = explode(',', $addonsId); // Convert string to array
+        $selectedIdArray = explode(',', $selectiveId); // Convert string to array
 
         $addons = Addons::whereIn('addon_id', $addonsIdArray)->get();
+        $selectedItems = Addons::whereIn('addon_id', $selectedIdArray)->get();
 
-        return response()->json($addons);
+        return response()->json([ 'addons'=> $addons , 'selectedItem' => $selectedItems]);
     }
 }
