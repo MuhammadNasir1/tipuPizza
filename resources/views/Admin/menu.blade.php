@@ -156,8 +156,8 @@
 
 
                         <!-- Hidden input to store selected addon IDs -->
-                        <input type="text" id="selected_addons" name="addons" value="">
-                        <input type="text" id="selected_selective" name="selective" value="">
+                        <input type="hidden" id="selected_addons" name="addons" value="">
+                        <input type="hidden" id="selected_selective" name="selective" value="">
                     </div>
                     <div class=" mt-8">
                         <button class="w-full px-3 py-2 font-semibold text-white rounded-full shadow-md gradient-bg"

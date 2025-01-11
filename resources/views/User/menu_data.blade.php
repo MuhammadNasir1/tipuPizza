@@ -18,14 +18,16 @@
 
             <!-- Addons section -->
             <div id="addonsSection" class="mt-4">
-                <h3 class="text-md font-semibold">Choose Addons</h3>
+                <h3 class="text-md font-semibold hidden" id="addonHeading">Choose Addons</h3>
                 <div id="addonList" class="mt-2"></div>
             </div>
 
-           <div class="flex justify-between gap-4">
-             <button id="closeModal" class="mt-4 btn bg-red-500  font-semibold text-white px-5 py-3 rounded">Close</button>
-            <button id="orderButton" class="btn bg-green-600 font-semibold text-white px-5 py-3 rounded mt-4" disabled>Add To Cart</button>
-           </div>
+            <div class="flex justify-between gap-4">
+                <button id="closeModal"
+                    class="mt-4 btn bg-red-500  font-semibold text-white px-5 py-3 rounded">Close</button>
+                <button id="orderButton" class="btn bg-green-600 font-semibold text-white px-5 py-3 rounded mt-4"
+                    disabled>Add To Cart</button>
+            </div>
 
         </div>
     </div>
@@ -199,6 +201,8 @@
         };
 
         $('.open-modal').on('click', function() {
+            $("#addonHeading").addClass('hidden');
+
             const itemId = $(this).data('item-id');
             const itemName = $(this).data('item-name');
             const priceSmall = $(this).data('price-small');
@@ -208,7 +212,7 @@
             const addonsId = $(this).data('menu_addons');
 
             $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
-            'selected'); // Reset visibility and selection
+                'selected'); // Reset visibility and selection
             $('#orderButton').prop('disabled', true); // Disable Order button initially
 
             if (!priceSmall) {
@@ -229,10 +233,12 @@
                 },
                 success: function(addons) {
                     $('#addonList').empty();
-                    console.log(addons);
-
-                    addons.forEach(function(addon) {
-                        const addonHtml = `
+                    $('#sizeModal').removeClass('hidden').addClass('flex');
+                    if(Array.isArray(addons) && addons.length > 0){
+                        $("#addonHeading").removeClass('hidden');
+                    }
+                        addons.forEach(function(addon) {
+                        const addonHtml =    `
                         <div class="flex items-center mt-2 justify-between gap-4">
                             <div>
                                 <input type="checkbox" id="addon-${addon.addon_id}" data-addon-id="${addon.addon_id}" data-addon-name="${addon.addon_name}" data-addon-price="${addon.addon_price}" class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
@@ -268,7 +274,7 @@
                         addons: [] // Initially no addons selected
                     });
 
-                    $('#sizeModal').removeClass('hidden').addClass('flex');
+                 
                 }
             });
         });
@@ -280,7 +286,8 @@
 
         // Enable Order Button and Highlight Size Button when a size is selected
         $('#selectSmall, #selectLarge').on('click', function() {
-            $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected'); // Deselect other size buttons
+            $('#selectSmall, #selectLarge').removeClass(
+            'bg-primary text-white selected'); // Deselect other size buttons
             $(this).addClass('bg-primary text-white selected'); // Highlight the selected size button
 
             $('#orderButton').prop('disabled', false); // Enable Order button
@@ -368,10 +375,10 @@
                                                     <h3 class="md:text-lg font-semibold text-xs">${item.menu_name}</h3>
                                                     <div class="flex gap-4 justify-end">
                                                         ${item.prices.small ? `<h2 class="font-semibold md:text-lg text-[14px] text-black relative flex flex-col justify-start items-center ">
-                                                             <span class=" font-semibold leading-none">${item.prices.smallLabel}</span> £ ${item.prices.small}
+                                                             <span class=" font-semibold leading-none">${item.prices.smallLabel || ''}</span> £ ${item.prices.small}
                                                         </h2>` : ''}
                                                         ${item.prices.large ? `<h2 class="font-semibold md:text-lg text-[14px] text-black relative flex flex-col justify-start items-center text-primary ">
-                                                          <span class=" font-semibold leading-none text-primary">${item.prices.largeLabel}</span>  £ ${item.prices.large}
+                                                          <span class=" font-semibold leading-none text-primary">${item.prices.largeLabel || ''}</span>  £ ${item.prices.large}
                                                         </h2>` : ''}
                                                     </div>
                                                 </div>
@@ -383,7 +390,7 @@
                                                  <button class="bg-primary open-modal w-full md:w-auto text-white px-4 py-3 font-semibold rounded-md md:text-[16px] text-xs  flex md:gap-4 gap-2 justify-center items-center"        data-item-id="${item.menu_id}"
                                                     data-item-name="${item.menu_name}" data-menu_addons="${item.menu_addons}"
                                                     data-price-small="${item.prices.small || ''}"
-                                                    data-price-large="${item.prices.large || ''}"  data-item-label-s="${item.prices.smallLabel}"  data-item-label-l="${item.prices.largeLabel}"><svg fill="white" class="md:h-6 md:w-6 h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg> Add To Cart</button>
+                                                    data-price-large="${item.prices.large || ''}"  data-item-label-s="${item.prices.smallLabel || ''}"  data-item-label-l="${item.prices.largeLabel || ''}"><svg fill="white" class="md:h-6 md:w-6 h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M0 24C0 10.7 10.7 0 24 0L69.5 0c22 0 41.5 12.8 50.6 32l411 0c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3l-288.5 0 5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5L488 336c13.3 0 24 10.7 24 24s-10.7 24-24 24l-288.3 0c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5L24 48C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg> Add To Cart</button>
                                                 </div>
                                             </div>
                                         </div>
