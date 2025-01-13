@@ -228,60 +228,65 @@ class MenuController extends Controller
         // });
 
         $categories = Categories::select('category_id', 'category_name', 'category_description', 'category_img')
-            ->where('category_status', 1)
+    ->where('category_status', 1)
+    ->get()
+    ->map(function ($category) {
+        // Fetch all menu items for the current category
+        $menuItems = Menu::where('category_id', $category->category_id)
+            ->where('menu_status', 1)
             ->get()
-            ->map(function ($category) {
-                // Fetch all menu items for the current category
-                $menuItems = Menu::where('category_id', $category->category_id)
-                    ->where('menu_status', 1)
-                    ->get()
-                    ->map(function ($menu) {
-                        $addonIds = explode(',', $menu->addons); // Column for addon-type addons
-                        $selectiveIds = explode(',', $menu->selective); // Column for selective-type addons
-                        
-                        // Fetch addons from both columns
-                        $addonData = Addons::whereIn('addon_id', array_merge($addonIds, $selectiveIds))
-                            ->get()
-                            ->map(function ($addon) {
-                                return [
-                                    'addon_id' => $addon->addon_id,
-                                    'addon_name' => $addon->addon_name,
-                                    'addon_type' => $addon->addon_type,
-                                ];
-                            });
-                        
-                        // Separate the addons into addon and selective based on the `addon_type`
-                        $addon = $addonData->where('addon_type', 'addon')->values();
-                        $selective = $addonData->where('addon_type', 'selective')->values();
-                        
+            ->map(function ($menu) {
+                $addonIds = explode(',', $menu->addons); // Column for addon-type addons
+                $selectiveIds = explode(',', $menu->selective); // Column for selective-type addons
 
+                // Fetch addons from both columns
+                $addonData = Addons::whereIn('addon_id', array_merge($addonIds, $selectiveIds))
+                    ->get()
+                    ->map(function ($addon) {
                         return [
-                            'menu_id' => $menu->menu_id,
-                            'menu_name' => $menu->menu_name,
-                            'menu_addons' => $menu->addons,
-                            'menu_selective' => $menu->selective,
-                            'menu_img' => $menu->menu_img,
-                            'prices' => [
-                                'smallLabel' => $menu->menu_s_label,
-                                'small' => $menu->menu_s_price,
-                                'largeLabel' => $menu->menu_l_label,
-                                'large' => $menu->menu_l_price,
-                            ],
-                            'description' => $menu->menu_description,
-                            'addons' => $addon,
-                            'selective' => $selective,
+                            'addon_id' => $addon->addon_id,
+                            'addon_name' => $addon->addon_name,
+                            'addon_type' => $addon->addon_type,
                         ];
                     });
 
+                // Separate the addons into addon and selective based on the `addon_type`
+                $addon = $addonData->where('addon_type', 'addon')->values();
+                $selective = $addonData->where('addon_type', 'selective')->values();
+
+                // Function to format price conditionally
+                $formatPrice = function ($price) {
+                    return floor($price) == $price
+                        ? number_format($price, 0)
+                        : number_format($price, 2);
+                };
+
                 return [
-                    'id' => $category->category_id,
-                    'category_name' => $category->category_name,
-                    'category_img' => $category->category_img,
-                    'category_description' => $category->category_description,
-                    'items' => $menuItems,
+                    'menu_id' => $menu->menu_id,
+                    'menu_name' => $menu->menu_name,
+                    'menu_addons' => $menu->addons,
+                    'menu_selective' => $menu->selective,
+                    'menu_img' => $menu->menu_img,
+                    'prices' => [
+                        'smallLabel' => $menu->menu_s_label,
+                        'small' => $formatPrice($menu->menu_s_price),
+                        'largeLabel' => $menu->menu_l_label,
+                        'large' => $formatPrice($menu->menu_l_price),
+                    ],
+                    'description' => $menu->menu_description,
+                    'addons' => $addon,
+                    'selective' => $selective,
                 ];
             });
 
+        return [
+            'id' => $category->category_id,
+            'category_name' => $category->category_name,
+            'category_img' => $category->category_img,
+            'category_description' => $category->category_description,
+            'items' => $menuItems,
+        ];
+    });
 
 
         return response()->json(["categories" => $categories], 200);

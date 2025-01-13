@@ -84,9 +84,19 @@ class AddonsController extends Controller
         $selectiveId = $request->input('selectiveId'); // Example: "1,2"
         $addonsIdArray = explode(',', $addonsId); // Convert string to array
         $selectedIdArray = explode(',', $selectiveId); // Convert string to array
+        $addons = Addons::whereIn('addon_id', $addonsIdArray)->get()->map(function ($addon) {
+            $addon->addon_price = floor($addon->addon_price) == $addon->addon_price
+                ? number_format($addon->addon_price, 0)
+                : number_format($addon->addon_price, 2);
+            return $addon;
+        });
 
-        $addons = Addons::whereIn('addon_id', $addonsIdArray)->get();
-        $selectedItems = Addons::whereIn('addon_id', $selectedIdArray)->get();
+        $selectedItems = Addons::whereIn('addon_id', $selectedIdArray)->get()->map(function ($addon) {
+            $addon->addon_price = floor($addon->addon_price) == $addon->addon_price
+                ? number_format($addon->addon_price, 0)
+                : number_format($addon->addon_price, 2);
+            return $addon;
+        });
 
         return response()->json([ 'addons'=> $addons , 'selectedItem' => $selectedItems]);
     }

@@ -41,7 +41,8 @@
     <div class="px-4 md:px-16 py-2 text-white bg-primary">
         <div class="flex items-center justify-between">
             <p class="text-md  flex gap-4 items-center"><span><i class="fa-solid fa-envelope"></i> <a
-                        href="mailto:tipupizzakebab@gmail.com" class="text-xs md:text-lg">tipupizzakebab@gmail.com</a> </span></p>
+                        href="mailto:tipupizzakebab@gmail.com" class="text-xs md:text-lg">tipupizzakebab@gmail.com</a>
+                </span></p>
             {{-- <p class="text-md  flex gap-4 items-center"><span><i class="fa-solid fa-envelope"></i> a </span> | <span><i class="fa-solid fa-phone mr-4"></i> 12345678</span> </span> --}}
             <div class="flex md:gap-6 gap-4">
                 <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
@@ -52,8 +53,8 @@
                     rel="noopener noreferrer">
                     <i class="fab fa-tiktok"></i>
                 </a>
-                <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/" target="_blank"
-                    rel="noopener noreferrer">
+                <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/"
+                    target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-instagram"></i>
                 </a>
             </div>
@@ -173,16 +174,16 @@
             <div class="flex items-center justify-between">
                 <span class="text-xl font-semibold">Tipu Pizza Kebab</span>
                 <div class="flex gap-6">
-                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
-                        rel="noopener noreferrer">
+                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab"
+                        target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
-                        rel="noopener noreferrer">
+                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.tiktok.com/@tipupizzakebab"
+                        target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-tiktok"></i>
                     </a>
-                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/" target="_blank"
-                        rel="noopener noreferrer">
+                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/"
+                        target="_blank" rel="noopener noreferrer">
                         <i class="fab fa-instagram"></i>
                     </a>
                 </div>
@@ -215,7 +216,23 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
             $('#view-modal').addClass('hidden');
+
+            function updateCartCount() {
+                let cartItem = JSON.parse(localStorage.getItem('cart')) || [];
+                let addonsCartItems = JSON.parse(localStorage.getItem('addonsCart')) || [];
+
+                const totalItems = cartItem.reduce((sum, item) => sum + (item.quantity || 0), 0) +
+                    addonsCartItems.reduce((sum, addon) => sum + (addon.addonQuantity || 0), 0);
+
+                $('#cartItemCount').text(totalItems);
+            }
+
+            updateCartCount();
+
             $(document).ready(function() {
+
+
+
                 // Scroll to top functionality
                 $('#scrollToTop').on('click', function() {
                     $('html, body').animate({

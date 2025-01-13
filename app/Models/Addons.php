@@ -17,4 +17,15 @@ class Addons extends Model
     ];
 
     public $timestamp = true;
+    public function toArray()
+    {
+        $array = parent::toArray();
+
+        // Example: Format any numerical fields if required
+        if (isset($array['price'])) {
+            $array['price'] = number_format($array['price'], 2);
+        }
+
+        return $array;
+    }
 }

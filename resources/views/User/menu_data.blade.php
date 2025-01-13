@@ -35,7 +35,7 @@
 
         </div>
     </div>
-</div>
+</div>  
 
 <script>
     // function addCartfun() {
@@ -172,91 +172,86 @@
     // }
 
     function addCartfun() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let addonsCart = JSON.parse(localStorage.getItem('addonsCart')) || [];
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let addonsCart = JSON.parse(localStorage.getItem('addonsCart')) || [];
 
-    const updateCartCount = () => {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        $('#cartItemCount').text(totalItems);
-    };
 
-    updateCartCount();
+        const addToCart = (item) => {
+            const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id && cartItem.size === item
+                .size);
 
-    const addToCart = (item) => {
-        const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id && cartItem.size === item.size);
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                cart.push({
+                    ...item,
+                    quantity: 1
+                });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
 
-        if (existingItemIndex > -1) {
-            cart[existingItemIndex].quantity += 1;
-        } else {
-            cart.push({
-                ...item,
-                quantity: 1
+            Swal.fire({
+                title: 'Added to Cart',
+                text: `${item.name} (${item.size}) has been added to your cart!`,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
             });
-        }
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
+        };
 
-        Swal.fire({
-            title: 'Added to Cart',
-            text: `${item.name} (${item.size}) has been added to your cart!`,
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    };
+        const addAddonsToCart = (addons) => {
+            addons.forEach(addon => {
+                addonsCart.push(addon);
+            });
+            localStorage.setItem('addonsCart', JSON.stringify(addonsCart));
+        };
 
-    const addAddonsToCart = (addons) => {
-        addons.forEach(addon => {
-            addonsCart.push(addon);
-        });
-        localStorage.setItem('addonsCart', JSON.stringify(addonsCart));
-    };
+        $('.open-modal').on('click', function() {
+            $("#addonHeading").addClass('hidden');
 
-    $('.open-modal').on('click', function() {
-        $("#addonHeading").addClass('hidden');
+            const itemId = $(this).data('item-id');
+            const itemName = $(this).data('item-name');
+            const priceSmall = $(this).data('price-small');
+            const priceLarge = $(this).data('price-large');
+            const labelSmall = $(this).data('item-label-s');
+            const labelLarge = $(this).data('item-label-l');
+            const addonsId = $(this).data('menu_addons');
+            const selectiveId = $(this).data('menu-selecter');
 
-        const itemId = $(this).data('item-id');
-        const itemName = $(this).data('item-name');
-        const priceSmall = $(this).data('price-small');
-        const priceLarge = $(this).data('price-large');
-        const labelSmall = $(this).data('item-label-s');
-        const labelLarge = $(this).data('item-label-l');
-        const addonsId = $(this).data('menu_addons');
-        const selectiveId = $(this).data('menu-selecter');
+            $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
+                'selected'); // Reset visibility and selection
+            $('#orderButton').prop('disabled', true); // Disable Order button initially
 
-        $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
-            'selected'); // Reset visibility and selection
-        $('#orderButton').prop('disabled', true); // Disable Order button initially
+            if (!priceSmall) {
+                $('#selectSmall').addClass('hidden');
+                $('#selectLarge').click();
+            }
+            if (!priceLarge) {
+                $('#selectLarge').addClass('hidden');
+                $('#selectSmall').click();
+            }
 
-        if (!priceSmall) {
-            $('#selectSmall').addClass('hidden');
-            $('#selectLarge').click();
-        }
-        if (!priceLarge) {
-            $('#selectLarge').addClass('hidden');
-            $('#selectSmall').click();
-        }
+            // Fetch addons
+            $.ajax({
+                url: '/getIemAddons', // Adjust this URL to match your endpoint
+                method: 'GET',
+                data: {
+                    addonsId: addonsId,
+                    selectiveId: selectiveId
+                },
+                success: function(data) {
+                    $('#addonList').empty();
+                    $("#selectedList").empty();
 
-        // Fetch addons
-        $.ajax({
-            url: '/getIemAddons', // Adjust this URL to match your endpoint
-            method: 'GET',
-            data: {
-                addonsId: addonsId,
-                selectiveId: selectiveId
-            },
-            success: function(data) {
-                $('#addonList').empty();
-                $("#selectedList").empty();
+                    $('#sizeModal').removeClass('hidden').addClass('flex');
+                    if (Array.isArray(data.addon) && data.addon.length > 0) {
+                        $("#addonHeading").removeClass('hidden');
+                    }
 
-                $('#sizeModal').removeClass('hidden').addClass('flex');
-                if (Array.isArray(data.addon) && data.addon.length > 0) {
-                    $("#addonHeading").removeClass('hidden');
-                }
-
-                if (Array.isArray(data.addons)) {
-                    data.addons.forEach(function(addon) {
-                        const addonHtml = `
+                    if (Array.isArray(data.addons)) {
+                        data.addons.forEach(function(addon) {
+                            const addonHtml = `
                 <div class="flex items-center mt-2 justify-between gap-4">
                     <div>
                         <input type="checkbox" id="addon-${addon.addon_id}"
@@ -271,13 +266,13 @@
                     </div>
                 </div>
             `;
-                        $('#addonList').append(addonHtml);
-                    });
-                }
+                            $('#addonList').append(addonHtml);
+                        });
+                    }
 
-                if (Array.isArray(data.selectedItem)) {
-                    data.selectedItem.forEach(function(item) {
-                        const itemHtml = `
+                    if (Array.isArray(data.selectedItem)) {
+                        data.selectedItem.forEach(function(item) {
+                            const itemHtml = `
                 <div class="flex items-center mt-2 justify-between gap-4">
                     <div>
                         <input type="radio" id="selective-${item.addon_id}"
@@ -290,72 +285,73 @@
 
                 </div>
             `;
-                        $('#selectedList').append(itemHtml);
+                            $('#selectedList').append(itemHtml);
+                        });
+                    }
+
+                    $('#modalItemName').text(itemName);
+                    $('#modalSmallPrice').text(priceSmall);
+                    $('#modalLargePrice').text(priceLarge);
+                    $('#labelS').text(labelSmall);
+                    $('#labelL').text(labelLarge);
+
+                    $('#selectSmall').data('cart-item', {
+                        id: itemId,
+                        name: itemName,
+                        size: labelSmall,
+                        price: priceSmall
+                    });
+
+                    $('#selectLarge').data('cart-item', {
+                        id: itemId,
+                        name: itemName,
+                        size: labelLarge,
+                        price: priceLarge
                     });
                 }
-
-                $('#modalItemName').text(itemName);
-                $('#modalSmallPrice').text(priceSmall);
-                $('#modalLargePrice').text(priceLarge);
-                $('#labelS').text(labelSmall);
-                $('#labelL').text(labelLarge);
-
-                $('#selectSmall').data('cart-item', {
-                    id: itemId,
-                    name: itemName,
-                    size: labelSmall,
-                    price: priceSmall
-                });
-
-                $('#selectLarge').data('cart-item', {
-                    id: itemId,
-                    name: itemName,
-                    size: labelLarge,
-                    price: priceLarge
-                });
-            }
-        });
-    });
-
-    $('#closeModal').on('click', function() {
-        $('#sizeModal').removeClass('flex').addClass('hidden');
-    });
-
-    $('#selectSmall, #selectLarge').on('click', function() {
-        $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected');
-        $(this).addClass('bg-primary text-white selected');
-        $('#orderButton').prop('disabled', false);
-    });
-
-    $('#orderButton').on('click', function() {
-        const selectedSize = $('#selectSmall').hasClass('selected') ?
-            $('#selectSmall').data('cart-item') :
-            $('#selectLarge').data('cart-item');
-
-        const selectedAddons = [];
-        $('.addon-checkbox:checked').each(function() {
-            selectedAddons.push({
-                addonId: $(this).data('addon-id'),
-                addonName: $(this).data('addon-name'),
-                addonPrice: $(this).data('addon-price'),
-                addonQuantity: 1
             });
         });
 
-        const selectedSelector = [];
-        $('.selective-radio:checked').each(function() {
-            selectedSelector.push({
-                selectedAddonId: $(this).data('addon-id'),
-                selectiveName: $(this).data('addon-name')
-            });
+        $('#closeModal').on('click', function() {
+            $('#sizeModal').removeClass('flex').addClass('hidden');
         });
 
-        selectedSize.selectedSelector = selectedSelector;
-        addToCart(selectedSize);
-        addAddonsToCart(selectedAddons);
-        $('#sizeModal').removeClass('flex').addClass('hidden');
-    });
-}
+        $('#selectSmall, #selectLarge').on('click', function() {
+            $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected');
+            $(this).addClass('bg-primary text-white selected');
+            $('#orderButton').prop('disabled', false);
+        });
+
+        $('#orderButton').on('click', function() {
+            const selectedSize = $('#selectSmall').hasClass('selected') ?
+                $('#selectSmall').data('cart-item') :
+                $('#selectLarge').data('cart-item');
+
+            const selectedAddons = [];
+            $('.addon-checkbox:checked').each(function() {
+                selectedAddons.push({
+                    addonId: $(this).data('addon-id'),
+                    addonName: $(this).data('addon-name'),
+                    addonPrice: $(this).data('addon-price'),
+                    addonQuantity: 1
+                });
+            });
+
+            const selectedSelector = [];
+            $('.selective-radio:checked').each(function() {
+                selectedSelector.push({
+                    selectedAddonId: $(this).data('addon-id'),
+                    selectiveName: $(this).data('addon-name')
+                });
+            });
+
+            selectedSize.selectedSelector = selectedSelector;
+            addToCart(selectedSize);
+            addAddonsToCart(selectedAddons);
+            $('#sizeModal').removeClass('flex').addClass('hidden');
+            $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected');
+        });
+    }
 
 
 

@@ -19,7 +19,7 @@
                     <h2 class="font-semibold text-lg">Order Summary</h2>
                     <div class="flex justify-between items-center mt-4">
                         <p class="text-gray-700">Total:</p>
-                        <p class="font-semibold text-lg" id="order-total">0$</p>
+                        <p class="font-semibold text-lg" id="order-total">0£</p>
                     </div>
                 </div>
 
@@ -79,7 +79,14 @@
             function updateTotalPrice() {
                 totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
                 totalPrice += addonsCart.reduce((sum, addon) => sum + addon.addonPrice * addon.addonQuantity, 0);
-                $orderSummaryTotal.text(`${totalPrice}$`);
+
+                // Format the total price (if it has decimals, show 2 digits, otherwise show without decimals)
+                const formattedPrice = totalPrice % 1 === 0 ?
+                    totalPrice.toFixed(0) // No decimals if it's a whole number
+                    :
+                    totalPrice.toFixed(2); // Show 2 decimals if it has a decimal part
+
+                $orderSummaryTotal.text(`${formattedPrice}£`);
             }
 
             // Function to render the entire cart
@@ -127,7 +134,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-                        <h2 class="font-semibold text-2xl mt-3">${item.price * item.quantity}$</h2>
+                        <h2 class="font-semibold text-2xl mt-3">  ${((item.price * item.quantity) % 1 === 0) ? (item.price * item.quantity).toFixed(0) : (item.price * item.quantity).toFixed(2)}£</h2>
                     </div>
                 </div>
             </div>
@@ -157,7 +164,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-                        <h2 class="font-semibold text-2xl mt-3">${addon.addonPrice * addon.addonQuantity}$</h2>
+                        <h2 class="font-semibold text-2xl mt-3">${((addon.addonPrice * addon.addonQuantity) % 1 === 0) ? (addon.addonPrice * addon.addonQuantity).toFixed(0) : (addon.addonPrice * addon.addonQuantity).toFixed(2)}£ </h2>
                     </div>
                 </div>
             </div>

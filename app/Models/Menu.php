@@ -28,4 +28,19 @@ class Menu extends Model
     {
         return $this->belongsTo(Categories::class, 'category_id');
     }
+
+    // public function toArray()
+    // {
+    //     $array = parent::toArray();
+
+    //     // Format the prices
+    //     if (isset($array['menu_s_price'])) {
+    //         $array['menu_s_price'] = number_format($array['menu_s_price'], 2);
+    //     }
+    //     if (isset($array['menu_l_price'])) {
+    //         $array['menu_l_price'] = number_format($array['menu_l_price'], 2);
+    //     }
+
+    //     return $array;
+    // }
 }
