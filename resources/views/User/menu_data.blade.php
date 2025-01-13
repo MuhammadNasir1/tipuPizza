@@ -18,7 +18,7 @@
 
             <!-- Addons section -->
             <div class="mt-4">
-                <h3 class="text-md font-semibold " id="">Choose Extras</h3>
+                <h3 class="text-md font-semibold " id="">Serve With</h3>
                 <div id="selectedList" class="mt-2"></div>
             </div>
             <div id="addonsSection" class="mt-4">
@@ -172,102 +172,97 @@
     // }
 
     function addCartfun() {
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const updateCartCount = () => {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            $('#cartItemCount').text(totalItems);
-        };
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let addonsCart = JSON.parse(localStorage.getItem('addonsCart')) || [];
 
+    const updateCartCount = () => {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        $('#cartItemCount').text(totalItems);
+    };
 
+    updateCartCount();
+
+    const addToCart = (item) => {
+        const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id && cartItem.size === item.size);
+
+        if (existingItemIndex > -1) {
+            cart[existingItemIndex].quantity += 1;
+        } else {
+            cart.push({
+                ...item,
+                quantity: 1
+            });
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
 
-        const addToCart = (item) => {
-            const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id && cartItem.size === item
-                .size);
-            if (existingItemIndex > -1) {
-                cart[existingItemIndex].quantity += 1;
-            } else {
-                cart.push({
-                    ...item,
-                    quantity: 1
-                });
-            }
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
+        Swal.fire({
+            title: 'Added to Cart',
+            text: `${item.name} (${item.size}) has been added to your cart!`,
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 1500
+        });
+    };
 
-            Swal.fire({
-                title: 'Added to Cart',
-                text: `${item.name} (${item.size}) has been added to your cart!`,
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        };
+    const addAddonsToCart = (addons) => {
+        addons.forEach(addon => {
+            addonsCart.push(addon);
+        });
+        localStorage.setItem('addonsCart', JSON.stringify(addonsCart));
+    };
 
-        $('.open-modal').on('click', function() {
-            $("#addonHeading").addClass('hidden');
+    $('.open-modal').on('click', function() {
+        $("#addonHeading").addClass('hidden');
 
-            const itemId = $(this).data('item-id');
-            const itemName = $(this).data('item-name');
-            const priceSmall = $(this).data('price-small');
-            const priceLarge = $(this).data('price-large');
-            const labelSmall = $(this).data('item-label-s');
-            const labelLarge = $(this).data('item-label-l');
-            const addonsId = $(this).data('menu_addons');
-            const selectiveId = $(this).data('menu-selecter');
+        const itemId = $(this).data('item-id');
+        const itemName = $(this).data('item-name');
+        const priceSmall = $(this).data('price-small');
+        const priceLarge = $(this).data('price-large');
+        const labelSmall = $(this).data('item-label-s');
+        const labelLarge = $(this).data('item-label-l');
+        const addonsId = $(this).data('menu_addons');
+        const selectiveId = $(this).data('menu-selecter');
 
-            $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
-                'selected'); // Reset visibility and selection
-            $('#orderButton').prop('disabled', true); // Disable Order button initially
+        $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
+            'selected'); // Reset visibility and selection
+        $('#orderButton').prop('disabled', true); // Disable Order button initially
 
-            if (!priceSmall) {
-                $('#selectSmall').addClass('hidden');
-                $('#selectLarge').click();
-            }
-            if (!priceLarge) {
-                $('#selectLarge').addClass('hidden');
-                $('#selectSmall').click();
-            }
+        if (!priceSmall) {
+            $('#selectSmall').addClass('hidden');
+            $('#selectLarge').click();
+        }
+        if (!priceLarge) {
+            $('#selectLarge').addClass('hidden');
+            $('#selectSmall').click();
+        }
 
-            // Fetch addons
-            $.ajax({
-                url: '/getIemAddons', // Adjust this URL to match your endpoint
-                method: 'GET',
-                data: {
+        // Fetch addons
+        $.ajax({
+            url: '/getIemAddons', // Adjust this URL to match your endpoint
+            method: 'GET',
+            data: {
+                addonsId: addonsId,
+                selectiveId: selectiveId
+            },
+            success: function(data) {
+                $('#addonList').empty();
+                $("#selectedList").empty();
 
-                    addonsId: addonsId,
-                    selectiveId: selectiveId
+                $('#sizeModal').removeClass('hidden').addClass('flex');
+                if (Array.isArray(data.addon) && data.addon.length > 0) {
+                    $("#addonHeading").removeClass('hidden');
+                }
 
-                },
-                success: function(data) {
-                    $('#addonList').empty();
-                    $('#sizeModal').removeClass('hidden').addClass('flex');
-                    if (Array.isArray(data.addon) && data.addon.length > 0) {
-                        $("#addonHeading").removeClass('hidden');
-                    }
-                    // addons.forEach(function(addon) {
-                    //     const addonHtml = `
-                    //     <div class="flex items-center mt-2 justify-between gap-4">
-                    //         <div>
-                    //             <input type="checkbox" id="addon-${addon.addon_id}" data-addon-id="${addon.addon_id}" data-addon-name="${addon.addon_name}" data-addon-price="${addon.addon_price}" class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
-                    //             <label for="addon-${addon.addon_id}" class="ml-2">${addon.addon_name}</label>
-                    //         </div>
-                    //         <div>
-                    //             <p class="ml-2 text-primary font-semibold">${addon.addon_price}£</p>
-                    //         </div>
-                    //     </div>
-                    // `;
-                    //     $('#addonList').append(addonHtml);
-                    // });
-                    if (Array.isArray(data.addons)) {
-                        data.addons.forEach(function(addon) {
-                            const addonHtml = `
+                if (Array.isArray(data.addons)) {
+                    data.addons.forEach(function(addon) {
+                        const addonHtml = `
                 <div class="flex items-center mt-2 justify-between gap-4">
                     <div>
-                        <input type="checkbox" id="addon-${addon.addon_id}" 
-                               data-addon-id="${addon.addon_id}" 
-                               data-addon-name="${addon.addon_name}" 
-                               data-addon-price="${addon.addon_price}" 
+                        <input type="checkbox" id="addon-${addon.addon_id}"
+                               data-addon-id="${addon.addon_id}"
+                               data-addon-name="${addon.addon_name}"
+                               data-addon-price="${addon.addon_price}"
                                class="addon-checkbox w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
                         <label for="addon-${addon.addon_id}" class="ml-2">${addon.addon_name}</label>
                     </div>
@@ -276,92 +271,92 @@
                     </div>
                 </div>
             `;
-                            $('#addonList').append(addonHtml);
-                        });
-                    }
+                        $('#addonList').append(addonHtml);
+                    });
+                }
 
-                    // Append radio buttons for selectedItem
-                    if (Array.isArray(data.selectedItem)) {
-                        data.selectedItem.forEach(function(item) {
-                            const itemHtml = `
+                if (Array.isArray(data.selectedItem)) {
+                    data.selectedItem.forEach(function(item) {
+                        const itemHtml = `
                 <div class="flex items-center mt-2 justify-between gap-4">
                     <div>
-                        <input type="radio" id="selective-${item.addon_id}" 
-                               name="selectedItem" 
-                               data-addon-id="${item.addon_id}" 
-                               data-addon-name="${item.addon_name}" 
+                        <input type="radio" id="selective-${item.addon_id}"
+                               name="selectedItem" checked
+                               data-addon-id="${item.addon_id}"
+                               data-addon-name="${item.addon_name}"
                                class="selective-radio rounded-full w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
                         <label for="selective-${item.addon_id}" class="ml-2">${item.addon_name}</label>
                     </div>
-                 
+
                 </div>
             `;
-                            $('#selectedList').append(itemHtml);
-                        });
-                    }
-
-                    $('#modalItemName').text(itemName);
-                    $('#modalSmallPrice').text(priceSmall);
-                    $('#modalLargePrice').text(priceLarge);
-                    $('#labelS').text(labelSmall);
-                    $('#labelL').text(labelLarge);
-
-                    $('#selectSmall').data('cart-item', {
-                        id: itemId,
-                        name: itemName,
-                        size: labelSmall,
-                        price: priceSmall,
-                        addons: [] // Initially no addons selected
+                        $('#selectedList').append(itemHtml);
                     });
-
-                    $('#selectLarge').data('cart-item', {
-                        id: itemId,
-                        name: itemName,
-                        size: labelLarge,
-                        price: priceLarge,
-                        addons: [] // Initially no addons selected
-                    });
-
-
                 }
-            });
-        });
 
-        // Close modal
-        $('#closeModal').on('click', function() {
-            $('#sizeModal').removeClass('flex').addClass('hidden');
-        });
+                $('#modalItemName').text(itemName);
+                $('#modalSmallPrice').text(priceSmall);
+                $('#modalLargePrice').text(priceLarge);
+                $('#labelS').text(labelSmall);
+                $('#labelL').text(labelLarge);
 
-        // Enable Order Button and Highlight Size Button when a size is selected
-        $('#selectSmall, #selectLarge').on('click', function() {
-            $('#selectSmall, #selectLarge').removeClass(
-                'bg-primary text-white selected'); // Deselect other size buttons
-            $(this).addClass('bg-primary text-white selected'); // Highlight the selected size button
-
-            $('#orderButton').prop('disabled', false); // Enable Order button
-        });
-
-        // Place Order
-        $('#orderButton').on('click', function() {
-            const selectedSize = $('#selectSmall').hasClass('selected') ?
-                $('#selectSmall').data('cart-item') :
-                $('#selectLarge').data('cart-item');
-
-            const selectedAddons = [];
-            $('.addon-checkbox:checked').each(function() {
-                selectedAddons.push({
-                    addonId: $(this).data('addon-id'),
-                    addonName: $(this).data('addon-name'),
-                    addonPrice: $(this).data('addon-price')
+                $('#selectSmall').data('cart-item', {
+                    id: itemId,
+                    name: itemName,
+                    size: labelSmall,
+                    price: priceSmall
                 });
-            });
 
-            selectedSize.addons = selectedAddons; // Add selected addons to the cart item
-
-            addToCart(selectedSize);
-            $('#sizeModal').removeClass('flex').addClass('hidden');
+                $('#selectLarge').data('cart-item', {
+                    id: itemId,
+                    name: itemName,
+                    size: labelLarge,
+                    price: priceLarge
+                });
+            }
         });
-    }
+    });
+
+    $('#closeModal').on('click', function() {
+        $('#sizeModal').removeClass('flex').addClass('hidden');
+    });
+
+    $('#selectSmall, #selectLarge').on('click', function() {
+        $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected');
+        $(this).addClass('bg-primary text-white selected');
+        $('#orderButton').prop('disabled', false);
+    });
+
+    $('#orderButton').on('click', function() {
+        const selectedSize = $('#selectSmall').hasClass('selected') ?
+            $('#selectSmall').data('cart-item') :
+            $('#selectLarge').data('cart-item');
+
+        const selectedAddons = [];
+        $('.addon-checkbox:checked').each(function() {
+            selectedAddons.push({
+                addonId: $(this).data('addon-id'),
+                addonName: $(this).data('addon-name'),
+                addonPrice: $(this).data('addon-price'),
+                addonQuantity: 1
+            });
+        });
+
+        const selectedSelector = [];
+        $('.selective-radio:checked').each(function() {
+            selectedSelector.push({
+                selectedAddonId: $(this).data('addon-id'),
+                selectiveName: $(this).data('addon-name')
+            });
+        });
+
+        selectedSize.selectedSelector = selectedSelector;
+        addToCart(selectedSize);
+        addAddonsToCart(selectedAddons);
+        $('#sizeModal').removeClass('flex').addClass('hidden');
+    });
+}
+
 
 
 
