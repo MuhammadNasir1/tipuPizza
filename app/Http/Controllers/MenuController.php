@@ -256,10 +256,15 @@ class MenuController extends Controller
 
                 // Function to format price conditionally
                 $formatPrice = function ($price) {
+                    if ($price === null) {
+                        return null; // Or return an empty string, or a custom message
+                    }
+                
                     return floor($price) == $price
                         ? number_format($price, 0)
                         : number_format($price, 2);
                 };
+                
 
                 return [
                     'menu_id' => $menu->menu_id,

@@ -35,7 +35,7 @@
 
         </div>
     </div>
-</div>  
+</div>
 
 <script>
     // function addCartfun() {
@@ -209,6 +209,7 @@
 
         $('.open-modal').on('click', function() {
             $("#addonHeading").addClass('hidden');
+            $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected');
 
             const itemId = $(this).data('item-id');
             const itemName = $(this).data('item-name');
@@ -349,7 +350,6 @@
             addToCart(selectedSize);
             addAddonsToCart(selectedAddons);
             $('#sizeModal').removeClass('flex').addClass('hidden');
-            $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected');
         });
     }
 
@@ -414,10 +414,10 @@
                                                     <h3 class="md:text-lg font-semibold text-xs">${item.menu_name}</h3>
                                                     <div class="flex gap-4 justify-end">
                                                         ${item.prices.small ? `<h2 class="font-semibold md:text-lg text-[14px] text-black relative flex flex-col justify-start items-center ">
-                                                             <span class=" font-semibold leading-none">${item.prices.smallLabel || ''}</span> £ ${item.prices.small}
+                                                             <span class=" font-semibold leading-none">${item.prices.smallLabel || ''}</span>${item.prices.small}£
                                                         </h2>` : ''}
                                                         ${item.prices.large ? `<h2 class="font-semibold md:text-lg text-[14px] text-black relative flex flex-col justify-start items-center text-primary ">
-                                                          <span class=" font-semibold leading-none text-primary">${item.prices.largeLabel || ''}</span>  £ ${item.prices.large}
+                                                          <span class=" font-semibold leading-none text-primary">${item.prices.largeLabel || ''}</span>  ${item.prices.large}£
                                                         </h2>` : ''}
                                                     </div>
                                                 </div>
