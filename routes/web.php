@@ -56,6 +56,9 @@ Route::get('/menu', function () {
 Route::get('/about', function () {
     return view('User/about');
 });
+Route::get('/checkout', function () {
+    return view('User/checkout');
+});
 Route::get('getMenu', [MenuController::class, 'getMenu']);
 // Route::get('menu', [MenuController::class, 'userData']);
 Route::post('/order', [OrderController::class, 'insertOrder']);

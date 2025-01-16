@@ -18,11 +18,11 @@
 
             <!-- Addons section -->
             <div class="mt-4">
-                <h3 class="text-md font-semibold " id="">Serve With</h3>
+                <h3 class="text-md font-semibold hidden " id="serveHeading">Serve With</h3>
                 <div id="selectedList" class="mt-2"></div>
             </div>
             <div id="addonsSection" class="mt-4">
-                <h3 class="text-md font-semibold " id="">Choose Addons</h3>
+                <h3 class="text-md font-semibold hidden " id="addonHeading">Choose Addons</h3>
                 <div id="addonList" class="mt-2"></div>
             </div>
 
@@ -208,7 +208,7 @@
         };
 
         $('.open-modal').on('click', function() {
-            $("#addonHeading").addClass('hidden');
+
             $('#selectSmall, #selectLarge').removeClass('bg-primary text-white selected');
 
             const itemId = $(this).data('item-id');
@@ -222,7 +222,8 @@
 
             $('#selectSmall, #selectLarge').removeClass('hidden').removeClass(
                 'selected'); // Reset visibility and selection
-            $('#orderButton').prop('disabled', true); // Disable Order button initially
+            $('#selectSmall').addClass('bg-primary text-white selected');
+            $('#orderButton').prop('disabled', false); // Disable Order button initially
 
             if (!priceSmall) {
                 $('#selectSmall').addClass('hidden');
@@ -242,15 +243,17 @@
                     selectiveId: selectiveId
                 },
                 success: function(data) {
+                    $("#addonHeading").addClass("hidden");
+                    $("#serveHeading").addClass("hidden");
+
                     $('#addonList').empty();
                     $("#selectedList").empty();
 
                     $('#sizeModal').removeClass('hidden').addClass('flex');
-                    if (Array.isArray(data.addon) && data.addon.length > 0) {
-                        $("#addonHeading").removeClass('hidden');
-                    }
-
                     if (Array.isArray(data.addons)) {
+                        if (data.addons.length > 0) {
+                            $("#addonHeading").removeClass("hidden");
+                        }
                         data.addons.forEach(function(addon) {
                             const addonHtml = `
                 <div class="flex items-center mt-2 justify-between gap-4">
@@ -272,6 +275,10 @@
                     }
 
                     if (Array.isArray(data.selectedItem)) {
+                        if (data.selectedItem.length > 0) {
+                            $("#serveHeading").removeClass("hidden");
+                        }
+
                         data.selectedItem.forEach(function(item) {
                             const itemHtml = `
                 <div class="flex items-center mt-2 justify-between gap-4">

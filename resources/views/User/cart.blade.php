@@ -28,7 +28,8 @@
                     <h2 class="font-semibold text-lg mb-4">Options</h2>
                     <div class="flex flex-col gap-4">
                         <!-- Delivery -->
-                        <label class="flex items-center gap-3 cursor-pointer p-3 border rounded-lg hover:bg-gray-100">
+                        <label class="flex items-center gap-3 cursor-pointer p-3 border rounded-lg" data-option="Delivery"
+                            id="Delivery">
                             <input type="radio" name="diningOption" class="hidden" />
                             <span class="bg-blue-500 text-white p-3 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
@@ -41,7 +42,8 @@
                         </label>
 
                         <!-- Collection -->
-                        <label class="flex items-center gap-3 cursor-pointer p-3 border rounded-lg hover:bg-gray-100">
+                        <label class="flex items-center gap-3 cursor-pointer p-3 border rounded-lg "
+                            data-option="Collection" id='Collection'>
                             <input type="radio" name="diningOption" class="hidden" />
                             <span class="bg-green-500 text-white p-3 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
@@ -56,9 +58,11 @@
                 </div>
 
                 <!-- Next Button -->
+               <a href="../checkout">
                 <button class="w-full bg-primary text-white py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark">
                     Proceed to Checkout
                 </button>
+               </a>
             </div>
         </div>
     </div>
@@ -70,6 +74,21 @@
             const $orderSummaryTotal = $("#order-total");
             const $diningOptions = $("input[name='diningOption']");
 
+            const savedOption = localStorage.getItem("diningOption");
+            function activeDinnningBtn(selectedOption) {
+                
+                console.log(selectedOption);
+                if (selectedOption == "Delivery") {
+                    $("#Delivery").addClass("bg-purple-600 text-white");
+                    $("#Collection").removeClass("bg-purple-600 text-white");
+                } else if (selectedOption == "Collection") {
+                    $("#Collection").addClass("bg-purple-600 text-white");
+                    $("#Delivery").removeClass("bg-purple-600 text-white");
+                }
+
+            }
+            activeDinnningBtn(savedOption)
+
             // Load data from local storage
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
             const addonsCart = JSON.parse(localStorage.getItem("addonsCart")) || [];
@@ -80,13 +99,16 @@
                 totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
                 totalPrice += addonsCart.reduce((sum, addon) => sum + addon.addonPrice * addon.addonQuantity, 0);
 
+
+                localStorage.setItem("total", totalPrice);
+
                 // Format the total price (if it has decimals, show 2 digits, otherwise show without decimals)
                 const formattedPrice = totalPrice % 1 === 0 ?
                     totalPrice.toFixed(0) // No decimals if it's a whole number
                     :
                     totalPrice.toFixed(2); // Show 2 decimals if it has a decimal part
 
-                $orderSummaryTotal.text(`${formattedPrice}£`);
+                $orderSummaryTotal.text(`£${formattedPrice}`);
             }
 
             // Function to render the entire cart
@@ -112,7 +134,7 @@
                     .join("");
 
                 return `
-            <div class="card custom-shadow bg-white px-4 py-6 w-full mb-6">
+            <div class="card rounded-lg custom-shadow bg-white px-4 py-6 w-full mb-6">
                 <div class="flex gap-4 justify-between w-full">
                     <!-- Product Info -->
                     <div class="py-4 w-[70%]">
@@ -134,7 +156,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-                        <h2 class="font-semibold text-2xl mt-3">  ${((item.price * item.quantity) % 1 === 0) ? (item.price * item.quantity).toFixed(0) : (item.price * item.quantity).toFixed(2)}£</h2>
+                        <h2 class="font-semibold text-2xl mt-3"> £${((item.price * item.quantity) % 1 === 0) ? (item.price * item.quantity).toFixed(0) : (item.price * item.quantity).toFixed(2)}</h2>
                     </div>
                 </div>
             </div>
@@ -144,7 +166,7 @@
             // Function to create an add-on card
             function createAddonCard(addon, addonIndex) {
                 return `
-            <div class="card custom-shadow bg-white px-4 py-4 w-full mb-6">
+            <div class="card rounded-lg custom-shadow bg-white px-4 py-4 w-full mb-6">
                 <div class="flex gap-4 justify-between">
                     <!-- Add-on Info -->
                     <div class="py-4 w-[70%]">
@@ -164,7 +186,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
-                        <h2 class="font-semibold text-2xl mt-3">${((addon.addonPrice * addon.addonQuantity) % 1 === 0) ? (addon.addonPrice * addon.addonQuantity).toFixed(0) : (addon.addonPrice * addon.addonQuantity).toFixed(2)}£ </h2>
+                        <h2 class="font-semibold text-2xl mt-3">£${((addon.addonPrice * addon.addonQuantity) % 1 === 0) ? (addon.addonPrice * addon.addonQuantity).toFixed(0) : (addon.addonPrice * addon.addonQuantity).toFixed(2)} </h2>
                     </div>
                 </div>
             </div>
@@ -223,8 +245,9 @@
             $diningOptions.on("change", function() {
                 const selectedOption = $(this).siblings("span").text().trim();
                 localStorage.setItem("diningOption", selectedOption);
+                activeDinnningBtn(selectedOption)
             });
-
+            
             // Pre-select dining option if saved
             const savedDiningOption = localStorage.getItem("diningOption");
             if (savedDiningOption) {
