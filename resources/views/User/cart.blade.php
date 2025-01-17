@@ -58,11 +58,12 @@
                 </div>
 
                 <!-- Next Button -->
-               <a href="../checkout">
-                <button class="w-full bg-primary text-white py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark">
-                    Proceed to Checkout
-                </button>
-               </a>
+                <a href="../checkout">
+                    <button
+                        class="w-full bg-primary text-white py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark">
+                        Proceed to Checkout
+                    </button>
+                </a>
             </div>
         </div>
     </div>
@@ -75,15 +76,16 @@
             const $diningOptions = $("input[name='diningOption']");
 
             const savedOption = localStorage.getItem("diningOption");
+
             function activeDinnningBtn(selectedOption) {
-                
+
                 console.log(selectedOption);
                 if (selectedOption == "Delivery") {
-                    $("#Delivery").addClass("bg-purple-600 text-white");
-                    $("#Collection").removeClass("bg-purple-600 text-white");
+                    $("#Delivery").addClass("bg-red-400 text-white");
+                    $("#Collection").removeClass("bg-red-400 text-white");
                 } else if (selectedOption == "Collection") {
-                    $("#Collection").addClass("bg-purple-600 text-white");
-                    $("#Delivery").removeClass("bg-purple-600 text-white");
+                    $("#Collection").addClass(" bg-red-400 text-white");
+                    $("#Delivery").removeClass("bg-red-400 text-white");
                 }
 
             }
@@ -247,7 +249,7 @@
                 localStorage.setItem("diningOption", selectedOption);
                 activeDinnningBtn(selectedOption)
             });
-            
+
             // Pre-select dining option if saved
             const savedDiningOption = localStorage.getItem("diningOption");
             if (savedDiningOption) {
