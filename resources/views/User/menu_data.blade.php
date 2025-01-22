@@ -330,6 +330,34 @@
             $('#orderButton').prop('disabled', false);
         });
 
+        // $('#orderButton').on('click', function() {
+        //     const selectedSize = $('#selectSmall').hasClass('selected') ?
+        //         $('#selectSmall').data('cart-item') :
+        //         $('#selectLarge').data('cart-item');
+
+        //     const selectedAddons = [];
+        //     $('.addon-checkbox:checked').each(function() {
+        //         selectedAddons.push({
+        //             addonId: $(this).data('addon-id'),
+        //             addonName: $(this).data('addon-name'),
+        //             addonPrice: $(this).data('addon-price'),
+        //             addonQuantity: 1
+        //         });
+        //     });
+
+        //     const selectedSelector = [];
+        //     $('.selective-radio:checked').each(function() {
+        //         selectedSelector.push({
+        //             selectedAddonId: $(this).data('addon-id'),
+        //             selectiveName: $(this).data('addon-name')
+        //         });
+        //     });
+
+        //     selectedSize.selectedSelector = selectedSelector;
+        //     addToCart(selectedSize);
+        //     addAddonsToCart(selectedAddons);
+        //     $('#sizeModal').removeClass('flex').addClass('hidden');
+        // });
         $('#orderButton').on('click', function() {
             const selectedSize = $('#selectSmall').hasClass('selected') ?
                 $('#selectSmall').data('cart-item') :
@@ -353,11 +381,14 @@
                 });
             });
 
+            // Attach addons and selectors directly to the cart item
+            selectedSize.selectedAddons = selectedAddons;
             selectedSize.selectedSelector = selectedSelector;
-            addToCart(selectedSize);
-            addAddonsToCart(selectedAddons);
+
+            addToCart(selectedSize); // Store the complete item, including addons
             $('#sizeModal').removeClass('flex').addClass('hidden');
         });
+
     }
 
 
