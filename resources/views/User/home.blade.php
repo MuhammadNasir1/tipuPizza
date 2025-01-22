@@ -57,7 +57,7 @@
 
 
                 <div class="relative rounded-lg overflow-hidden mb-8 md:mb-0">
-                    <img src="{{ asset('assets/images/about-1.png') }}" alt="Restaurant Interior"
+                    <img src="{{ asset('assets/images/home-a-banner.png') }}" alt="Restaurant Interior"
                         class="w-full h-full object-cover rounded-lg shadow-lg" />
                 </div>
 

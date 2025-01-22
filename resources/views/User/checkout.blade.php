@@ -14,14 +14,14 @@
                     <!-- Personal Details -->
                     <div class="mb-6">
                         <h2 class="font-semibold text-lg mb-4">Personal Details</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <label class="block">
+                        <div class="md:grid flex flex-col  md:grid-cols-2 gap-4 w-full">
+                            <label class="block w-full ">
                                 <span class="text-gray-700">Full Name</span>
                                 <input required type="text"
                                     class="border p-3 rounded-md w-full focus:border-primary focus:outline-none"
                                     placeholder="Full Name">
                             </label>
-                            <label class="block">
+                            <label class="block w-full">
                                 <span class="text-gray-700">Email</span>
                                 <input required type="email"
                                     class="border p-3 rounded-md w-full focus:border-primary focus:outline-none"
@@ -73,9 +73,9 @@
                         <h2 class="font-semibold text-lg mb-4">Payment</h2>
                         <div class="space-y-3">
                             <label
-                                class="flex items-center gap-3 cursor-pointer border p-3 bg-green-400 text-white rounded-lg">
+                                class="flex items-center gap-3 cursor-pointer border p-3 bg-red-400 text-white rounded-lg">
                                 <input type="radio" name="paymentOption" class="hidden">
-                                <span class="bg-green-600 p-2 rounded-full">
+                                <span class="bg-red-600 p-2 rounded-full">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
