@@ -76,7 +76,7 @@
 
                     <div class="flex  gap-4">
                         <!-- Delivery -->
-                        <label class="flex w-full border-2 items-center gap-3 cursor-pointer px-2 py-4  rounded-lg bg-white"
+                        <label class="flex w-full border-2 items-center gap-3 cursor-pointer p-2 rounded-lg bg-white"
                             data-option="Delivery" id="Delivery">
                             <input type="radio" name="diningOption" class="hidden" />
                             <img src="{{ asset('assets/delivery-icon.png') }}" alt="delivery" class="w-10 h-10">
@@ -85,7 +85,7 @@
 
                         <!-- Collection -->
                         <label
-                            class="flex w-full border-2 items-center gap-3 cursor-pointer px-2 py-4  rounded-lg bg-white "
+                            class="flex w-full border-2 items-center gap-3 cursor-pointer p-2  rounded-lg bg-white "
                             data-option="Collection" id='Collection'>
                             <input type="radio" name="diningOption" class="hidden" />
                             <img src="{{ asset('assets/collection-icon.png') }}" alt="collection" class="w-10 h-10">
@@ -115,12 +115,13 @@
                             <h2 class="font-semibold text-black text-lg">Delivery Point</h2>
                             <div class="border border-gray-300 rounded-lg py-4 px-2 mt-2">
                                 <div class="flex gap-2 flex-shrink-0 items-center">
-                                  <div class="flex flex-col items-center gap-1 cursor-pointer">
-                                   <p> <i class="fa-solid fa-location-dot mr-2 text-2xl text-primary"></i></p>
-                                    <p class="text-[10px] text-[#6F767E] ">pick here</p>
-                                  </div>
+                                    <div class="flex flex-col items-center gap-1 cursor-pointer">
+                                        <p> <i class="fa-solid fa-location-dot mr-2 text-2xl text-primary"></i></p>
+                                        <p class="text-[10px] text-[#6F767E] ">pick here</p>
+                                    </div>
                                     <div>
-                                        <h2 class="text-black text-xs sm:text-[15px]"> <span class="font-semibold">Address</span> <span
+                                        <h2 class="text-black text-xs sm:text-[15px]"> <span
+                                                class="font-semibold">Address</span> <span
                                                 class="text-[#6F767E] font-normal">(3.5km)</span></h2>
                                         <p class="sm:text-xs text-[10px] text-[#6F767E]">Zone, google map location here</p>
                                     </div>
@@ -133,11 +134,10 @@
 
                 </div>
 
-              
-                    <button
-                        class="w-full bg-primary text-white py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark">
-                        Proceed to Checkout
-                    </button>
+
+                <button class="w-full bg-primary text-white py-3 rounded-lg text-lg font-semibold hover:bg-primary-dark">
+                    Proceed to Checkout
+                </button>
             </div>
         </div>
     </div>
@@ -158,7 +158,7 @@
                     $("#Collection").removeClass("bg-red-400 border-primary");
                     $('#collection-container').addClass('hidden');
                     $('#delivery-container').removeClass('hidden');
-                    
+
                 } else if (selectedOption == "Collection") {
                     $("#Collection").addClass("bg-red-400 border-primary").removeClass('hidden');
                     $('#collection-container').removeClass('hidden');
@@ -204,10 +204,11 @@
                     <div class="flex justify-between items-center border-b pb-2">
                         <span class="text-gray-600">${addon.addonName}</span>
                         <div class="flex items-center space-x-4">
+                        ${addon.addonPrice !== 0 ? `
                             <button class="decrease-addon-quantity px-2 bg-gray-300 rounded" data-index="${index}" data-addon-id="${addon.addonId}">-</button>
                             <span class="text-lg font-semibold">${addon.addonQuantity}</span>
                             <button class="increase-addon-quantity px-2 bg-gray-300 rounded" data-index="${index}" data-addon-id="${addon.addonId}">+</button>
-                            <span class="font-bold">£${(addon.addonPrice * addon.addonQuantity).toFixed(2)}</span>
+                            <span class="font-bold">£${(addon.addonPrice * addon.addonQuantity).toFixed(2)}</span>` : ''}
                             <button class="remove-addon text-gray-400" data-index="${index}" data-addon-id="${addon.addonId}">✖</button>
                         </div>
                     </div>
