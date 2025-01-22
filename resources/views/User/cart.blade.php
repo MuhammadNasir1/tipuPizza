@@ -298,6 +298,7 @@
                 activeDinningBtn(selectedOption);
             });
 
+            const savedDiningOption = localStorage.getItem("diningOption");
             if (savedDiningOption) {
                 $diningOptions.each(function() {
                     const optionText = $(this).siblings("span").text().trim();

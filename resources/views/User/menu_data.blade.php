@@ -266,7 +266,9 @@
                         <label for="addon-${addon.addon_id}" class="ml-2">${addon.addon_name}</label>
                     </div>
                     <div>
-                        <p class="ml-2 text-primary font-semibold">£${addon.addon_price}</p>
+                 ${addon.addon_price == 0 ? '' : '<p class="ml-2 text-primary font-semibold">£' + addon.addon_price + '</p>'}
+
+
                     </div>
                 </div>
             `;
