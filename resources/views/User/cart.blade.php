@@ -139,6 +139,10 @@
                         Proceed to Checkout
                     </button>
             </div>
+        </div>
+    </div>
+@endsection
+@section('js')
     <script>
         $(document).ready(function() {
             const $container = $("#product-cards-container");
@@ -148,12 +152,14 @@
 
             const savedOption = localStorage.getItem("diningOption");
 
-            function activeDinnningBtn(selectedOption) {
-
-                console.log(selectedOption);
+            function activeDinningBtn(selectedOption) {
                 if (selectedOption == "Delivery") {
-                    $("#Delivery").addClass("bg-red-400 text-white");
-                    $("#Collection").removeClass("bg-red-400 text-white");
+                    $("#Delivery").addClass("bg-red-400 border-primary");
+                    $("#Collection").removeClass("bg-red-400 border-primary");
+                    $('#collection-container').addClass('hidden');
+                    $('#delivery-container').removeClass('hidden');
+                    
+                } else if (selectedOption == "Collection") {
                     $("#Collection").addClass("bg-red-400 border-primary").removeClass('hidden');
                     $('#collection-container').removeClass('hidden');
                     $("#Delivery").removeClass("bg-red-400 border-primary");
