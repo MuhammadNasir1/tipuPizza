@@ -9,28 +9,41 @@
             <div class="md:grid flex flex-col md:grid-cols-2 gap-6 w-full relative">
                 <!-- Address Card -->
                 <div class="border-4 border-primary flex flex-col justify-center items-center py-6 px-4 rounded-lg">
-                    <div class="h-24 w-24 text-white text-[50px] rounded-full bg-primary flex justify-center items-center">
-                        <i class="fas fa-map-marker-alt text-3xl"></i>
+
+                    <div class="h-20 w-20 text-white text-[50px] rounded-full bg-primary flex justify-center items-center">
+                        <i class="fas fa-phone text-3xl"></i>
 
                     </div>
-                    <h2 class="text-2xl font-semibold text-primary mt-3">Address</h2>
-                    <p class="text-lg text-gray-600 font-medium text-center">
-                        2 Curzon St, Derby DE1 1LL
-                    </p>
+                    <h2 class="text-2xl font-semibold text-primary mt-3">Phone No</h2>
+                 <a href="">  <p class="text-sm text-gray-600 font-medium text-center">
+                    123456789
+                    </p></a>
                 </div>
 
                 <!-- Email Card -->
                 <div class="border-4 border-primary flex flex-col justify-center items-center py-6 px-4 rounded-lg">
-                    <div class="h-24 w-24 text-white text-[50px] rounded-full bg-primary flex justify-center items-center">
+                    <div class="h-20 w-20 text-white text-[50px] rounded-full bg-primary flex justify-center items-center">
                         <i class="fas fa-envelope text-3xl"></i>
 
                     </div>
                     <h2 class="text-2xl font-semibold text-primary mt-3">Email</h2>
-                    <p class="text-lg text-gray-600 font-medium text-center">
+                    <p class="text-sm text-gray-600 font-medium text-center">
                         tipupizzakebab@gmail.com
                     </p>
                 </div>
 
+
+                <div class="border-4 border-primary flex flex-col justify-center items-center py-6 px-4 rounded-lg col-span-2">
+                    <div class="h-20 w-20 text-white text-[50px] rounded-full bg-primary flex justify-center items-center">
+                        <i class="fas fa-map-marker-alt text-3xl"></i>
+
+                    </div>
+                    <h2 class="text-2xl font-semibold text-primary mt-3">Address</h2>
+                    <p class="text-sm text-gray-600 font-medium text-center">
+                        2 Curzon St, Derby DE1 1LL
+                    </p>
+                </div>
+               
                 <!-- Google Map -->
                 <div class="col-span-2">
                     <iframe
@@ -104,7 +117,7 @@
         </div>
 
         <!-- Timing Section -->
-        <div class="col-span-2 bg-primary rounded-2xl p-6">
+        {{-- <div class="col-span-2 bg-primary rounded-2xl p-6">
             <h2 class="text-white font-bold text-center text-3xl">Our Timing</h2>
             <div class="flex flex-col md:flex-row justify-around gap-6 mt-6 max-w-4xl mx-auto">
                 <div class="text-white text-center">
@@ -116,7 +129,7 @@
                     <p>12:00 PM - 11:00 PM</p>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
 @section('js')

@@ -1,3 +1,5 @@
+const autoprefixer = require('autoprefixer');
+
 module.exports = {
     content: [
         "./resources/**/*.blade.php",
@@ -10,12 +12,11 @@ module.exports = {
             colors: {
                 primary: "#EC1223",
                 content: "#F5F5F5",
-  
-            
             },
-          
         },
-      
     },
-    plugins: [require("flowbite/plugin")],
+    plugins: [
+        require("flowbite/plugin"),
+        autoprefixer
+    ],
 };
