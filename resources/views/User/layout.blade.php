@@ -47,15 +47,18 @@
             <div class="flex md:gap-6 gap-4">
                 <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
                     rel="noopener noreferrer">
-                    <i class="fab fa-facebook-f"></i>
+                    {{-- <i class="fab fa-facebook-f"></i> --}}
+                    <img src="{{asset('assets/fb-logo.png')}}" alt="Facebook" class="h-8">
                 </a>
                 <a class="lg:text-2xl md:text-xl text-sm" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
                     rel="noopener noreferrer">
-                    <i class="fab fa-tiktok"></i>
+                    <img src="{{asset('assets/tiktok.png')}}" alt="Tiktok" class="h-8">
+
                 </a>
                 <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/"
                     target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-instagram"></i>
+                    <img src="{{asset('assets/insta.png')}}" alt="instagram" class="h-8">
+
                 </a>
             </div>
         </div>
@@ -174,18 +177,26 @@
             <div class="flex items-center justify-between">
                 <span class="text-xl font-semibold">Tipu Pizza Kebab</span>
                 <div class="flex gap-6">
-                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab"
-                        target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.tiktok.com/@tipupizzakebab"
-                        target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-tiktok"></i>
-                    </a>
-                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/"
-                        target="_blank" rel="noopener noreferrer">
-                        <i class="fab fa-instagram"></i>
-                    </a>
+                    <a class="lg:text-2xl md:text-xl text-sm" href="https://www.facebook.com/TipuPizzaKebab" target="_blank"
+                    rel="noopener noreferrer">
+                    {{-- <i class="fab fa-facebook-f"></i> --}}
+                    <img src="{{asset('assets/fb-logo.png')}}" alt="Facebook" class="h-8">
+                </a>
+                <a class="lg:text-2xl md:text-xl text-sm" href="https://www.tiktok.com/@tipupizzakebab" target="_blank"
+                    rel="noopener noreferrer">
+                    <img src="{{asset('assets/tiktok.png')}}" alt="Tiktok" class="h-8">
+
+                </a>
+                <a class="lg:text-2xl md:text-xl text-sm" href="https://www.instagram.com/tipupizzakebab/"
+                    target="_blank" rel="noopener noreferrer">
+                    <img src="{{asset('assets/insta.png')}}" alt="instagram" class="h-8">
+
+                </a>
+                <a class="lg:text-2xl md:text-xl text-sm" href=""
+                    target="_blank" rel="noopener noreferrer">
+                    <img src="{{asset('assets/halal-icon.png')}}" alt="instagram" class="h-10">
+
+                </a>
                 </div>
             </div>
         </div>

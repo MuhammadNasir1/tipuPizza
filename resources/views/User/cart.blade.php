@@ -123,6 +123,10 @@
                                 </div>
 
                             </div>
+                                   <div class="mt-4">
+                            <x-textarea class="" id="customAdress" label="Address"
+                                placeholder="Enter Here" name="address"></x-textarea>
+                        </div>
                         </div>
                         <div id="map" class="my-4 rounded-md z-20" style="height: 300px;"></div>
                         <div class="mt-2">
